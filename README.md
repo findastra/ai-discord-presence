@@ -63,3 +63,10 @@ Open [findastra-discord-presence-20261008.html](findastra-discord-presence-20261
 Limits: this browser interface does not install or start native programs. Where an existing web app is available, the Cage opens that app. Draft controls store their data in the current browser and do not imply connected services. Existing application instructions above still apply.
 
 Version [v0.1.1-20261008-pets](https://github.com/findastra/findastra-discord-presence/tree/v0.1.1-20261008-pets). Added with OpenAI Codex (GPT-6), 2026-10-08.
+
+### Skill: DM cleanup
+
+Discord Damsel can walk you through deleting all of your own messages in a Discord DM with
+Undiscord, a browser add-on. How to use it: **[docs/dm-cleanup-20261010.md](docs/dm-cleanup-20261010.md)**.
+Assistants read [skills/dm-cleanup/SKILL.md](skills/dm-cleanup/SKILL.md). Only your messages are deleted, deletion is
+permanent, and automating a personal account is against Discord's rules. Added with Claude Opus 5.5, 2026-10-10.
