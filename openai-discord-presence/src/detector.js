@@ -1,15 +1,48 @@
 import { DatabaseSync } from 'node:sqlite';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { IDLE_MS, isRecentTask, modelLabel, projectLabel } from './presence.js';
 
-export function resolveProject(home, thread) {
+const PROJECT_REFRESH_MS = 30_000;
+let projectCache;
+
+// Codex state can contain large queued attachments. Keep only the small project maps,
+// and do not reparse the whole file for every chat or every five-second presence poll.
+function readProjectState(home) {
+  const now = Date.now();
+  const cached = projectCache?.home === home ? projectCache : undefined;
+  if (cached && now >= cached.checkedAt && now < cached.nextCheck) return cached.maps;
+  let maps = { assignments: new Map(), names: new Map() };
+  let signature;
   try {
-    const state = JSON.parse(readFileSync(join(home, '.codex-global-state.json'), 'utf8'));
-    const assigned = state['thread-project-assignments']?.[thread.id]?.projectId;
-    const project = state['local-projects']?.[assigned || thread.project_id];
-    return projectLabel(project?.name);
+    const path = join(home, '.codex-global-state.json');
+    const stat = statSync(path);
+    signature = `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}`;
+    if (cached?.signature === signature) maps = cached.maps;
+    else {
+      const state = JSON.parse(readFileSync(path, 'utf8'));
+      for (const [id, assignment] of Object.entries(state?.['thread-project-assignments'] ?? {})) {
+        if (typeof assignment?.projectId === 'string') maps.assignments.set(id, assignment.projectId);
+      }
+      for (const [id, project] of Object.entries(state?.['local-projects'] ?? {})) {
+        maps.names.set(id, projectLabel(project?.name));
+      }
+    }
+  } catch {
+    // A missing or incomplete state file must not leave stale labels cached forever.
+    signature = undefined;
+    maps = { assignments: new Map(), names: new Map() };
+  }
+  projectCache = { home, signature, maps, checkedAt: now, nextCheck: now + PROJECT_REFRESH_MS };
+  return maps;
+}
+
+export function resolveProject(home, thread, getState = () => readProjectState(home)) {
+  try {
+    const state = getState();
+    const assigned = state.assignments.get(thread.id);
+    return state.names.get(assigned || thread.project_id) || '';
   } catch { return ''; }
 }
 
@@ -29,13 +62,15 @@ export function folderProject(cwd, userHome = homedir()) {
 
 // The project to show for one chat: its folder if that folder still exists (a renamed or deleted folder
 // would show a name that no longer exists), otherwise the chat's saved Codex project name.
-export function chatProject(home, row) {
+export function chatProject(home, row, getState) {
   const path = stripLongPath(row.cwd);
-  return (path && existsSync(path) ? folderProject(row.cwd) : '') || resolveProject(home, row);
+  return (path && existsSync(path) ? folderProject(row.cwd) : '') || resolveProject(home, row, getState);
 }
 
 export function detectAstra(home = process.env.CODEX_HOME || join(homedir(), '.codex'), now = Date.now(), shareProject = false) {
   let db;
+  let savedState;
+  const getProjectState = () => savedState ??= readProjectState(home);
   try {
     const files = readdirSync(home).filter(n => /^state_\d+\.sqlite$/.test(n))
       .sort((a, b) => Number(b.match(/\d+/)[0]) - Number(a.match(/\d+/)[0]));
@@ -51,7 +86,7 @@ export function detectAstra(home = process.env.CODEX_HOME || join(homedir(), '.c
     const active = isRecentTask(row, now);
     const model = active ? projectLabel(row.model) : '';
     const effort = active ? projectLabel(row.reasoning_effort ?? '') : '';
-    const project = shareProject && active ? chatProject(home, row) : '';
+    const project = shareProject && active ? chatProject(home, row, getProjectState) : '';
     // Keep each chat's model and effort with its project when rotating the card.
     let sessions = [];
     if (shareProject && active) {
@@ -59,7 +94,7 @@ export function detectAstra(home = process.env.CODEX_HOME || join(homedir(), '.c
         WHERE archived = 0 AND source IN ('vscode', 'cli') AND (agent_path IS NULL OR agent_path = '/root')
         AND updated_at >= ? ORDER BY updated_at DESC LIMIT 25`).all(Math.floor((now - IDLE_MS) / 1000));
       sessions = recent.filter(r => isRecentTask(r, now)).map(r => ({
-        project: chatProject(home, r), model: projectLabel(r.model), effort: projectLabel(r.reasoning_effort ?? ''),
+        project: chatProject(home, r, getProjectState), model: projectLabel(r.model), effort: projectLabel(r.reasoning_effort ?? ''),
       }));
     }
     const projects = [...new Set(sessions.map(session => session.project).filter(Boolean))];
