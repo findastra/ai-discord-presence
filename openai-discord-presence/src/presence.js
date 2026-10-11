@@ -27,6 +27,12 @@ export function projectLabel(value) {
   return String(value ?? '').replace(/[\x00-\x1f\x7f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 110);
 }
 
+// Owner-approved display name; folder/repository slugs are not product titles.
+export function projectDisplayName(value) {
+  const label = projectLabel(value);
+  return /^(?:findastra[ -]pet[ -]apps|astras-pet-apps)$/i.test(label) ? "Astra's Pet Apps" : label;
+}
+
 const ROTATE_MS = 15000;
 
 // Select the entire chat record, so a rotating project always keeps its own model.
@@ -34,11 +40,11 @@ const ROTATE_MS = 15000;
 export function selectSession(detection = {}, config = {}, now = Date.now()) {
   const latest = { model: projectLabel(detection.model), effort: projectLabel(detection.effort) };
   if (!config.shareProject) return { project: '', ...latest };
-  const override = projectLabel(config.projectName);
+  const override = projectDisplayName(config.projectName);
   if (override) return { project: override, ...latest };
   const sessions = detection.sessions?.length ? detection.sessions : [detection];
   const session = sessions[Math.floor(now / ROTATE_MS) % sessions.length];
-  return { project: projectLabel(session.project), model: projectLabel(session.model), effort: projectLabel(session.effort) };
+  return { project: projectDisplayName(session.project), model: projectLabel(session.model), effort: projectLabel(session.effort) };
 }
 
 const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
@@ -78,7 +84,7 @@ export function activity(startedAt, image = GALAXY_URL, project = '', model = ''
     // Card title. Discord shows this instead of the registered app name, which can't be a brand name.
     name: 'OpenAI',
     details: level ? `Using ${name} on ${level}` : `Using ${name}`,
-    state: projectLabel(project) ? `Working on ${projectLabel(project)}` : 'Exploring ideas',
+    state: projectDisplayName(project) ? `Working on ${projectDisplayName(project)}` : 'Exploring ideas',
     timestamps: { start: startedAt },
     assets: { large_image: image, large_text: projectLabel(model).slice(0, 64) || name },
   };
@@ -90,5 +96,5 @@ export function validateConfig(input) {
   if (!/^\d{17,20}$/.test(clientId)) throw new Error('Paste the 17–20 digit Discord Application ID. No token needed.');
   // Either an uploaded Discord asset key or an https image link.
   if (!/^[a-z0-9_-]{1,128}$/.test(image) && !/^https:\/\/[^\s"<>]{1,240}$/.test(image)) throw new Error('Use an uploaded asset key or an https image link.');
-  return { clientId, image, shareProject: input.shareProject === true, projectName: projectLabel(input.projectName), automaticOnStart: input.automaticOnStart === true };
+  return { clientId, image, shareProject: input.shareProject === true, projectName: projectDisplayName(input.projectName), automaticOnStart: input.automaticOnStart === true };
 }

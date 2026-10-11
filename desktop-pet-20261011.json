@@ -1,0 +1,25 @@
+{
+  "desktop_scale": 1,
+  "alpha": "Desktop renderer thresholds partial alpha to prevent magenta color-key flecks",
+  "sparkles": false,
+  "renderer": "astras-pet-apps/scripts/desktop-pets-20261011.cs",
+  "status": "draft",
+  "date": "2026-10-11",
+  "art_files": [
+    "desktop-art/discord-damsel/alarmed-20261011.png",
+    "desktop-art/discord-damsel/blink-20261011.png",
+    "desktop-art/discord-damsel/curious-20261011.png",
+    "desktop-art/discord-damsel/happy-20261011.png",
+    "desktop-art/discord-damsel/idle-20261011.png",
+    "desktop-art/discord-damsel/sad-20261011.png",
+    "desktop-art/discord-damsel/sheet-20261011.png",
+    "desktop-art/discord-damsel/sick-20261011.png",
+    "desktop-art/discord-damsel/sleep-20261011.png",
+    "desktop-art/discord-damsel/worried-20261011.png"
+  ],
+  "creator": "Astra",
+  "scale_reference": "Standard 58.75 logical-pixel height, with aspect-ratio width clamp before scaling",
+  "assistant": "OpenAI Codex (GPT-6)",
+  "notes": "VR headset resting above visible face; controller in hand. Presence project label corrected to Astra's Pet Apps.",
+  "pet": "discord-damsel"
+}
