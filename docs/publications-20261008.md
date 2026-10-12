@@ -25,3 +25,5 @@ The new standalone entry has not been separately verified as a hosted website. A
 ## Recovery
 
 Keep this source tag unchanged. For a defect in the pet interface, use the original application entry described in README.md or check out the prior source in a separate checkout. Publish a corrective commit and new tag; do not reset shared main or force-push a rollback. Back up browser records before clearing site data.
+
+2026-10-11: Desktop artwork/size update prepared for publication; see ../desktop-pet-20261011.json. No new app integrations claimed.

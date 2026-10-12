@@ -70,3 +70,6 @@ Discord Damsel can walk you through deleting all of your own messages in a Disco
 Undiscord, a browser add-on. How to use it: **[docs/dm-cleanup-20261010.md](docs/dm-cleanup-20261010.md)**.
 Assistants read [skills/dm-cleanup/SKILL.md](skills/dm-cleanup/SKILL.md). Only your messages are deleted, deletion is
 permanent, and automating a personal account is against Discord's rules. Added with Claude Opus 5.5, 2026-10-10.
+
+## Desktop pet update - 2026-10-11
+VR headset resting above visible face; controller in hand. Presence project label corrected to Astra's Pet Apps. Desktop artwork status: draft. Manifest: [desktop-pet-20261011.json](desktop-pet-20261011.json). The native companion renders this art; existing browser interface behavior is unchanged. Generated character artwork uses OpenAI image generation; source sheets and derived frames are included where applicable. Public credit: Astra. Integrated by OpenAI Codex (GPT-6).

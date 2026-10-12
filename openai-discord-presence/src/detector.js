@@ -2,14 +2,14 @@ import { DatabaseSync } from 'node:sqlite';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { IDLE_MS, isRecentTask, modelLabel, projectLabel } from './presence.js';
+import { IDLE_MS, isRecentTask, modelLabel, projectLabel, projectDisplayName } from './presence.js';
 
 export function resolveProject(home, thread) {
   try {
     const state = JSON.parse(readFileSync(join(home, '.codex-global-state.json'), 'utf8'));
     const assigned = state['thread-project-assignments']?.[thread.id]?.projectId;
     const project = state['local-projects']?.[assigned || thread.project_id];
-    return projectLabel(project?.name);
+    return projectDisplayName(project?.name);
   } catch { return ''; }
 }
 
@@ -24,7 +24,7 @@ export function folderProject(cwd, userHome = homedir()) {
   const path = stripLongPath(cwd);
   if (!path || CODEX_OWN_FOLDERS.some(own => own.test(path))) return '';
   if (path.toLowerCase() === userHome.replace(/[\\/]+$/, '').toLowerCase()) return '';
-  return projectLabel(path.split(/[\\/]/).pop());
+  return projectDisplayName(path.split(/[\\/]/).pop());
 }
 
 // The project to show for one chat: its folder if that folder still exists (a renamed or deleted folder
