@@ -9,3 +9,9 @@ node_modules/
 dist/
 site/
 .reference-*
+
+# Local recovery state, parked extensions and downloaded installers never ship.
+tools/damsel-data/
+tools/betterdiscord-installer-*.exe
+__pycache__/
+*.pyc

@@ -14,5 +14,55 @@
   },
   "version": "0.1.1-20261008-pets",
   "source": "https://github.com/findastra/findastra-discord-presence/tree/v0.1.1-20261008-pets",
-  "built_with": "OpenAI Codex (GPT-6), 2026-10-08"
+  "built_with": "OpenAI Codex (GPT-6), 2026-10-08",
+  "framework": "PET-PROGRAM-FRAMEWORK.md (owner visual corrections 2026-10-15)",
+  "audit": {
+    "cadence": "manual",
+    "subject": "Discord Tower UI, local installer recovery and plugin/theme inventory",
+    "needs": "Local Discord Tower service; Discord UI inspection for runtime confirmation"
+  },
+  "tools": [
+    {
+      "name": "presence-checklist",
+      "version": "1.1",
+      "visibility": "public",
+      "status": "implemented",
+      "purpose": "Manual verification steps for Discord presence"
+    },
+    {
+      "name": "betterdiscord-recovery",
+      "version": "1.1",
+      "visibility": "public",
+      "status": "implemented",
+      "purpose": "Check loader files and recover a verified official installer; execution remains manual"
+    },
+    {
+      "name": "plugins-and-themes",
+      "version": "1.1",
+      "visibility": "public",
+      "status": "implemented",
+      "purpose": "Inventory, import, park and restore local plugin/theme files"
+    },
+    {
+      "name": "notes-tool",
+      "version": "1.1",
+      "visibility": "public",
+      "status": "implemented",
+      "purpose": "Browser-local notes/backlog with export and merging import"
+    },
+    {
+      "name": "play-with-findastra-discord-presence",
+      "version": "1.1",
+      "visibility": "public",
+      "status": "connection-pending",
+      "purpose": "Open Damsel chat for the play tutorial"
+    },
+    {
+      "name": "care-for-findastra-discord-presence",
+      "version": "1.1",
+      "visibility": "public",
+      "status": "connection-pending",
+      "purpose": "Open Damsel chat for the care tutorial"
+    }
+  ]
 }

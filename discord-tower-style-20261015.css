@@ -26,7 +26,27 @@ a{color:#85456f}a:focus-visible,button:focus-visible,summary:focus-visible,input
 .tower-content .check{font-size:14px}.tower-links{display:flex;gap:10px 20px;flex-wrap:wrap}.tower-links a{font-size:13px}
 body>footer{padding:0;margin:12px 0 0;color:#745f79;font-size:12px}.tower-footer{padding:6px 0}.tower-footer p{margin:8px 12px}
 #tower-chat-launcher{position:fixed;bottom:20px;right:24px;width:80px;height:80px;background:transparent;border:0;padding:8px;perspective:500px;z-index:50}
-.tower-coin{display:block;position:relative;width:64px;height:64px;transform-style:preserve-3d;animation:tower-spin 6s linear infinite}.tower-face,.tower-edge{position:absolute;inset:0}.tower-face{backface-visibility:hidden;transform:translateZ(1.6px)}.tower-back{transform:rotateY(180deg) translateZ(1.6px)}.tower-face img{width:64px;height:64px;object-fit:contain;image-rendering:pixelated}.tower-back img{transform:scaleX(-1)}.tower-edge{background:linear-gradient(125deg,#fff6b7,#d58d14 45%,#fff0a0 65%,#a56206);mask-size:contain;mask-position:center;mask-repeat:no-repeat}@keyframes tower-spin{to{transform:rotateY(360deg)}}
 #tower-chat{position:fixed;inset:auto 20px 110px auto;margin:0;width:min(410px,calc(100vw - 32px));max-height:70vh;background:#fff7fc;color:#382a3d;border:1px solid #be8eb3;border-radius:20px;padding:22px;box-shadow:0 16px 60px #4b315333}#tower-chat::backdrop{background:#19233333}#tower-chat h2{font-size:18px}#tower-chat p{font-size:14px}.tower-close{float:right}.tower-empty{color:#735773;font-size:13px}
 @media(max-width:640px){body{width:calc(100% - 32px);margin:30px auto 100px}body>header{grid-template-columns:76px minmax(0,1fr);gap:0 14px}body>header>img{width:76px;height:76px}.tower-content{padding:16px}.tower-status{justify-content:flex-start}#tower-chat-launcher{right:12px;bottom:10px}}
 @media(prefers-reduced-motion:reduce){.tower-coin{animation:none}}
+
+/* Pet-specific tools above; shared Pet Program controls below. */
+.tower-shared{background:linear-gradient(180deg,transparent,#f5faff 70px);border-radius:24px;padding:36px 20px 22px;display:grid;gap:24px;margin:12px -20px 0}
+.tower-tutorials{border:1px solid #c7a5c4;border-radius:20px;padding:18px;flex-wrap:wrap}
+.tower-tutorials .tower-tool>summary,.tower-tutorials .tower-tool:nth-child(even)>summary{background:#efc8e3;border-color:#bb8db0;color:#57324e;box-shadow:0 2px 0 #d7b4ce}
+.tower-program-link{display:flex!important;align-items:center;gap:16px;min-height:88px;padding:18px!important;border:1px solid #a8c5df!important;border-radius:16px!important;background:#e0effb!important;font-size:17px!important;font-weight:650}
+.tower-program-image{display:grid;place-items:center;width:72px;height:58px;border-radius:10px;background:#fff7fc;font-size:32px;color:#856d85;flex-shrink:0}
+.tower-group:nth-of-type(2)>.tower-tools{border:1px solid #bbccdf;border-radius:20px;padding:18px}
+.tower-footer{justify-self:center;width:100%;text-align:center}.tower-footer p{text-align:center}
+
+.tower-status{display:flex;flex-wrap:nowrap;gap:0;padding:0;border:0;white-space:nowrap;font-size:12px;color:inherit;align-items:center}
+.tower-status>*{display:inline-flex;align-items:center}
+.tower-status>*+*::before{content:'✦';color:#d994c6;font-size:12px;line-height:1;margin:0 .5cm}
+.tower-footer{min-width:0}.tower-shared{min-width:0}
+
+.tower-program-image{width:220px;height:130px;object-fit:cover;object-position:top}.tower-program-link{flex:1;min-width:240px;flex-direction:column}.tower-program-link img{max-width:100%}
+
+.tower-discord-preview{display:flex;align-items:center;gap:14px;padding:18px;background:#111720;border:1px solid #ffffff24;border-radius:14px;color:#f5f6f7;width:100%;box-sizing:border-box;text-align:left;font:14px/1.5 Arial,sans-serif}
+.tower-discord-preview>img{width:70px;height:70px;object-fit:cover;border-radius:12px;flex-shrink:0}
+.tower-discord-preview>span{display:grid;gap:3px}.tower-discord-preview strong{font-size:19px;font-weight:500}.tower-discord-preview .preview-muted{font-size:12px;color:#9da5ac}
+.tower-program-link{text-decoration:none}.tower-program-link .tower-discord-preview{font-weight:400}

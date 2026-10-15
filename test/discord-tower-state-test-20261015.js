@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+const scope={};vm.runInNewContext(fs.readFileSync(new URL('../discord-tower-state-20261015.js',import.meta.url),'utf8'),scope);
+const {normalize,merge}=scope.DiscordTowerState;
+const plain=x=>JSON.parse(JSON.stringify(x));
+test('invalid storage never prevents page initialization',()=>{for(const value of [null,[],12,'bad',{schema:2,tools:[],backlog:[]}])assert.deepEqual(plain(normalize(value)),{schema:2,tools:{},backlog:[]});});
+test('normalize retains valid flags and notes, rejects malformed entries',()=>{const result=plain(normalize({schema:2,tools:{bad:null,good:{enabled:false,sick:true},text:{enabled:'false',sick:'yes'}},backlog:[null,{id:'a',text:'owner note',secret:{token:'ignored'}}]}));assert.deepEqual(result.tools,{good:{enabled:false,sick:true},text:{enabled:true,sick:false}});assert.deepEqual(result.backlog,[{id:'a',text:'owner note'}]);});
+test('import is additive, deduplicated and cannot silently enable or heal',()=>{const a={schema:2,tools:{tool:{enabled:false,sick:true}},backlog:[{id:'1',text:'original'}]},b={schema:2,tools:{tool:{enabled:true,sick:false}},backlog:[{id:'1',text:'overwrite'},{id:'2',text:'new'}]};const result=plain(merge(a,b));assert.deepEqual(result.tools.tool,{enabled:false,sick:true});assert.deepEqual(result.backlog,[{id:'1',text:'original'},{id:'2',text:'new'}]);assert.deepEqual(plain(merge(result,b)),result);});
+test('wrong schema import fails before changing saved data',()=>{for(const value of [null,[],{}, {schema:3,tools:{},backlog:[]}])assert.throws(()=>merge({},value),/schema 2/);});
