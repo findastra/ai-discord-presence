@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync, appendFileSync, renameSync, statSync, mkdirSync, utimesSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { GALAXY_URL, Presence, activity, validateConfig, modelLabel, effortLabel, selectSession, launchMode, modeAfterSettings } from '../src/presence.js';
+import { GALAXY_URL, Presence, activity, validateConfig, modelLabel, effortLabel, selectSession, ROTATE_MS, launchMode, modeAfterSettings } from '../src/presence.js';
 import { detectClaude, isRecent, transcriptModel, transcriptInfo, folderProject } from '../src/detector.js';
 import { frame, Decoder, DiscordRPC } from '../src/rpc.js';
 import net from 'node:net';
@@ -258,7 +258,7 @@ test('every recently active Claude Code folder is listed for rotation, newest fi
       { project: 'fuzzbois', model: 'claude-opus-5-5', effort: 'high' },
       { project: 'paper-girl', model: 'claude-haiku-4-5', effort: 'low' },
     ]);
-    const selected = selectSession(found, { shareProject: true }, 15000);
+    const selected = selectSession(found, { shareProject: true }, ROTATE_MS);
     const card = activity(17, undefined, selected.project, selected.model, selected.effort);
     assert.equal(card.details, 'Using Claude Haiku 4.5 on Low');
     assert.equal(card.state, 'Working on paper-girl');
@@ -340,7 +340,7 @@ test('session selection respects project privacy, fixed labels, and the current 
     { project: 'project-b', model: 'claude-haiku-4-5', effort: 'low' },
   ];
   assert.deepEqual(selectSession({ sessions }, { shareProject: true }, 0), sessions[0]);
-  assert.deepEqual(selectSession({ sessions }, { shareProject: true }, 15000), sessions[1]);
+  assert.deepEqual(selectSession({ sessions }, { shareProject: true }, ROTATE_MS), sessions[1]);
   assert.deepEqual(selectSession({ sessions }, { shareProject: false, projectName: 'private' }, 15000), { ...sessions[0], project: '' });
   assert.deepEqual(selectSession({ sessions }, { shareProject: true, projectName: 'Fixed project' }, 15000), { ...sessions[0], project: 'Fixed project' });
   assert.deepEqual(selectSession({}, {}, 15000), { project: '', model: '', effort: '' });

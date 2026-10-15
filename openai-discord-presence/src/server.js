@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
-import { BUILT_IN_CLIENT_ID, GALAXY_URL, Presence, activity, validateConfig, modelLabel, effortLabel, selectSession } from './presence.js';
+import { BUILT_IN_CLIENT_ID, GALAXY_URL, Presence, activity, validateConfig, modelLabel, effortLabel, selectSession, rotationCards, ROTATE_MS } from './presence.js';
 import { detectAstra } from './detector.js';
 import { DiscordRPC } from './rpc.js';
 import { startupEnabled, setStartup } from './windows-startup.js';
@@ -28,6 +28,13 @@ let revision = 0;
 let running = false;
 let rerun = false;
 let closing = false;
+// The card is checked every second so each project gets its turn on time; the detector itself reads
+// Codex/Claude Code metadata at most every 3 seconds, and Discord only hears about real changes.
+const TICK_MS = 1000;
+const DETECT_MS = 3000;
+let detectedAt = 0;
+// After a failed connection (Discord closed), wait before trying the pipes again.
+let retryAt = 0;
 rpc.on('disconnected', () => { published = false; lastSent = undefined; });
 
 async function sync() {
@@ -37,7 +44,10 @@ async function sync() {
   const current = revision;
   try {
     // Manual mode also checks, so the card can name the exact model and project.
-    if (presence.mode !== 'off') detection = detectAstra(undefined, Date.now(), config.shareProject);
+    if (presence.mode !== 'off' && Date.now() - detectedAt >= DETECT_MS) {
+      detection = detectAstra(undefined, Date.now(), config.shareProject);
+      detectedAt = Date.now();
+    }
     presence.update(detection.active);
     currentSession = selectSession(detection, config);
     if (!config.clientId) { message = 'Add your Discord Application ID to connect.'; return; }
@@ -49,7 +59,9 @@ async function sync() {
       message = presence.mode === 'off' ? 'Sharing is off.' : detection.message;
       return;
     }
+    if (!rpc.ready && Date.now() < retryAt) return;
     await rpc.connect(config.clientId);
+    retryAt = 0;
     if (current !== revision || closing) { rerun = true; return; }
     const payload = activity(presence.startedAt, config.image, currentSession.project, currentSession.model, currentSession.effort);
     const signature = JSON.stringify(payload);
@@ -62,6 +74,7 @@ async function sync() {
   } catch (error) {
     published = false;
     message = error.message;
+    if (!rpc.ready) retryAt = Date.now() + 5000;
   } finally {
     running = false;
     if (rerun && !closing) { rerun = false; setImmediate(sync); }
@@ -103,7 +116,9 @@ const server = http.createServer(async (req, res) => {
   try {
     if (req.method === 'GET' && req.url === '/api/status') {
       return send(res, 200, { app: 'openai-discord-presence', identity: SOURCE_IDENTITY, config, mode: presence.mode, startedAt: presence.startedAt, published,
-        connected: rpc.ready, message, startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'OpenAI', detection: detection.message });
+        connected: rpc.ready, message, startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'OpenAI', detection: detection.message,
+        projects: config.shareProject && !config.projectName ? [...new Set(rotationCards(detection.sessions ?? []).map(s => s.project).filter(Boolean))] : [],
+        rotateSeconds: ROTATE_MS / 1000 });
     }
     if (req.method === 'POST') {
       if (req.headers.origin !== origin) return send(res, 403, { error: 'Open the local control panel to make changes.' });
@@ -119,6 +134,8 @@ const server = http.createServer(async (req, res) => {
         writeFileSync(configPath, JSON.stringify(nextConfig, null, 2) + '\n', { mode: 0o600 });
         config = nextConfig;
         revision++;
+        detectedAt = 0;
+        retryAt = 0;
         rpc.disconnect();
         void sync();
         return send(res, 200, { ok: true });
@@ -126,6 +143,8 @@ const server = http.createServer(async (req, res) => {
       if (req.url === '/api/mode') {
         presence.setMode(input.mode);
         revision++;
+        detectedAt = 0;
+        retryAt = 0;
         if (input.mode === 'off') rpc.disconnect();
         void sync();
         return send(res, 200, { ok: true });
@@ -151,7 +170,7 @@ server.on('error', error => {
   rpc.disconnect();
   process.exitCode = 1;
 });
-const interval = setInterval(sync, 5000);
+const interval = setInterval(sync, TICK_MS);
 async function shutdown() {
   if (closing) return;
   closing = true;

@@ -27,24 +27,42 @@ export function projectLabel(value) {
   return String(value ?? '').replace(/[\x00-\x1f\x7f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 110);
 }
 
-// Owner-approved display name; folder/repository slugs are not product titles.
+// Folder and saved-project slugs this owner used before naming the project. They are only a fallback:
+// a chat or project name set in the app always wins, because it is shown exactly as written.
 export function projectDisplayName(value) {
   const label = projectLabel(value);
-  return /^(?:findastra[ -]pet[ -]apps|astras-pet-apps)$/i.test(label) ? "Astra's Pet Apps" : label;
+  return /^(?:findastra[ -]pet[ -]apps|astras[ -]pet[ -](?:apps|os))$/i.test(label) ? "Astra's PetOS" : label;
 }
 
-const ROTATE_MS = 15000;
+// Discord takes about five activity updates per 20 seconds from one app. A new project every 6 seconds
+// stays inside that with room to spare, so every active project gets its turn quickly.
+export const ROTATE_MS = 6000;
+
+// The cards to rotate through, newest first: one per project and model, so five chats in the same
+// project with the same model take one turn, not five, while two models in one project still each show.
+// Chats with no project name only count when nothing else has a name, so "Exploring ideas" never
+// takes a turn away from a real project.
+export function rotationCards(sessions = []) {
+  const seen = new Map();
+  for (const session of sessions) {
+    const card = { project: projectLabel(session?.project), model: projectLabel(session?.model), effort: projectLabel(session?.effort) };
+    const key = JSON.stringify(card);
+    if (!seen.has(key)) seen.set(key, card);
+  }
+  const named = [...seen.values()].filter(card => card.project);
+  return named.length ? named : [...seen.values()].slice(0, 1);
+}
 
 // Select the entire chat record, so a rotating project always keeps its own model.
 // A fixed label or disabled project sharing continues to describe the newest chat.
 export function selectSession(detection = {}, config = {}, now = Date.now()) {
   const latest = { model: projectLabel(detection.model), effort: projectLabel(detection.effort) };
   if (!config.shareProject) return { project: '', ...latest };
-  const override = projectDisplayName(config.projectName);
+  const override = projectLabel(config.projectName);
   if (override) return { project: override, ...latest };
-  const sessions = detection.sessions?.length ? detection.sessions : [detection];
+  const sessions = rotationCards(detection.sessions?.length ? detection.sessions : [detection]);
   const session = sessions[Math.floor(now / ROTATE_MS) % sessions.length];
-  return { project: projectDisplayName(session.project), model: projectLabel(session.model), effort: projectLabel(session.effort) };
+  return { project: session.project, model: session.model, effort: session.effort };
 }
 
 const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
@@ -84,7 +102,7 @@ export function activity(startedAt, image = GALAXY_URL, project = '', model = ''
     // Card title. Discord shows this instead of the registered app name, which can't be a brand name.
     name: 'OpenAI',
     details: level ? `Using ${name} on ${level}` : `Using ${name}`,
-    state: projectDisplayName(project) ? `Working on ${projectDisplayName(project)}` : 'Exploring ideas',
+    state: projectLabel(project) ? `Working on ${projectLabel(project)}` : 'Exploring ideas',
     timestamps: { start: startedAt },
     assets: { large_image: image, large_text: projectLabel(model).slice(0, 64) || name },
   };
@@ -96,5 +114,5 @@ export function validateConfig(input) {
   if (!/^\d{17,20}$/.test(clientId)) throw new Error('Paste the 17–20 digit Discord Application ID. No token needed.');
   // Either an uploaded Discord asset key or an https image link.
   if (!/^[a-z0-9_-]{1,128}$/.test(image) && !/^https:\/\/[^\s"<>]{1,240}$/.test(image)) throw new Error('Use an uploaded asset key or an https image link.');
-  return { clientId, image, shareProject: input.shareProject === true, projectName: projectDisplayName(input.projectName), automaticOnStart: input.automaticOnStart === true };
+  return { clientId, image, shareProject: input.shareProject === true, projectName: projectLabel(input.projectName), automaticOnStart: input.automaticOnStart === true };
 }

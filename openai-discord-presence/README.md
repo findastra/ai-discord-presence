@@ -29,7 +29,15 @@ Automatic reads recent primary Codex task metadata, excluding archived tasks and
 
 ## Project sharing
 
-Project sharing is off by default. Turn on **Show my project on Discord** to publish a folder name, or enter a fixed project label. Full paths and chat titles are never published. When several recent sessions rotate, each project keeps its own model and effort. With a fixed label or sharing disabled, the newest session supplies the model and effort. Sessions without a usable project show **Exploring ideas**.
+Project sharing is off by default. Turn on **Show my project on Discord** and each Codex chat is named, first match wins:
+
+1. **The chat's own name**, if you renamed the chat in Codex. Rename it and the card follows within a few seconds.
+2. **The folder** the chat works in (its last part only, e.g. `paper-girl`), if that folder still exists.
+3. **The saved Codex project**, for chats in Codex's own scratch folders.
+
+Automatic chat titles (the ones Codex makes from your first message) are never used, and full paths are never published. Or type a fixed project label in Settings; it stays until you clear it.
+
+Every chat active in the last five minutes takes a turn: the card moves to the next project every **6 seconds** (Discord accepts about five updates per 20 seconds, so this is as fast as is safe). Chats in the same project with the same model share one turn; each turn keeps its own model and effort. The control panel lists every project taking turns. With a fixed label or sharing off, the newest chat supplies the model and effort. Chats without a usable name show **Exploring ideas** only when no other chat has one.
 
 ## Updating and startup
 
@@ -43,7 +51,7 @@ Create an application in the [Discord Developer Portal](https://discord.com/deve
 
 ## Privacy
 
-The detector opens Codex’s local SQLite task database read-only and reads model, effort, update time and folder metadata. It never reads prompts, replies or chat titles. Saved project names may be used when a real folder is unavailable.
+The detector opens Codex’s local SQLite task database read-only and reads model, effort, update time and folder metadata. It never reads prompts, replies or automatic chat titles. With project sharing on it also reads the name you gave a chat (only when you renamed it) and saved project names. The project-name file is read at most every 30 seconds and only when it changed.
 
 The control server binds only to `127.0.0.1`, checks Host and Origin for changes, and sends no telemetry. Discord receives activity text, a timestamp, an image URL and an optional project label. Settings remain in the Git-ignored `.local/config.json`. The local status endpoint includes installation/build identity so the launcher can detect old running copies; that identity is not sent to Discord.
 

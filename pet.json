@@ -4,16 +4,48 @@
   "owner": "Astra",
   "sprite": "pet-sprite-20261008.json",
   "art_key": "discord-damsel",
-  "job": "Manages the Discord presence apps (OpenAI and Anthropic) and other Discord apps.",
+  "job": "Puts Astra's live AI work on her Discord profile: the OpenAI and Anthropic Discord Presence tools show the model in use and every active project, taking turns every 6 seconds.",
   "runs_on": "Modern browser for the pet interface; original application requirements remain in README.md.",
   "entry": "findastra-discord-presence-20261008.html",
   "status": "hatching",
   "cage": {
     "topic": "pet-app",
-    "home": "https://github.com/findastra/astras-pet-apps"
+    "home": "https://github.com/findastra/astras-pet-apps",
+    "submit": {
+      "date": "2026-10-14",
+      "job": "Puts Astra's live AI work on her Discord profile: the OpenAI and Anthropic Discord Presence tools show the model in use and every active project, taking turns every 6 seconds."
+    }
   },
   "version": "0.1.1-20261008-pets",
   "source": "https://github.com/findastra/findastra-discord-presence/tree/v0.1.1-20261008-pets",
   "built_with": "OpenAI Codex (GPT-6), 2026-10-08",
-  "desktop_pet": "desktop-pet-20261011.json"
+  "desktop_pet": "desktop-pet-20261011.json",
+  "pet_program": "pet-program-13",
+  "framework": "PET-PROGRAM-FRAMEWORK.md (findastra/astras-pet-os, 2026-10-14)",
+  "tools": [
+    {
+      "name": "openai-discord-presence",
+      "label": "pet-program-13-v1.0-openai-discord-presence-v0.2",
+      "version": "0.2.0",
+      "intended_use": "Shows the OpenAI model, effort and active Codex projects on Discord. Reads Codex metadata read-only; names a chat by its user-given name, then its folder, then its saved Codex project.",
+      "visibility": "public",
+      "runs_on": "Windows, this PC only (control page http://127.0.0.1:38761/)",
+      "links": {
+        "source": "https://github.com/findastra/findastra-discord-presence/tree/main/openai-discord-presence",
+        "download": "https://github.com/findastra/findastra-discord-presence/raw/main/downloads/openai-discord-presence.zip"
+      }
+    },
+    {
+      "name": "anthropic-discord-presence",
+      "label": "pet-program-13-v1.0-anthropic-discord-presence-v0.2",
+      "version": "0.2.0",
+      "intended_use": "Shows the Anthropic model, effort and active Claude Code projects on Discord. Reads Claude Code transcript metadata only; names a session by its /rename name, then its folder. Always on covers Claude on the web and desktop chat.",
+      "visibility": "public",
+      "runs_on": "Windows, this PC only (control page http://127.0.0.1:38762/)",
+      "links": {
+        "source": "https://github.com/findastra/findastra-discord-presence/tree/main/anthropic-discord-presence",
+        "download": "https://github.com/findastra/findastra-discord-presence/raw/main/downloads/anthropic-discord-presence.zip"
+      }
+    }
+  ]
 }
