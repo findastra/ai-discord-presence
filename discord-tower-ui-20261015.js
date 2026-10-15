@@ -42,7 +42,7 @@
     el('span',name,launch);launch.setAttribute('aria-label',name==='Discord'?'Open Discord':'Open BetterDiscord installer');
     launch.onclick=()=>{action(route==='discord'?'open-discord':route);};
   }
-  const programsGroup=group('Your Programs');programsGroup.classList.add('astra-program-row');
+  const programsGroup=group('Your Programs');programsGroup.parentElement.hidden=true;
   const toolsGroup=group('Your Tools');
   const shared=el('div',undefined,main,'tower-shared');
   const notesGroup=group('Your Notes');shared.append(notesGroup.parentElement);
@@ -52,7 +52,7 @@
   const aboutGroup=group('About');shared.append(aboutGroup.parentElement);
   function card(parent,id,description) {
     const detail=el('details',undefined,parent,'tower-tool');detail.id=id;
-    const labels={'presence-controls':'Your connected programs','presence-checklist':'Presence checklist','betterdiscord-recovery':'BetterDiscord recovery','plugins-and-themes':'Plugins & themes','notes-tool':'Notes & requests','play-with-findastra-discord-presence':'Play with Discord Damsel','care-for-findastra-discord-presence':'Care for Discord Damsel','clicker-training':'Click bindings','backlog-health':'Backlog & health','pet-collar':'Pet collar','links':'Links'};
+    const labels={'openai-controls':'OpenAI controls','anthropic-controls':'Anthropic controls','presence-controls':'Your connected programs','presence-checklist':'Presence checklist','betterdiscord-recovery':'BetterDiscord recovery','plugins-and-themes':'Plugins & themes','notes-tool':'Notes & requests','play-with-findastra-discord-presence':'Play with Discord Damsel','care-for-findastra-discord-presence':'Care for Discord Damsel','clicker-training':'Click bindings','backlog-health':'Backlog & health','pet-collar':'Pet collar','links':'Links'};
     el('summary',labels[id]||id,detail);
     const content=el('div',undefined,detail,'tower-content');
     const controls=el('span',undefined,detail.querySelector('summary'),'tower-controls tower-light-controls');controls.setAttribute('role','group');controls.setAttribute('aria-label',(labels[id]||id)+' controls');
@@ -84,9 +84,14 @@
   const controllers=previous.find(n=>n.querySelector('h2')?.textContent==='Existing local controllers');
   if(controllers){for(const a of [...controllers.querySelectorAll('a')]){
     const provider=a.textContent.toLowerCase().includes('openai')?'OpenAI':'Anthropic';
-    a.className='astra-cloud-launch';a.replaceChildren();
-    const icon=el('img',undefined,a);icon.src=provider.toLowerCase()+'-controls-icon-20261015.png';icon.alt='';
-    a.dataset.controller=provider.toLowerCase();a.removeAttribute('href');a.setAttribute('aria-disabled','true');a.title='Start the local Discord Tower service to open these controls';el('span',provider+' Controls',a);a.setAttribute('aria-label','Open '+provider+' controls');programsGroup.append(a);
+    const id=provider.toLowerCase()+'-controls';
+    const body=card(toolsGroup,id,'Discord profile-card preview. Open the companion to change its presence settings.');
+    a.className='tower-program-link';a.replaceChildren();
+    const preview=el('span',undefined,a,'tower-discord-preview');
+    const icon=el('img',undefined,preview);icon.src=provider.toLowerCase()+'-controls-icon-20261015.png';icon.alt=provider+' galaxy';
+    const copy=el('span',undefined,preview);el('strong',provider,copy);el('span',provider==='OpenAI'?'Using OpenAI':'Using Claude',copy);el('span','Exploring ideas',copy,'preview-muted');el('span','Ready when you are',copy,'preview-muted');
+    a.dataset.controller=provider.toLowerCase();a.removeAttribute('href');a.setAttribute('aria-disabled','true');a.title='Start the local Discord Tower service to open these controls';a.setAttribute('aria-label','Open '+provider+' controls');body.append(a);
+    el('p','Preview only — check Discord for the current live activity.',body,'tower-note');
   }controllers.remove();}
   const checklist=card(toolsGroup,'presence-checklist','Check the visible Discord result after changing a presence app.');
   const oldChecklist=previous.find(n=>n.querySelector('h2')?.textContent==='Presence checklist');if(oldChecklist)checklist.append(oldChecklist);
@@ -95,7 +100,7 @@
   const actions=el('div',undefined,recovery,'tower-links');
   async function action(route){const owner=route==='open-manager'?'plugins-and-themes':route==='open-discord'?null:'betterdiscord-recovery';if(owner&&saved.tools[owner]?.enabled===false){live.textContent='This tool is OFF. Use its top light to enable it.';recovery.closest('details').open=true;live.scrollIntoView({block:'center'});return;}try{const response=await fetch('/api/'+route,{method:'POST',headers:{'X-Discord-Tower':'local-action'}});const result=await response.json();if(!response.ok)throw Error(result.error);live.textContent='Action accepted. Checking the result…';setTimeout(refresh,1500);}catch(error){live.textContent=error.message;recovery.closest('details').open=true;live.scrollIntoView({block:'center'});}}
   for(const [label,route] of [['Check now','check'],['Download fresh installer','download'],['Open verified installer','open-installer'],['Open extension manager','open-manager']]){const b=el('button',label,actions);b.onclick=()=>action(route);}
-  async function refresh(){if(saved.tools['betterdiscord-recovery']?.enabled===false)return;try{const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw Error('Local recovery service is unavailable');const state=await response.json();if(saved.tools['betterdiscord-recovery']?.enabled===false)return;if(!Array.isArray(state.channels)||!Array.isArray(state.extensions))throw Error('Invalid service response');healthKnown=true;for(const a of programsGroup.querySelectorAll('[data-controller]')){const candidate=state.programs?.[a.dataset.controller];if(typeof candidate==='string'){const url=new URL(candidate);if(url.protocol==='http:'&&url.hostname===location.hostname&&!url.username&&!url.password){a.href=url.href;a.removeAttribute('aria-disabled');a.title='Open '+a.dataset.controller+' controls';}}}detectedBroken=state.channels.some(c=>c.needs_repair);lastCheckSuccessful=state.channels.length>0&&!detectedBroken&&!state.error;publishHealth();live.textContent=state.channels.map(c=>c.channel+' '+c.version+': '+(c.needs_repair?'repair needed':'loader files present')).join(' · ')+' — Installer '+(state.installer_ready?'verified and ready':'missing')+'. Startup monitor '+(state.monitor?'enabled':'off')+'.'+(state.error?' '+state.error:'');extensionStatus.textContent=state.extensions.length?state.extensions.map(x=>x.kind+': '+x.name).join(' · '):'No installed plugins or themes found on this PC.';}catch(error){lastCheckSuccessful=false;healthKnown=false;publishHealth();live.textContent='Local recovery service unavailable. Open the recovery utility to check this PC.';}}
+  async function refresh(){if(saved.tools['betterdiscord-recovery']?.enabled===false)return;try{const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw Error('Local recovery service is unavailable');const state=await response.json();if(saved.tools['betterdiscord-recovery']?.enabled===false)return;if(!Array.isArray(state.channels)||!Array.isArray(state.extensions))throw Error('Invalid service response');healthKnown=true;for(const a of toolsGroup.querySelectorAll('[data-controller]')){const candidate=state.programs?.[a.dataset.controller];if(typeof candidate==='string'){const url=new URL(candidate);if(url.protocol==='http:'&&url.hostname===location.hostname&&!url.username&&!url.password){a.href=url.href;a.setAttribute('aria-disabled',String(saved.tools[a.dataset.controller+'-controls']?.enabled===false));a.title='Open '+a.dataset.controller+' controls';}}}detectedBroken=state.channels.some(c=>c.needs_repair);lastCheckSuccessful=state.channels.length>0&&!detectedBroken&&!state.error;publishHealth();live.textContent=state.channels.map(c=>c.channel+' '+c.version+': '+(c.needs_repair?'repair needed':'loader files present')).join(' · ')+' — Installer '+(state.installer_ready?'verified and ready':'missing')+'. Startup monitor '+(state.monitor?'enabled':'off')+'.'+(state.error?' '+state.error:'');extensionStatus.textContent=state.extensions.length?state.extensions.map(x=>x.kind+': '+x.name).join(' · '):'No installed plugins or themes found on this PC.';}catch(error){lastCheckSuccessful=false;healthKnown=false;publishHealth();live.textContent='Local recovery service unavailable. Open the recovery utility to check this PC.';}}
   setInterval(refresh,15000);setTimeout(refresh,0);
   el('p','Open betterdiscord-recovery-20261015.lnk from your downloaded output folder for the local recovery and extension controls. BetterDiscord’s installer is third-party software and uses its own interface.',recovery,'tower-note');
   const thirdParty=el('div',undefined,recovery,'tower-links');
