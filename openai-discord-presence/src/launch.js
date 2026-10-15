@@ -7,6 +7,7 @@ const app = 'openai-discord-presence';
 
 export async function launch({ fetcher = fetch, spawnProcess = spawn, identity = SOURCE_IDENTITY,
   background = process.argv.includes('--background'), automatic = process.argv.includes('--automatic'),
+  replace = process.argv.includes('--replace'),
   sleep = ms => new Promise(r => setTimeout(r, ms)) } = {}) {
   async function status() {
     let response;
@@ -15,6 +16,17 @@ export async function launch({ fetcher = fetch, spawnProcess = spawn, identity =
     let data;
     try { data = await response.json(); } catch { data = null; }
     if (response.ok === false || data?.app !== app || data.identity?.installationPath !== identity.installationPath || data.identity?.buildId !== identity.buildId) {
+      // --replace (used by Discord Damsel): ask an older copy of this same app to quit, then start this one.
+      // Only this app's own control API is called; anything else on the port is left alone.
+      if (replace && data?.app === app) {
+        await fetcher(url + 'api/quit', { method: 'POST', signal: AbortSignal.timeout(2000),
+          headers: { 'Content-Type': 'application/json', Origin: url.slice(0, -1) }, body: '{}' }).catch(() => {});
+        for (let i = 0; i < 25; i++) {
+          await sleep(200);
+          try { await fetcher(url + 'api/status', { signal: AbortSignal.timeout(400) }); } catch { return false; }
+        }
+        throw new Error('The older copy at ' + url + ' did not quit. Open its control panel and choose Quit app.');
+      }
       throw new Error('Another or older presence installation is running at ' + url + '. Open its control panel, choose Quit app, then launch this copy again. No running app was stopped.');
     }
     return true;
