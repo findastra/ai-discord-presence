@@ -6,7 +6,8 @@ const url = 'http://127.0.0.1:38761/';
 const app = 'openai-discord-presence';
 
 export async function launch({ fetcher = fetch, spawnProcess = spawn, identity = SOURCE_IDENTITY,
-  background = process.argv.includes('--background'), sleep = ms => new Promise(r => setTimeout(r, ms)) } = {}) {
+  background = process.argv.includes('--background'), automatic = process.argv.includes('--automatic'),
+  sleep = ms => new Promise(r => setTimeout(r, ms)) } = {}) {
   async function status() {
     let response;
     try { response = await fetcher(url + 'api/status', { signal: AbortSignal.timeout(600) }); }
@@ -30,6 +31,12 @@ export async function launch({ fetcher = fetch, spawnProcess = spawn, identity =
     }
   }
   if (!(await status())) throw new Error('Could not start OpenAI Discord Presence. Run node src/server.js for details.');
+  // --automatic (used by Discord Damsel): switch the running app to Automatic, the same as clicking it.
+  if (automatic) {
+    const response = await fetcher(url + 'api/mode', { method: 'POST', signal: AbortSignal.timeout(2000),
+      headers: { 'Content-Type': 'application/json', Origin: url.slice(0, -1) }, body: JSON.stringify({ mode: 'auto' }) });
+    if (response.ok === false) throw new Error('The app started but did not switch to Automatic. Open its control panel and click Automatic.');
+  }
   if (!background) spawnProcess('rundll32.exe', ['url.dll,FileProtocolHandler', url], { detached: true, windowsHide: true, stdio: 'ignore' }).unref();
 }
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

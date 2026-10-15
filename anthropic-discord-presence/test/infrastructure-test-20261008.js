@@ -139,3 +139,18 @@ test('enabling or disabling Windows startup keeps the Always on choice', () => {
   assert.equal(setStartup(false, m.options).alwaysOn, true);
   assert.equal(JSON.parse(m.files.get(m.configPath)).alwaysOn, true);
 });
+
+test('--automatic switches the running app to Automatic through its own control API', async () => {
+  const posts = [];
+  const fetcher = async (target, options = {}) => {
+    if (options.method === 'POST') { posts.push({ target, options }); return { ok: true, json: async () => ({ ok: true }) }; }
+    return { ok: true, json: async () => ({ app: 'anthropic-discord-presence', identity: SOURCE_IDENTITY }) };
+  };
+  await launch({ fetcher, spawnProcess: () => {}, background: true, automatic: true });
+  assert.equal(posts.length, 1);
+  assert.match(posts[0].target, /\/api\/mode$/);
+  assert.deepEqual(JSON.parse(posts[0].options.body), { mode: 'auto' });
+  assert.equal(posts[0].options.headers.Origin, posts[0].target.replace(/\/api\/mode$/, ''));
+  await launch({ fetcher, spawnProcess: () => {}, background: true });
+  assert.equal(posts.length, 1);
+});
