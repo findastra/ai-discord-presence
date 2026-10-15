@@ -33,7 +33,9 @@ Project sharing is off by default. Turn on **Show my project on Discord** and ea
 
 1. **The chat's own name**, if you renamed the chat in Codex. Rename it and the card follows within a few seconds.
 2. **The folder** the chat works in (its last part only, e.g. `paper-girl`), if that folder still exists.
-3. **The saved Codex project**, for chats in Codex's own scratch folders.
+3. **The saved Codex project**, for chats in Codex's own scratch folders or whose folder no longer exists.
+
+Old folder names of Astra's own project (`Findastra Pet Apps`, `astras-pet-apps`, `astras-pet-os`) show as **Astra's PetOS**; a chat name you set always wins over that.
 
 Automatic chat titles (the ones Codex makes from your first message) are never used, and full paths are never published. Or type a fixed project label in Settings; it stays until you clear it.
 

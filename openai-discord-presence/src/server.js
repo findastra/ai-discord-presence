@@ -35,6 +35,9 @@ const DETECT_MS = 3000;
 let detectedAt = 0;
 // After a failed connection (Discord closed), wait before trying the pipes again.
 let retryAt = 0;
+// Never send Discord two cards closer than this, even if chats reorder between checks.
+const MIN_SEND_MS = 4500;
+let sentAt = 0;
 rpc.on('disconnected', () => { published = false; lastSent = undefined; });
 
 async function sync() {
@@ -59,13 +62,14 @@ async function sync() {
       message = presence.mode === 'off' ? 'Sharing is off.' : detection.message;
       return;
     }
-    if (!rpc.ready && Date.now() < retryAt) return;
+    if (Date.now() < retryAt) return;
     await rpc.connect(config.clientId);
     retryAt = 0;
     if (current !== revision || closing) { rerun = true; return; }
     const payload = activity(presence.startedAt, config.image, currentSession.project, currentSession.model, currentSession.effort);
     const signature = JSON.stringify(payload);
-    if (lastSent !== signature) {
+    if (lastSent !== signature && Date.now() - sentAt >= MIN_SEND_MS) {
+      sentAt = Date.now();
       await rpc.setActivity(payload);
       lastSent = signature;
     }
@@ -74,7 +78,8 @@ async function sync() {
   } catch (error) {
     published = false;
     message = error.message;
-    if (!rpc.ready) retryAt = Date.now() + 5000;
+    // Closed Discord or a rejected card: wait 5 seconds before trying again.
+    retryAt = Date.now() + 5000;
   } finally {
     running = false;
     if (rerun && !closing) { rerun = false; setImmediate(sync); }

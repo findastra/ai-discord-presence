@@ -39,6 +39,8 @@ Project sharing is off by default. Turn on **Show my project on Discord** and ea
 1. **The session's own name**, if you renamed it with `/rename` in Claude Code. Rename it and the card follows within a few seconds.
 2. **The folder** the session works in (its last part only, e.g. `paper-girl`), if that folder still exists.
 
+Old folder names of Astra's own project (`Findastra Pet Apps`, `astras-pet-apps`, `astras-pet-os`) show as **Astra's PetOS**; a session name you set always wins over that.
+
 Automatic session titles (made from what you typed) are never used, and full paths are never published. Or type a fixed project label in Settings; it stays until you clear it.
 
 Every session active in the last five minutes takes a turn: the card moves to the next project every **6 seconds** (Discord accepts about five updates per 20 seconds, so this is as fast as is safe). Sessions in the same project with the same model share one turn; each turn keeps its own model and effort. The control panel lists every project taking turns. With a fixed label or sharing off, the newest session supplies the model and effort. Sessions without a usable name show **Exploring ideas** only when no other session has one.

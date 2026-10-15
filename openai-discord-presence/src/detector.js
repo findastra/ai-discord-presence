@@ -88,7 +88,8 @@ export function detectAstra(home = process.env.CODEX_HOME || join(homedir(), '.c
     const hasProjects = columns.has('project_id')
       && Boolean(db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'projects'").get());
     const effort = columns.has('reasoning_effort') ? ', t.reasoning_effort' : '';
-    const naming = !shareProject ? '' : ['t.id', columns.has('project_id') ? 't.project_id' : 'NULL AS project_id', 't.cwd',
+    const naming = !shareProject ? '' : [columns.has('id') ? 't.id' : 'NULL AS id', columns.has('project_id') ? 't.project_id' : 'NULL AS project_id',
+      columns.has('cwd') ? 't.cwd' : 'NULL AS cwd',
       columns.has('name') ? 't.name AS chat_name' : 'NULL AS chat_name', hasProjects ? 'p.name AS project_name' : 'NULL AS project_name']
       .map(c => ', ' + c).join('');
     const from = `FROM threads t${shareProject && hasProjects ? ' LEFT JOIN projects p ON p.id = t.project_id' : ''}`;
