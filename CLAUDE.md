@@ -5,6 +5,8 @@ including every SKILL.md on every branch. Never skim or skip them.**
 
 Findastra Discord Presence holds one Windows app per AI company: `openai-discord-presence/` and `anthropic-discord-presence/`, each its own download. More can be added (see [ADDING-A-MODEL.md](ADDING-A-MODEL.md)). Read this before changing anything; `node --test` at the repo root runs every app's tests plus the naming rules.
 
+This repo is the pet **Discord Damsel**; her home (pet program) is **Discord Tower** (names come only from `pet-programs.json` in `findastra/astras-pet-os`). On Astra's PC it lives in `%USERPROFILE%\Documents\Astra's Pet Apps\findastra-discord-presence` (one working copy; work on a `claude/<topic>-YYYYMMDD` branch and push before you stop). Open handoff cards: [handoffs/](handoffs/README.md).
+
 ## High-level decisions
 - Before naming, structuring or publishing anything, look at the owner's other repos on github.com/findastra and follow their conventions (lowercase-hyphen repo and folder names; README title is the same words in Title Case).
 
@@ -17,6 +19,8 @@ Findastra Discord Presence holds one Windows app per AI company: `openai-discord
 ## Art
 - Original galaxies only (never art captured from a company's site). One arm per current model generation: OpenAI 6 (GPT-6), Anthropic 5 (Claude 5). When a new generation ships, re-render with one more arm and bump `?v=` in `GALAXY_URL` (`src/presence.js`) so Discord refetches.
 - Each image is centred, fills the square, black background. GIFs stay under 10 MB (GitHub serves larger raw files without an image type).
+- The recipe (prompts, commands, swirl physics) is [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); the tools are in [image-bridge/](image-bridge/README.md). Rebuilding from `image-bridge/masters/` reproduces the shipped `galaxy.png` exactly; keep it that way. Generating new images costs Astra money: ask first, regenerate one image, never a set.
+- `image-bridge/imagine.mjs` is also used by `astras-pet-os` (`scripts/generate-pets.mjs`, `scripts/generate-seeds-20261012.mjs`). Don't rename or move it without updating those scripts.
 
 ## Privacy
 - Detection reads local metadata only (model, effort, timestamps, folder). Never read or send conversation text, prompts or chat titles. Only a folder's last name may leave the computer, and only when the user opts in.

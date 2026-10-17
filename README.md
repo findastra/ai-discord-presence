@@ -1,5 +1,7 @@
 # Findastra Discord Presence
 
+*A pet app by Astra.* The home (Discord Tower) of **Discord Damsel**, one of [Astra's PetOS](https://github.com/findastra/astras-pet-os) pets.
+
 Share AI activity on your Discord profile: the model and effort level when local metadata exposes them, an optional project name, an elapsed timer, and a swirling galaxy.
 
 Two small Windows apps, one for each company's models. Both can run together, but Discord may display only one card even when it accepts both activities. Each card was verified individually on Discord desktop; simultaneous display is not guaranteed.
@@ -36,11 +38,20 @@ Codex and Claude Code expose model metadata. Anthropic Automatic requires Claude
 
 ## The galaxies
 
-Each galaxy has **one arm per model generation**: 6 for OpenAI (GPT-6) and 5 for Anthropic (Claude 5). When a new generation ships, its galaxy grows an arm. The animation follows real galaxy physics: stars near the core orbit several times faster than the rim, the arms trail, and stars brighten as they pass through an arm.
+Each galaxy has **one arm per model generation**: 6 for OpenAI (GPT-6) and 5 for Anthropic (Claude 5). When a new generation ships, its galaxy grows an arm. The animation follows real galaxy physics: stars near the core orbit several times faster than the rim, the arms trail, and stars brighten as they pass through an arm. How the art is made, with every prompt and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); the tools are in [image-bridge/](image-bridge/README.md).
 
 ## Adding another AI
 
 Want a card for Gemini, Copilot or another model? Each app is a self-contained folder, so a new one is a copy of an existing app with its detection, labels, Discord application and galaxy changed. Step-by-step guide: **[ADDING-A-MODEL.md](ADDING-A-MODEL.md)**.
+
+## Limits
+
+- Windows only, with Node.js 24 or later and Discord desktop open.
+- Discord accepts both cards, but may show only one of them on your profile; check your profile to see what friends see.
+- Automatic needs local metadata: Codex for OpenAI, Claude Code for Anthropic. Claude desktop chat, Claude on the web and cloud sessions need **Start session** or **Always on**.
+- Model, effort and project come from local metadata and can be missing; the card then says **Using OpenAI** or **Using Claude**.
+- Detection does not follow which window is in front, and long silent thinking can exceed the five-minute window.
+- New galaxy art costs money to generate and needs Astra's approval ([docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md)).
 
 ## For developers
 
