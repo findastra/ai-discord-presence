@@ -28,12 +28,13 @@ Claude Opus 5.5, one long chat from 2026-10-06 to 2026-10-17 (the presence apps,
 
 **`findastra/astras-pet-os`, branch `claude/image-bridge-path-20261017`** (not on `main`): the pet art scripts'
 default bridge path now points at `../findastra-discord-presence/image-bridge/imagine.mjs`, and the docs that
-said the bridge was "local, not published" are corrected. See that branch's commit.
+said the bridge was "local, not published" are corrected. Commit `976c913`; `npm test` passes (89).
 
 **Astra's PC:**
-- `%USERPROFILE%\Documents\Astra's Pet Apps\findastra-discord-presence`: not touched. It is on
+- `%USERPROFILE%\Documents\Astra's Pet Apps\findastra-discord-presence`: not touched. The newer rule in
+  `astras-pet-os/AGENTS.md` (commit `beed649`, 2026-10-17) moves it to `Documents\Astra's PetOS\<repo>`; that folder did not exist yet. It is on
   `codex/l3-activity-20261016` with about 19 uncommitted files from Codex (mid-work) and a `.bundle` file.
-- I worked in temporary git worktrees under `%TEMP%` and removed them after pushing.
+- I worked in temporary git worktrees under `%TEMP%` (`fdp-wt`, `hub-wt`) and removed them after pushing.
 - The image bridge's old PC copy stays where it was; the repo copy is now the one to use.
 - `OPENAI_API_KEY` is a Windows user environment variable Astra set up. No key is in any repo or log.
 
@@ -41,7 +42,7 @@ said the bridge was "local, not published" are corrected. See that branch's comm
 - **The presence apps are not running.** `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\OpenAI Discord Presence.vbs`
   and `Anthropic Discord Presence.vbs` point at `%USERPROFILE%\Documents\Projects\findastra-discord-presence\...`,
   a folder that no longer exists. Left alone on purpose: after Codex pushes, run **Enable Automatic Startup.cmd**
-  in each app from `Documents\Astra's Pet Apps\findastra-discord-presence` to rewrite them.
+  in each app from the repo's current folder (`Documents\Astra's PetOS\findastra-discord-presence` once it is moved) to rewrite them.
 - Codex's uncommitted work in the local copy (above) is not on GitHub yet.
 - The old repos `findastra/openai-discord-presence` and `findastra/anthropic-discord-presence` are not archived
   (needs Astra's OK).
@@ -55,7 +56,7 @@ Merge `claude/galaxy-art-and-handoff-20261017` (and, if wanted, `claude/presence
 Astra approves; then restart the apps from the right folder.
 
 ## Done when
-Both branches are merged or closed, both apps run from `Documents\Astra's Pet Apps\findastra-discord-presence`
+Both branches are merged or closed, both apps run from `Documents\Astra's PetOS\findastra-discord-presence`
 at sign-in, and Discord shows the card.
 
 ## Return
