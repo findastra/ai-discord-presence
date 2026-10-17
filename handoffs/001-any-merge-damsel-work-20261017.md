@@ -27,7 +27,8 @@ Merge the three lines of Damsel work into one branch off current `main`, then a 
    both `detector.js`, `launch.js`, `presence.js` and `server.js`).
 Keep main's `projectDisplayName` and the cache from PR #2 in `openai-discord-presence/src/detector.js`.
 The launcher and README name the folder `Documents\Pet Programs\...`; Astra decided on 2026-10-17 that every repo
-lives in **`%USERPROFILE%\Documents\Astra's Pet Apps\<repo>`**, so use that path.
+lives in **`%USERPROFILE%\Documents\Astra's PetOS\<repo>`** (astras-pet-os AGENTS.md; the folder is still
+`Astra's Pet Apps` until File Master's rename plan runs), so use that path.
 Run `node --test`, rebuild downloads with `node scripts/package.mjs`, and check the uncommitted
 `start-discord-damsel-20261014.cmd` before anyone runs it.
 
