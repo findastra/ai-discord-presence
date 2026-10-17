@@ -6,4 +6,7 @@ Every card has a `## What I did` section that lists explicitly what was changed,
 
 | Card | For | Status |
 | --- | --- | --- |
-| [001: Wrap-up of the Claude presence chat (art recipe, image bridge, open items)](001-any-claude-presence-chat-wrapup-20261017.md) | any | open, waits on Astra: merges, restart the apps |
+| [001: Merge the three lines of Damsel work](001-any-merge-damsel-work-20261017.md) | any (Codex first) | open; on branch `claude/rescue-damsel-unsaved-20261017` |
+| [002: Wrap-up of the Claude presence chat (art recipe, image bridge, open items)](002-any-claude-presence-chat-wrapup-20261017.md) | any | open, waits on Astra: merges, restart the apps |
+
+**Next free number: 003.** A number is used once across `main` and every branch.
