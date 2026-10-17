@@ -8,6 +8,13 @@ messages in one DM or channel. Assistants follow [skills/dm-cleanup/SKILL.md](..
 > - Deleting is permanent. There is no undo.
 > - Discord doesn't allow automating a personal account. Bans for this are rare but possible.
 > - If someone is harassing you, **report and block them first**. Deleted messages can't be used as evidence.
+> - If they use a message logger, they may already have copies. Deleting can't reach their device.
+> - Undiscord is made by someone else (a third-party program, not checked through the Shed). Install it only from
+>   GreasyFork.
+
+**Farm rules (2026-10-16):** before you click Delete, an assistant helping you says back exactly what will go (which
+DM, which dates, only your messages) and waits for your yes. It also leaves a short note for File Master and GitHub
+Goldfish on your PC (date and count only, never names). You are the only one who clicks Delete.
 
 ## One-time setup (about 5 minutes)
 
