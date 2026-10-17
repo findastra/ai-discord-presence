@@ -1,5 +1,8 @@
 # Rules for this repo
 
+**Before any work, read [AGENTS.md](AGENTS.md) and every file its "Before any work" list names, in full,
+including every SKILL.md on every branch. Never skim or skip them.**
+
 Findastra Discord Presence holds one Windows app per AI company: `openai-discord-presence/` and `anthropic-discord-presence/`, each its own download. More can be added (see [ADDING-A-MODEL.md](ADDING-A-MODEL.md)). Read this before changing anything; `node --test` at the repo root runs every app's tests plus the naming rules.
 
 ## High-level decisions
