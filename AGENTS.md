@@ -6,4 +6,6 @@ Keep existing product behavior and source intact. The pet interface is findastra
 
 Pet interface and art integration: OpenAI Codex (GPT-6), 2026-10-08.
 
+Project display-name fix: OpenAI Codex (GPT-6), 2026-10-11. OpenAI Presence maps legacy Pet Apps folder names to the official name Astra's Pet Apps; keep folder paths intact. Regression coverage: openai-discord-presence/test/project-name-test-20261011.js.
+
 Shared original yellow-phone shell and Pet Collar UI by OpenAI Codex (GPT-6), 2026-10-15. Coins retired by owner. Existing program/host behavior is preserved; shared disconnected controls do not establish an L3 connection.

@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, statSync, openSync, fstatSync, readSync, closeSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { IDLE_MS, modelLabel, projectLabel } from './presence.js';
+import { IDLE_MS, modelLabel, projectLabel, projectDisplayName } from './presence.js';
 
 // Newest Claude Code transcript as { file, mtimeMs }, or { file: '', mtimeMs: 0 }. Reads file metadata only.
 export function latestClaudeCode(home = process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude')) {
@@ -140,7 +140,70 @@ export function folderProject(cwd, home = homedir()) {
   const path = String(cwd ?? '').replace(/^\\\\\?\\/, '').replace(/[\\/]+$/, '');
   if (!path || /[\\/]Claude[\\/]scratch-workspaces[\\/]/i.test(path)) return '';
   if (path.toLowerCase() === home.replace(/[\\/]+$/, '').toLowerCase()) return '';
-  return projectLabel(path.split(/[\\/]/).pop());
+  return projectDisplayName(path.split(/[\\/]/).pop());
+}
+
+// Session names set with /rename in Claude Code. Claude Code appends a small record
+// {"type":"custom-title","customTitle":"…"} to the transcript; the newest one is the current name.
+// Only those records are parsed: other lines are skipped unless they contain that marker, and a
+// message that merely mentions it is ignored because its type is not custom-title. Automatic titles
+// (made from what you typed) are never used. Each transcript is read once, then only the bytes
+// appended since the last check.
+const nameCache = new Map();
+const MAX_NAME_CACHE = 256;
+const NAME_CHUNK = 1024 * 1024;
+const NAME_MARKER = '"custom-title"';
+
+export function sessionName(file) {
+  let fd;
+  try {
+    fd = openSync(file, 'r');
+    const stat = fstatSync(fd);
+    const id = `${stat.dev}:${stat.ino}:${stat.birthtimeMs}`;
+    let entry = nameCache.get(file);
+    if (!entry || entry.id !== id || stat.size < entry.offset) entry = { id, offset: 0, name: '' };
+    let position = entry.offset;
+    let carry = Buffer.alloc(0);
+    let skipping = false;
+    while (position < stat.size) {
+      const chunk = Buffer.alloc(Math.min(NAME_CHUNK, stat.size - position));
+      const read = readSync(fd, chunk, 0, chunk.length, position);
+      if (!read) break;
+      position += read;
+      let data = carry.length ? Buffer.concat([carry, chunk.subarray(0, read)]) : chunk.subarray(0, read);
+      carry = Buffer.alloc(0);
+      if (skipping) {
+        const next = data.indexOf(10);
+        if (next === -1) continue;
+        data = data.subarray(next + 1);
+        skipping = false;
+      }
+      const last = data.lastIndexOf(10);
+      if (last === -1) {
+        // One very large record (a big tool result): skip it rather than hold it in memory.
+        if (data.length > MAX_RECORD_BYTES) skipping = true; else carry = Buffer.from(data);
+        continue;
+      }
+      const complete = data.subarray(0, last);
+      carry = Buffer.from(data.subarray(last + 1));
+      if (!complete.includes(NAME_MARKER)) continue;
+      for (const line of complete.toString('utf8').split('\n')) {
+        if (!line.includes(NAME_MARKER)) continue;
+        try {
+          const row = JSON.parse(line);
+          if (row?.type === 'custom-title' && typeof row.customTitle === 'string') entry.name = projectLabel(row.customTitle);
+        } catch { /* Incomplete or unrelated line. */ }
+      }
+    }
+    entry.offset = position - carry.length;
+    nameCache.delete(file);
+    nameCache.set(file, entry);
+    if (nameCache.size > MAX_NAME_CACHE) nameCache.delete(nameCache.keys().next().value);
+    return entry.name;
+  } catch {
+    nameCache.delete(file);
+    return '';
+  } finally { if (fd !== undefined) closeSync(fd); }
 }
 
 // The project to show for one session: its folder, but only if that folder still exists (a moved or
@@ -171,16 +234,22 @@ export function isRecent(mtimeMs, now = Date.now()) {
   return mtimeMs > 0 && age >= -5000 && age < IDLE_MS;
 }
 
-export async function detectClaude({ now = Date.now(), home } = {}) {
+// The name to show for one session, first match wins: its /rename name, then its folder if that
+// folder still exists. Renaming a session changes the card on the next check.
+export function sessionLabel(file, cwd, names = true) {
+  return (names ? sessionName(file) : '') || sessionProject(cwd);
+}
+
+export async function detectClaude({ now = Date.now(), home, names = true } = {}) {
   try {
     const recent = recentClaudeCode(home, now);
-    const active = recent.map(({ file }) => transcriptMetadata(file, true).activity)
-      .filter(event => event && isRecent(event.at, now)).sort((a, b) => b.at - a.at);
+    const active = recent.map(({ file }) => ({ file, event: transcriptMetadata(file, true).activity }))
+      .filter(({ event }) => event && isRecent(event.at, now)).sort((a, b) => b.event.at - a.event.at);
     if (active.length) {
       const sessions = [];
       const seen = new Set();
-      for (const { model, effort, cwd } of active) {
-        const session = { project: sessionProject(cwd), model, effort };
+      for (const { file, event: { model, effort, cwd } } of active) {
+        const session = { project: sessionLabel(file, cwd, names), model, effort };
         const key = JSON.stringify(session);
         if (!seen.has(key)) { seen.add(key); sessions.push(session); }
       }

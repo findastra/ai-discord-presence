@@ -27,7 +27,31 @@ export function projectLabel(value) {
   return String(value ?? '').replace(/[\x00-\x1f\x7f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 110);
 }
 
-const ROTATE_MS = 15000;
+// Folder and saved-project slugs this owner used before naming the project. They are only a fallback:
+// a chat or project name set in the app always wins, because it is shown exactly as written.
+export function projectDisplayName(value) {
+  const label = projectLabel(value);
+  return /^(?:findastra[ -]pet[ -]apps|astras[ -]pet[ -](?:apps|os))$/i.test(label) ? "Astra's PetOS" : label;
+}
+
+// Discord takes about five activity updates per 20 seconds from one app. A new project every 6 seconds
+// stays inside that with room to spare, so every active project gets its turn quickly.
+export const ROTATE_MS = 6000;
+
+// The cards to rotate through, newest first: one per project and model, so five chats in the same
+// project with the same model take one turn, not five, while two models in one project still each show.
+// Chats with no project name only count when nothing else has a name, so "Exploring ideas" never
+// takes a turn away from a real project.
+export function rotationCards(sessions = []) {
+  const seen = new Map();
+  for (const session of sessions) {
+    const card = { project: projectLabel(session?.project), model: projectLabel(session?.model), effort: projectLabel(session?.effort) };
+    const key = JSON.stringify(card);
+    if (!seen.has(key)) seen.set(key, card);
+  }
+  const named = [...seen.values()].filter(card => card.project);
+  return named.length ? named : [...seen.values()].slice(0, 1);
+}
 
 // Select the entire chat record, so a rotating project always keeps its own model.
 // A fixed label or disabled project sharing continues to describe the newest chat.
@@ -36,9 +60,9 @@ export function selectSession(detection = {}, config = {}, now = Date.now()) {
   if (!config.shareProject) return { project: '', ...latest };
   const override = projectLabel(config.projectName);
   if (override) return { project: override, ...latest };
-  const sessions = detection.sessions?.length ? detection.sessions : [detection];
+  const sessions = rotationCards(detection.sessions?.length ? detection.sessions : [detection]);
   const session = sessions[Math.floor(now / ROTATE_MS) % sessions.length];
-  return { project: projectLabel(session.project), model: projectLabel(session.model), effort: projectLabel(session.effort) };
+  return { project: session.project, model: session.model, effort: session.effort };
 }
 
 const cap = word => word.charAt(0).toUpperCase() + word.slice(1);

@@ -45,6 +45,9 @@ async function refresh() {
     }
     $('status').textContent = state.message;
     $('project-preview').textContent = state.project ? `Working on ${state.project}` : 'Exploring ideas';
+    const turns = state.projects?.length > 1 ? `Taking turns every ${state.rotateSeconds} seconds: ${state.projects.join(' · ')}` : '';
+    $('rotation').textContent = turns;
+    $('rotation').hidden = !turns;
     $('model-preview').textContent = `Using ${state.modelLabel}${state.effortLabel ? ` on ${state.effortLabel}` : ''}`;
     $('dot').className = state.published ? 'live' : '';
     $('badge').textContent = state.published ? 'SHARING' : state.mode === 'off' ? 'OFF' : 'WAITING';

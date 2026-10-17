@@ -20,13 +20,40 @@ export function projectLabel(value) {
   return String(value ?? '').replace(/[\x00-\x1f\x7f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 110);
 }
 
+// Folder slugs this owner used before naming the project. They are only a fallback: a session name set
+// with /rename in Claude Code always wins, because it is shown exactly as written.
+export function projectDisplayName(value) {
+  const label = projectLabel(value);
+  return /^(?:findastra[ -]pet[ -]apps|astras[ -]pet[ -](?:apps|os))$/i.test(label) ? "Astra's PetOS" : label;
+}
+
+// Discord takes about five activity updates per 20 seconds from one app. A new project every 6 seconds
+// stays inside that with room to spare, so every active project gets its turn quickly.
+export const ROTATE_MS = 6000;
+
+// The cards to rotate through, newest first: one per project and model, so five chats in the same
+// project with the same model take one turn, not five, while two models in one project still each show.
+// Chats with no project name only count when nothing else has a name, so "Exploring ideas" never
+// takes a turn away from a real project.
+export function rotationCards(sessions = []) {
+  const seen = new Map();
+  for (const session of sessions) {
+    const card = { project: projectLabel(session?.project), model: session?.model || '', effort: session?.effort || '' };
+    const key = JSON.stringify(card);
+    if (!seen.has(key)) seen.set(key, card);
+  }
+  const named = [...seen.values()].filter(card => card.project);
+  return named.length ? named : [...seen.values()].slice(0, 1);
+}
+
 // Keep model and effort attached to their own session while projects rotate. A private or fixed
 // project label uses the newest session; neither setting exposes another session's folder.
 export function selectSession(detection = {}, config = {}, now = Date.now()) {
   const sessions = detection.sessions?.length ? detection.sessions : [detection];
   const override = projectLabel(config.projectName);
   const rotate = config.shareProject === true && !override;
-  const selected = sessions[rotate ? Math.floor(now / 15000) % sessions.length : 0];
+  const choices = rotate ? rotationCards(sessions) : sessions;
+  const selected = choices[rotate ? Math.floor(now / ROTATE_MS) % choices.length : 0];
   return {
     project: config.shareProject === true ? override || projectLabel(selected.project) : '',
     model: selected.model || '',
