@@ -5,15 +5,20 @@
     256
   ],
   "frames": {
-    "idle": "pet-art/idle-20261008.png",
-    "blink": "pet-art/blink-20261008.png",
-    "happy": "pet-art/happy-20261008.png",
-    "curious": "pet-art/curious-20261008.png",
-    "worried": "pet-art/worried-20261008.png",
-    "sad": "pet-art/sad-20261008.png",
-    "sick": "pet-art/sick-20261008.png",
-    "alarmed": "pet-art/alarmed-20261008.png",
-    "sleep": "pet-art/sleep-20261008.png"
+    "idle": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/idle.png",
+    "blink": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/blink.png",
+    "happy": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/happy.png",
+    "curious": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/curious.png",
+    "worried": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/worried.png",
+    "sad": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/sad.png",
+    "sick": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/sick.png",
+    "alarmed": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/alarmed.png",
+    "sleep": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/sleep.png"
   },
-  "built_with": "OpenAI Codex (GPT-6), 2026-10-08"
+  "built_with": "OpenAI Codex (GPT-6), 2026-10-08",
+  "source": {
+    "repository": "https://github.com/findastra/astras-pet-os",
+    "art_key": "discord-damsel",
+    "note": "Every picture lives in findastra/astras-pet-os (one art source, Flash Audit A58, Astra 2026-10-18); these are its addresses."
+  }
 }
