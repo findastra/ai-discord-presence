@@ -69,12 +69,13 @@ This is an independent project, not made, endorsed or sponsored by OpenAI, Anthr
 ## Discord Damsel
 
 *An Intelligent App, or Pet, by Astra.* Discord Damsel is the pet for this repo. Her pet program (Discord Tower, #13 in
-[Astra's PetOS](https://github.com/findastra/astras-pet-os)) runs two tools:
+[Astra's PetOS](https://github.com/findastra/astras-pet-os)) runs these tools:
 
 | Tool | Version | What it does |
 |---|---|---|
 | `discord-tower-v1.0-openai-discord-presence-v0.2` | 0.2.0 | Codex: the OpenAI model and effort, and every active chat by its own name, folder or Codex project |
 | `discord-tower-v1.0-anthropic-discord-presence-v0.2` | 0.2.0 | Claude Code: the Anthropic model and effort, and every active session by its `/rename` name or folder |
+| `discord-tower-v1.0-sticker-manager-v1.0` | 1.0.0 | In her servers module: every server you are in, each opening to its stickers; pick stickers and reset your favorite stickers to them ([how](discord-tower/sticker-manager/README.md)) |
 
 **Start both tools in Automatic:** double-click [start-discord-damsel-20261014.cmd](start-discord-damsel-20261014.cmd). It first updates this folder from GitHub (only on `main`, only with no local changes, fast-forward only), then starts OpenAI and Anthropic Discord Presence in the background, asks any older copy of either app to quit, switches both to Automatic and opens her page. Keep this folder as the only copy on the PC: `%USERPROFILE%\Documents\Pet Programs\findastra-discord-presence` (`Documents\Projects` until it is renamed). Double-clicking Discord Damsel on the desktop does the same once the desktop pets are rebuilt (astras-pet-os card 014).
 
@@ -102,6 +103,17 @@ Assistants read [skills/dm-cleanup/SKILL.md](skills/dm-cleanup/SKILL.md). Only y
 permanent, automating a personal account is against Discord's rules, and you approve exactly what goes before you
 click Delete (astras-pet-os farm-security, section 10). Added with Claude Opus 5.5, 2026-10-10; updated 2026-10-17.
 
+### Tool: Sticker Manager (`discord-tower-v1.0-sticker-manager-v1.0`), in her servers module
+
+Discord Damsel's servers module (`discord-damsel-servers-module`) lists every server you are in; click one to see all
+of its stickers and click it again to close it. Inside it, the Sticker Manager lets you pick stickers from any server
+and reset your favorite stickers to exactly those, with an undo. It runs inside Discord desktop as a BetterDiscord
+plugin. Install and use: **[discord-tower/sticker-manager/README.md](discord-tower/sticker-manager/README.md)**.
+It changes only your favorite stickers, after you confirm, through Discord's own settings saver; it makes no requests
+of its own and never touches your token. BetterDiscord is third-party, and client mods are against Discord's Terms of
+Service. Not yet tested inside Discord (BetterDiscord was not installed on 2026-10-18). Added with Claude Opus 5.5,
+2026-10-18, at Astra's request.
+
 ## Desktop pet update - 2026-10-11
 VR headset resting above visible face; controller in hand. Presence project label corrected to Astra's PetOS. Desktop artwork status: draft. Manifest: [desktop-pet-20261011.json (in the hub)](https://raw.githubusercontent.com/findastra/astras-pet-os/main/desktop-art/discord-damsel/desktop-pet-20261011.json). The native companion renders this art; existing browser interface behavior is unchanged. Generated character artwork uses OpenAI image generation; source sheets and derived frames are included where applicable. Public credit: Astra. Integrated by OpenAI Codex (GPT-6).
 
@@ -109,6 +121,6 @@ VR headset resting above visible face; controller in hand. Presence project labe
 
 What is not done, plainly. From the hub's [intelligence levels](https://github.com/findastra/astras-pet-os/blob/main/INTELLIGENCE-LEVELS.md) (checked 2026-10-17):
 
-- **Program (L1/L2):** ✅ **Made by Astra:** *Presence Tower*: [OpenAI Discord Presence](https://github.com/findastra/findastra-discord-presence/tree/main/openai-discord-presence) and [Anthropic Discord Presence](https://github.com/findastra/findastra-discord-presence/tree/main/anthropic-discord-presence) tray apps; **Made by others:** Discord
+- **Program (L1/L2):** ✅ **Made by Astra:** *Presence Tower*: [OpenAI Discord Presence](https://github.com/findastra/findastra-discord-presence/tree/main/openai-discord-presence) and [Anthropic Discord Presence](https://github.com/findastra/findastra-discord-presence/tree/main/anthropic-discord-presence) tray apps, and the [Sticker Manager](discord-tower/sticker-manager/README.md) BetterDiscord plugin; **Made by others:** Discord, BetterDiscord
 - **Runtime (L2):** ✅ **Does:** both presence apps start at sign-in and show live Codex and Claude Code activity on Discord. No inbox
 - **Agentic harness (L3):** — not built yet
