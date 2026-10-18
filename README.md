@@ -56,7 +56,7 @@ This is an independent project, not made, endorsed or sponsored by OpenAI, Anthr
 
 ## Discord Damsel pet interface
 
-*A pet app by Astra.*
+*An Intelligent App, or Pet, by Astra.*
 
 Open [findastra-discord-presence-20261008.html](findastra-discord-presence-20261008.html) in a modern browser, or double-click Discord Damsel in Astra's PetOS. The nine original pet moods and manifest are included.
 
