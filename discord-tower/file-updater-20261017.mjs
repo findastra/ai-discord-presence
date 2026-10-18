@@ -39,15 +39,17 @@ export function localDir(serverId, env = process.env) {
 
 const readJson = (file, fallback) => { try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return fallback; } };
 
-export function readSettings(dir) { return readJson(join(dir, 'settings.json'), { tools: {} }); }
-export function readState(dir) { return readJson(join(dir, 'state.json'), {}); }
-function writeState(dir, state) { mkdirSync(dir, { recursive: true }); writeFileSync(join(dir, 'state.json'), JSON.stringify(state, null, 2) + '\n'); }
+export const SCHEMA = 1;   // data files carry their schema version (PET-PROGRAM-FRAMEWORK.md, section 6)
+export function readSettings(dir) { return readJson(join(dir, 'settings.json'), { schema: SCHEMA, tools: {} }); }
+export function readState(dir) { return readJson(join(dir, 'state.json'), { schema: SCHEMA }); }
+function writeState(dir, state) { mkdirSync(dir, { recursive: true }); writeFileSync(join(dir, 'state.json'), JSON.stringify({ ...state, schema: SCHEMA }, null, 2) + '\n'); }
 
 // A blank settings file with every tool OFF, so Astra only has to paste webhooks and switch tools ON.
 export function ensureSettings(dir, tools) {
   const file = join(dir, 'settings.json');
   const settings = readSettings(dir);
-  let changed = !existsSync(file);
+  let changed = !existsSync(file) || settings.schema !== SCHEMA;
+  settings.schema = SCHEMA;
   for (const { tool } of tools) if (!settings.tools[tool.short]) { settings.tools[tool.short] = { on: false, webhook: '' }; changed = true; }
   if (changed) { mkdirSync(dir, { recursive: true }); writeFileSync(file, JSON.stringify(settings, null, 2) + '\n'); }
   return settings;

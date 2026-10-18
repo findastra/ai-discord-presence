@@ -98,6 +98,7 @@ test('runTool only posts when the tool is ON with a webhook, and skips unchanged
   const dir = join(LOCALAPPDATA, 'astras-pet-os', 'discord-tower', 'press-plai');
   const settings = JSON.parse(readFileSync(join(dir, 'settings.json'), 'utf8'));
   assert.deepEqual(Object.keys(settings.tools).length, 4, 'settings start with every updater OFF');
+  assert.equal(settings.schema, 1, 'data files carry a schema version');
   settings.tools['press-plai-provenance-file-updater'] = { on: true, webhook: '' };
   writeFileSync(join(dir, 'settings.json'), JSON.stringify(settings));
   assert.equal((await runTool(pair, { post: true, fetchFn: world.fetchFn, env, log: quiet })).status, 'no-webhook');
@@ -106,6 +107,7 @@ test('runTool only posts when the tool is ON with a webhook, and skips unchanged
   const logs = [];
   assert.equal((await runTool(pair, { post: true, fetchFn: world.fetchFn, env, log: (l) => logs.push(l) })).status, 'posted');
   assert.ok(!logs.join('\n').includes('abc-DEF_1'), 'the webhook never appears in the output');
+  assert.equal(JSON.parse(readFileSync(join(dir, 'state.json'), 'utf8')).schema, 1);
   assert.equal((await runTool(pair, { post: true, fetchFn: world.fetchFn, env, log: quiet })).status, 'unchanged');
   assert.equal((await runTool(pair, { post: true, force: true, fetchFn: world.fetchFn, env, log: quiet })).status, 'posted');
   assert.equal(world.calls.filter((c) => c.method === 'POST').length, 1, 'the forced run edited the same message');

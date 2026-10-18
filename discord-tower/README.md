@@ -36,4 +36,11 @@ Run it again whenever astras-pet-os changes. `--force` reposts unchanged files. 
 `failed:` and the launcher exits with an error (its sick light). `state.json` beside the settings remembers which
 message each tool owns; delete a tool's entry there to make it post a fresh message.
 
+## Limits
+
+- ON/OFF lives in the settings file on your PC, not in the core: the Farm, which should hold every kill switch
+  (PET-PROGRAM-FRAMEWORK.md, section 4), is not built yet. The page has no sick checkbox yet.
+- Only public repos can be posted. Nothing runs on a schedule; run the launcher when files change.
+- Open work: [handoffs/003](../handoffs/003-any-press-plai-tools-20261017.md).
+
 Built with Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-17.
