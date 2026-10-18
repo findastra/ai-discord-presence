@@ -1,5 +1,7 @@
 # Findastra Discord Presence
 
+*An Intelligent App, or Pet, by Astra.* The home (Discord Tower) of **Discord Damsel**, one of [Astra's PetOS](https://github.com/findastra/astras-pet-os) pets.
+
 Share AI activity on your Discord profile: the model and effort level when local metadata exposes them, an optional project name, an elapsed timer, and a swirling galaxy.
 
 Two small Windows apps, one for each company's models. Both can run together, but Discord may display only one card even when it accepts both activities. Each card was verified individually on Discord desktop; simultaneous display is not guaranteed.
@@ -36,11 +38,20 @@ Codex and Claude Code expose model metadata. Anthropic Automatic requires Claude
 
 ## The galaxies
 
-Each galaxy has **one arm per model generation**: 6 for OpenAI (GPT-6) and 5 for Anthropic (Claude 5). When a new generation ships, its galaxy grows an arm. The animation follows real galaxy physics: stars near the core orbit several times faster than the rim, the arms trail, and stars brighten as they pass through an arm.
+Each galaxy has **one arm per model generation**: 6 for OpenAI (GPT-6) and 5 for Anthropic (Claude 5). When a new generation ships, its galaxy grows an arm. The animation follows real galaxy physics: stars near the core orbit several times faster than the rim, the arms trail, and stars brighten as they pass through an arm. How the art is made, with every prompt and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); the tools are in [image-bridge/](image-bridge/README.md).
 
 ## Adding another AI
 
 Want a card for Gemini, Copilot or another model? Each app is a self-contained folder, so a new one is a copy of an existing app with its detection, labels, Discord application and galaxy changed. Step-by-step guide: **[ADDING-A-MODEL.md](ADDING-A-MODEL.md)**.
+
+## Limits
+
+- Windows only, with Node.js 24 or later and Discord desktop open.
+- Discord accepts both cards, but may show only one of them on your profile; check your profile to see what friends see.
+- Automatic needs local metadata: Codex for OpenAI, Claude Code for Anthropic. Claude desktop chat, Claude on the web and cloud sessions need **Start session** or **Always on**.
+- Model, effort and project come from local metadata and can be missing; the card then says **Using OpenAI** or **Using Claude**.
+- Detection does not follow which window is in front, and long silent thinking can exceed the five-minute window.
+- New galaxy art costs money to generate and needs Astra's approval ([docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md)).
 
 ## For developers
 
@@ -57,13 +68,13 @@ This is an independent project, not made, endorsed or sponsored by OpenAI, Anthr
 
 ## Discord Damsel
 
-*A pet app by Astra.* Discord Damsel is the pet for this repo. Her pet program (pet-program-13 in
+*An Intelligent App, or Pet, by Astra.* Discord Damsel is the pet for this repo. Her pet program (Discord Tower, #13 in
 [Astra's PetOS](https://github.com/findastra/astras-pet-os)) runs two tools:
 
 | Tool | Version | What it does |
 |---|---|---|
-| `pet-program-13-v1.0-openai-discord-presence-v0.2` | 0.2.0 | Codex: the OpenAI model and effort, and every active chat by its own name, folder or Codex project |
-| `pet-program-13-v1.0-anthropic-discord-presence-v0.2` | 0.2.0 | Claude Code: the Anthropic model and effort, and every active session by its `/rename` name or folder |
+| `discord-tower-v1.0-openai-discord-presence-v0.2` | 0.2.0 | Codex: the OpenAI model and effort, and every active chat by its own name, folder or Codex project |
+| `discord-tower-v1.0-anthropic-discord-presence-v0.2` | 0.2.0 | Claude Code: the Anthropic model and effort, and every active session by its `/rename` name or folder |
 
 **Start both tools in Automatic:** double-click [start-discord-damsel-20261014.cmd](start-discord-damsel-20261014.cmd). It first updates this folder from GitHub (only on `main`, only with no local changes, fast-forward only), then starts OpenAI and Anthropic Discord Presence in the background, asks any older copy of either app to quit, switches both to Automatic and opens her page. Keep this folder as the only copy on the PC: `%USERPROFILE%\Documents\Pet Programs\findastra-discord-presence` (`Documents\Projects` until it is renamed). Double-clicking Discord Damsel on the desktop does the same once the desktop pets are rebuilt (astras-pet-os card 014).
 
@@ -82,3 +93,22 @@ and the tool list are in [pet.json](pet.json); desktop art is in [desktop-pet-20
 
 Pet interface and art: OpenAI Codex (GPT-6), 2026-10-08 and 2026-10-11. Chat and session names, the 6-second shuffle
 and this summary: Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-14.
+
+### Trick: DM cleanup (`discord-tower-v1.0-dm-cleanup-trick-v1.0`)
+
+Discord Damsel can walk you through deleting all of your own messages in a Discord DM with
+Undiscord, a third-party browser add-on. How to use it: **[docs/dm-cleanup-20261010.md](docs/dm-cleanup-20261010.md)**.
+Assistants read [skills/dm-cleanup/SKILL.md](skills/dm-cleanup/SKILL.md). Only your messages are deleted, deletion is
+permanent, automating a personal account is against Discord's rules, and you approve exactly what goes before you
+click Delete (astras-pet-os farm-security, section 10). Added with Claude Opus 5.5, 2026-10-10; updated 2026-10-17.
+
+## Desktop pet update - 2026-10-11
+VR headset resting above visible face; controller in hand. Presence project label corrected to Astra's PetOS. Desktop artwork status: draft. Manifest: [desktop-pet-20261011.json](desktop-pet-20261011.json). The native companion renders this art; existing browser interface behavior is unchanged. Generated character artwork uses OpenAI image generation; source sheets and derived frames are included where applicable. Public credit: Astra. Integrated by OpenAI Codex (GPT-6).
+
+## Limits
+
+What is not done, plainly. From the hub's [intelligence levels](https://github.com/findastra/astras-pet-os/blob/main/INTELLIGENCE-LEVELS.md) (checked 2026-10-17):
+
+- **Program (L1/L2):** ✅ **Made by Astra:** *Presence Tower*: [OpenAI Discord Presence](https://github.com/findastra/findastra-discord-presence/tree/main/openai-discord-presence) and [Anthropic Discord Presence](https://github.com/findastra/findastra-discord-presence/tree/main/anthropic-discord-presence) tray apps; **Made by others:** Discord
+- **Runtime (L2):** ✅ **Does:** both presence apps start at sign-in and show live Codex and Claude Code activity on Discord. No inbox
+- **Agentic harness (L3):** — not built yet

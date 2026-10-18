@@ -24,7 +24,7 @@ function readProjectState(home, now = Date.now()) {
       for (const [id, assignment] of Object.entries(state?.['thread-project-assignments'] ?? {})) {
         if (typeof assignment?.projectId === 'string') maps.assignments.set(id, assignment.projectId);
       }
-      for (const [id, project] of Object.entries(state?.['local-projects'] ?? {})) maps.names.set(id, projectLabel(project?.name));
+      for (const [id, project] of Object.entries(state?.['local-projects'] ?? {})) maps.names.set(id, projectDisplayName(project?.name));
     }
   } catch {
     // A missing or half-written file must not leave old names cached.
