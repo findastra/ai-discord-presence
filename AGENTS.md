@@ -12,3 +12,5 @@ Keep existing product behavior and source intact. The pet interface is findastra
 Pet interface and art integration: OpenAI Codex (GPT-6), 2026-10-08.
 
 Desktop artwork and size sync: OpenAI Codex (GPT-6), 2026-10-11. Read desktop-pet-20261011.json. No sparkles. Keep draft and approved design status explicit.
+
+Discord Damsel given Mommy's Mommies' body-to-head ratio (longer gown) in desktop-art and pet-art by Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-17, at Astra's request. Record: `findastra/astras-pet-os` docs/pet-art-redesign-20261017.md.
