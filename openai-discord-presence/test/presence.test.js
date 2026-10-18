@@ -4,7 +4,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { GALAXY_URL, Presence, isRecentTask, modelLabel, effortLabel, activity, validateConfig, selectSession } from '../src/presence.js';
+import { GALAXY_URL, Presence, isRecentTask, modelLabel, effortLabel, activity, validateConfig, selectSession, ROTATE_MS } from '../src/presence.js';
 import { detectAstra, folderProject } from '../src/detector.js';
 import { frame, Decoder, DiscordRPC } from '../src/rpc.js';
 import net from 'node:net';
@@ -172,7 +172,7 @@ test('rotation retains each recent chat model and effort, including chats in the
       { project: 'paper-girl', model: 'gpt-6-sol', effort: 'low' },
       { project: 'paper-girl', model: 'gpt-6-luna', effort: 'medium' },
     ]);
-    const cards = [0, 15000, 30000].map(now => {
+    const cards = [0, ROTATE_MS, 2 * ROTATE_MS].map(now => {
       const session = selectSession(detected, { shareProject: true }, now);
       return activity(17, 'astra_galaxy', session.project, session.model, session.effort);
     });
@@ -181,7 +181,7 @@ test('rotation retains each recent chat model and effort, including chats in the
       ['Working on paper-girl', 'Using GPT-6 Sol on Low'],
       ['Working on paper-girl', 'Using GPT-6 Luna on Medium'],
     ]);
-    assert.deepEqual(selectSession(detected, { shareProject: true }, 45000), detected.sessions[0]);
+    assert.deepEqual(selectSession(detected, { shareProject: true }, 3 * ROTATE_MS), detected.sessions[0]);
     assert.deepEqual(detectAstra(dir, 1_000_000, false).sessions, []);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });

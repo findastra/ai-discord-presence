@@ -139,3 +139,39 @@ test('enabling or disabling Windows startup keeps the Always on choice', () => {
   assert.equal(setStartup(false, m.options).alwaysOn, true);
   assert.equal(JSON.parse(m.files.get(m.configPath)).alwaysOn, true);
 });
+
+test('--automatic switches the running app to Automatic through its own control API', async () => {
+  const posts = [];
+  const fetcher = async (target, options = {}) => {
+    if (options.method === 'POST') { posts.push({ target, options }); return { ok: true, json: async () => ({ ok: true }) }; }
+    return { ok: true, json: async () => ({ app: 'anthropic-discord-presence', identity: SOURCE_IDENTITY }) };
+  };
+  await launch({ fetcher, spawnProcess: () => {}, background: true, automatic: true });
+  assert.equal(posts.length, 1);
+  assert.match(posts[0].target, /\/api\/mode$/);
+  assert.deepEqual(JSON.parse(posts[0].options.body), { mode: 'auto' });
+  assert.equal(posts[0].options.headers.Origin, posts[0].target.replace(/\/api\/mode$/, ''));
+  await launch({ fetcher, spawnProcess: () => {}, background: true });
+  assert.equal(posts.length, 1);
+});
+
+test('--replace asks an older copy of this app to quit, then starts this copy', async () => {
+  let running = 'old', quits = 0, spawns = 0;
+  const fetcher = async (target, options = {}) => {
+    if (target.endsWith('api/quit')) { quits++; assert.equal(options.headers.Origin, target.replace(/\/api\/quit$/, '')); running = null; return { ok: true, json: async () => ({}) }; }
+    if (target.endsWith('api/mode')) return { ok: true, json: async () => ({}) };
+    if (!running) throw new Error('offline');
+    const identity = running === 'old' ? { installationPath: 'c:/old/copy', buildId: 'x'.repeat(64) } : SOURCE_IDENTITY;
+    return { ok: true, json: async () => ({ app: 'anthropic-discord-presence', identity }) };
+  };
+  const spawnProcess = () => { spawns++; running = 'new'; return { on() {}, unref() {} }; };
+  await launch({ fetcher, spawnProcess, background: true, replace: true, sleep: async () => {} });
+  assert.equal(quits, 1); assert.equal(spawns, 1);
+  // Without --replace an older copy is never stopped.
+  running = 'old'; quits = 0;
+  await assert.rejects(launch({ fetcher, spawnProcess, background: true, sleep: async () => {} }), /Quit app/);
+  assert.equal(quits, 0);
+  // Something that is not this app is never asked to quit.
+  const stranger = async () => ({ ok: true, json: async () => ({ app: 'something-else' }) });
+  await assert.rejects(launch({ fetcher: stranger, spawnProcess, background: true, replace: true, sleep: async () => {} }), /Quit app/);
+});

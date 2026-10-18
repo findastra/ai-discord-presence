@@ -29,11 +29,11 @@ Write a `detect…()` function that returns:
 
 - `active`: true when supported conversation or usage metadata confirms activity in the last 5 minutes (`IDLE_MS`). An open process or a touched file alone must not activate sharing. For unsupported surfaces, provide manual Start session and Stop sharing.
 - `model`: the exact model id, e.g. `gemini-3-pro`. `effort`: its thinking level if the AI records one, else `''`.
-- `project` / `projects`: the folder name(s) of recent sessions, only when the user turned on project sharing. Use the existing `folderProject()` rules: last folder name only, never a full path, and never a folder that no longer exists.
+- `project` / `projects`: the name(s) of recent sessions, only when the user turned on project sharing: a name the user gave the session themselves if the AI records one, otherwise the existing `folderProject()` rules (last folder name only, never a full path, never a folder that no longer exists).
 - `sessions`: newest-first records of `{ project, model, effort }`. Keep these fields together when rotating the card, and use the same selected record for the local preview and Discord payload. Never infer one session's model from another session.
 - `message`: a short status for the controls page.
 
-Read **metadata only**: timestamps, model ids, folder paths. Never read prompts, replies or chat titles, and never send anything except the card to Discord.
+Read **metadata only**: timestamps, model ids, folder paths and user-given session names. Never read prompts, replies or automatic chat titles, and never send anything except the card to Discord. The card rotates with `rotationCards()` and `ROTATE_MS` from `src/presence.js`; copy them unchanged.
 
 ## 4. Set the card text (`src/presence.js`)
 

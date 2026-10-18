@@ -34,7 +34,16 @@ Regular Claude desktop chat has no reliable automatic detector here. Use **Start
 
 ## Project sharing
 
-Project sharing is off by default. Turn on **Show my project on Discord** to publish a folder name, or enter a fixed project label. Full paths and chat titles are never published. When several recent sessions rotate, each project keeps its own model and effort. With a fixed label or sharing disabled, the newest session supplies the model and effort. Sessions without a usable project show **Exploring ideas**.
+Project sharing is off by default. Turn on **Show my project on Discord** and each Claude Code session is named, first match wins:
+
+1. **The session's own name**, if you renamed it with `/rename` in Claude Code. Rename it and the card follows within a few seconds.
+2. **The folder** the session works in (its last part only, e.g. `paper-girl`), if that folder still exists.
+
+Old folder names of Astra's own project (`Findastra Pet Apps`, `astras-pet-apps`, `astras-pet-os`) show as **Astra's PetOS**; a session name you set always wins over that.
+
+Automatic session titles (made from what you typed) are never used, and full paths are never published. Or type a fixed project label in Settings; it stays until you clear it.
+
+Every session active in the last five minutes takes a turn: the card moves to the next project every **6 seconds** (Discord accepts about five updates per 20 seconds, so this is as fast as is safe). Sessions in the same project with the same model share one turn; each turn keeps its own model and effort. The control panel lists every project taking turns. With a fixed label or sharing off, the newest session supplies the model and effort. Sessions without a usable name show **Exploring ideas** only when no other session has one.
 
 ## Updating and startup
 
@@ -48,7 +57,7 @@ Create an application in the [Discord Developer Portal](https://discord.com/deve
 
 ## Privacy
 
-The detector scans complete Claude Code JSONL records backwards to extract conversation timestamps, model, effort and working-directory fields, including when an individual record exceeds 64 KB. Conversation text is discarded and never published or retained in the metadata cache.
+The detector scans complete Claude Code JSONL records backwards to extract conversation timestamps, model, effort and working-directory fields, including when an individual record exceeds 64 KB. Conversation text is discarded and never published or retained in the metadata cache. With project sharing on it also reads `/rename` records (`{"type":"custom-title"}`) to name a session; each transcript is read once for these, then only the bytes added since the last check. Automatic titles are never used.
 
 The control server binds only to `127.0.0.1`, checks Host and Origin for changes, and sends no telemetry. Discord receives activity text, a timestamp, an image URL and an optional project label. Settings remain in the Git-ignored `.local/config.json`. The local status endpoint includes installation/build identity so the launcher can detect old running copies; that identity is not sent to Discord.
 

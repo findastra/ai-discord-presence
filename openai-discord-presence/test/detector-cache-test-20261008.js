@@ -31,7 +31,7 @@ test('saved project lookups read once per poll and throttle changed state while 
   });
   const clockMock = mock.method(Date, 'now', () => clock);
   syncBuiltinESMExports();
-  const detect = () => detectAstra(dir, 1_000_000, true);
+  const detect = () => detectAstra(dir, clock, true); // the poll passes its time, as the server does
   try {
     const first = detect();
     assert.equal(reads, 1, 'the newest chat and all rotating chats share one state read');

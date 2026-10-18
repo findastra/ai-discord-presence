@@ -23,7 +23,9 @@ This repo is the pet **Discord Damsel**; her home (pet program) is **Discord Tow
 - `image-bridge/imagine.mjs` is also used by `astras-pet-os` (`scripts/generate-pets.mjs`, `scripts/generate-seeds-20261012.mjs`). Don't rename or move it without updating those scripts.
 
 ## Privacy
-- Detection reads local metadata only (model, effort, timestamps, folder). Never read or send conversation text, prompts or chat titles. Only a folder's last name may leave the computer, and only when the user opts in.
+- Detection reads local metadata only (model, effort, timestamps, folder). Never read or send conversation text, prompts or automatic chat titles (they are made from what the user typed).
+- With project sharing on, a name the user gave a chat or session themselves may be shown (Codex `threads.name`, Claude Code `/rename` records), then a folder's last name, then a saved Codex project name. Nothing leaves the computer unless the user opts in (owner's request, 2026-10-14).
+- Rotation never goes faster than Discord's limit (about five activity updates per 20 seconds per app); `ROTATE_MS` in `src/presence.js` is 6000.
 
 ## Changes
 - Add tests with every behaviour change (`cd openai-discord-presence && node --test`). Rebuild downloads with `node scripts/package.mjs` before pushing changes that affect an app.

@@ -1,6 +1,6 @@
 # Findastra Discord Presence
 
-*A pet app by Astra.* The home (Discord Tower) of **Discord Damsel**, one of [Astra's PetOS](https://github.com/findastra/astras-pet-os) pets.
+*An Intelligent App, or Pet, by Astra.* The home (Discord Tower) of **Discord Damsel**, one of [Astra's PetOS](https://github.com/findastra/astras-pet-os) pets.
 
 Share AI activity on your Discord profile: the model and effort level when local metadata exposes them, an optional project name, an elapsed timer, and a swirling galaxy.
 
@@ -32,7 +32,7 @@ No account, API key or Discord setup needed. Everything runs on your own compute
 > Working on paper-girl
 > 00:42 elapsed
 
-The title is the company; the line under it is the detected model and effort level when available. Your project (the folder you're working in) is opt-in. With several projects active, the card rotates through complete session records every 15 seconds, keeping each project paired with its own model and effort.
+The title is the company; the line under it is the detected model and effort level when available. Your project is opt-in: a chat or session you renamed shows that name (Codex rename, or `/rename` in Claude Code), otherwise the folder you're working in. Renames show within a few seconds. With several projects active, every one takes a turn on the card, one every 6 seconds, each paired with its own model and effort; the control panel lists them all.
 
 Codex and Claude Code expose model metadata. Anthropic Automatic requires Claude Code conversation activity recorded in the last five minutes, including desktop Code sessions with supported local metadata. An open app or a touched transcript file does not count. Regular Claude desktop chat, Claude on the web and cloud sessions have no reliable automatic detector here; use manual **Start session** and **Stop sharing**, or turn on **Always on** in the Anthropic app's Settings to share whenever it runs. Missing model metadata is labeled **Using Claude** or **Using OpenAI**. Detection does not track foreground focus, and an accepted Discord activity is not proof that the profile displays it.
 
@@ -65,15 +65,34 @@ No dependencies; Node.js 24 only. Rules for contributors (and AI assistants) are
 This is an independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord. Their names and model names are their trademarks and appear only to say which product you're using. The code is MIT-licensed; the galaxy art is original.
 
 
-## Discord Damsel pet interface
 
-*An Intelligent App, or Pet, by Astra.*
+## Discord Damsel
 
-Open [findastra-discord-presence-20261008.html](findastra-discord-presence-20261008.html) in a modern browser, or double-click Discord Damsel in Astra's PetOS. The nine original pet moods and manifest are included.
+*An Intelligent App, or Pet, by Astra.* Discord Damsel is the pet for this repo. Her pet program (Discord Tower, #13 in
+[Astra's PetOS](https://github.com/findastra/astras-pet-os)) runs two tools:
 
-Limits: this browser interface does not install or start native programs. Where an existing web app is available, the Cage opens that app. Draft controls store their data in the current browser and do not imply connected services. Existing application instructions above still apply.
+| Tool | Version | What it does |
+|---|---|---|
+| `discord-tower-v1.0-openai-discord-presence-v0.2` | 0.2.0 | Codex: the OpenAI model and effort, and every active chat by its own name, folder or Codex project |
+| `discord-tower-v1.0-anthropic-discord-presence-v0.2` | 0.2.0 | Claude Code: the Anthropic model and effort, and every active session by its `/rename` name or folder |
 
-Version [v0.1.1-20261008-pets](https://github.com/findastra/findastra-discord-presence/tree/v0.1.1-20261008-pets). Added with OpenAI Codex (GPT-6), 2026-10-08.
+**Start both tools in Automatic:** double-click [start-discord-damsel-20261014.cmd](start-discord-damsel-20261014.cmd). It first updates this folder from GitHub (only on `main`, only with no local changes, fast-forward only), then starts OpenAI and Anthropic Discord Presence in the background, asks any older copy of either app to quit, switches both to Automatic and opens her page. Keep this folder as the only copy on the PC: `%USERPROFILE%\Documents\Pet Programs\findastra-discord-presence` (`Documents\Projects` until it is renamed). Double-clicking Discord Damsel on the desktop does the same once the desktop pets are rebuilt (astras-pet-os card 014).
+
+Her app is [findastra-discord-presence-20261008.html](findastra-discord-presence-20261008.html): open it in a browser, or
+double-click Discord Damsel on the desktop. It links each tool's control page and keeps a setup checklist. Metadata
+and the tool list are in [pet.json](pet.json); desktop art is in [desktop-pet-20261011.json](desktop-pet-20261011.json)
+(draft).
+
+### Limits
+
+- Her app does not start the tools or change Discord by itself. Start each tool with its `Start … Discord Presence.cmd`.
+- Both tools can run together, but Discord decides which card your profile shows; check the profile itself.
+- A chat renamed in Codex shows only if Codex saves the name in its local database (`threads.name`, which current
+  Codex source has). Not yet confirmed with the Codex desktop app on a live PC. A project renamed in Codex shows only
+  for chats that have no folder of their own.
+
+Pet interface and art: OpenAI Codex (GPT-6), 2026-10-08 and 2026-10-11. Chat and session names, the 6-second shuffle
+and this summary: Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-14.
 
 ### Trick: DM cleanup (`discord-tower-v1.0-dm-cleanup-trick-v1.0`)
 
