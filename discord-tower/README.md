@@ -13,7 +13,7 @@ A community hub for sharing AI resources. Tools:
 | `discord-tower-v1.0-press-plai-skills-file-updater-v1.0` | #skills-file | Posts every SKILL.md in astras-pet-os |
 | `discord-tower-v1.0-press-plai-security-file-updater-v1.0` | #security-file | Posts SECURITY.md, PROTECTION-RINGS.md and the farm-security skill |
 | `discord-tower-v1.0-press-plai-provenance-file-updater-v1.0` | #provenance-file | Posts PROVENANCE.md |
-| `discord-tower-v1.0-press-plai-ask-astra-bot-v1.0` | #ask-astra-bot | Members @ the bot and Claude answers. Setup: [docs/press-plai-ask-astra-bot-20261017.md](../docs/press-plai-ask-astra-bot-20261017.md) |
+| `discord-tower-v1.0-press-plai-ask-astra-bot-v1.0` | #ask-astra-bot | Members @ the bot and Claude answers. Chat only, on an Anthropic API key. Code: [ask-astra-bot/](ask-astra-bot/); start: **Start Press Plai Ask Astra Bot.cmd**; setup: [docs/press-plai-ask-astra-bot-20261017.md](../docs/press-plai-ask-astra-bot-20261017.md) |
 
 The four updaters are **one tool engine** ([file-updater-20261017.mjs](file-updater-20261017.mjs)) with four
 entries, never four copies. Each reads its files from one GitHub commit, attaches them to a message in its

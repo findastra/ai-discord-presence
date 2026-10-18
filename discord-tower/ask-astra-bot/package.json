@@ -1,0 +1,18 @@
+{
+  "name": "press-plai-ask-astra-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Discord Tower's Ask Astra bot: members @ it in Press Plai's #ask-astra-bot and Claude answers.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node bot-20261017.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.135.0",
+    "discord.js": "14.27.0"
+  }
+}
