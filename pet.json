@@ -19,7 +19,7 @@
   "version": "0.1.1-20261008-pets",
   "source": "https://github.com/findastra/findastra-discord-presence/tree/v0.1.1-20261008-pets",
   "built_with": "OpenAI Codex (GPT-6), 2026-10-08",
-  "desktop_pet": "desktop-pet-20261011.json",
+  "desktop_pet": "https://raw.githubusercontent.com/findastra/astras-pet-os/main/desktop-art/discord-damsel/desktop-pet-20261011.json",
   "audit": {
     "cadence": "weekly",
     "subject": "the OpenAI and Anthropic presence apps",
