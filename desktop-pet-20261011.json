@@ -20,6 +20,7 @@
   "creator": "Astra",
   "scale_reference": "Standard 58.75 logical-pixel height, with aspect-ratio width clamp before scaling",
   "assistant": "OpenAI Codex (GPT-6)",
-  "notes": "VR headset resting above visible face; controller in hand. Presence project label corrected to Astra's Pet Apps.",
-  "pet": "discord-damsel"
+  "notes": "Mommy's Mommies' body-to-head ratio (body 1.47 heads): longer gown, same head, face, headset and controller.",
+  "pet": "discord-damsel",
+  "revised": "Claude Opus 5.5 (claude-opus-5-5), 2026-10-17, at Astra's request"
 }
