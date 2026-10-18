@@ -18,9 +18,9 @@
     "desktop-art/discord-damsel/worried-20261011.png"
   ],
   "creator": "Astra",
-  "scale_reference": "Group 3 (Mommy's Mommies, Discord Damsel, API Fairy, Astra Wisp, VSCode Angel) share one scale: a crop 212 art pixels tall, up from the soles, drawn 58.75 logical pixels high (astras-pet-os docs/girls-same-size-20261017.md)",
+  "scale_reference": "Group 3 (Mommy's Mommies, Discord Damsel, API Fairy, Astra Wisp, VSCode Angel) share one scale: Mommy's Mommies' own crop, 202 art pixels tall up from the soles, drawn 58.75 logical pixels high (astras-pet-os docs/girls-same-size-20261017.md)",
   "assistant": "OpenAI Codex (GPT-6)",
-  "notes": "Mommy's Mommies' head and body exactly: head 76 px (hair top beside the headset to the jaw), body 109 px (jaw to hem) on the 256 px frames. Same face, headset, controller and gown, scaled by nearest-neighbour row and column picks.",
+  "notes": "Mommy's Mommies' face and body exactly (the head measured without hair): face 49 px wide and 26 px from the top of the eyes to the jaw, body 109 px (jaw to hem) on the 256 px frames. Same face, headset, controller and gown, scaled by nearest-neighbour row and column picks; she is narrower than before because her face was 79 px wide.",
   "pet": "discord-damsel",
   "revised": "Claude Opus 5.5 (claude-opus-5-5), 2026-10-17 and 2026-10-18, at Astra's request"
 }
