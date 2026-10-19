@@ -75,7 +75,7 @@ This is an independent project, not made, endorsed or sponsored by OpenAI, Anthr
 |---|---|---|
 | `discord-tower-v1.0-openai-discord-presence-v0.2` | 0.2.0 | Codex: the OpenAI model and effort, and every active chat by its own name, folder or Codex project |
 | `discord-tower-v1.0-anthropic-discord-presence-v0.2` | 0.2.0 | Claude Code: the Anthropic model and effort, and every active session by its `/rename` name or folder |
-| `discord-tower-v1.0-sticker-manager-v1.0` | 1.0.0 | In her servers module: every server you are in, each opening to its stickers; pick stickers and reset your favorite stickers to them ([how](discord-tower/sticker-manager/README.md)) |
+| `discord-tower-v1.0-sticker-manager-v1.0` | 1.0.1 | In her servers panel: every server you are in, each opening to its stickers; pick stickers and reset your favorite stickers to them ([how](discord-tower/sticker-manager/README.md)) |
 | `discord-tower-v1.0-cli-proxy-api-v1.0` | 1.0.0 | Looks after CLI Proxy API (third-party): installs the verified release, keeps it on this PC, starts and stops it from its controls page ([how](discord-tower/cli-proxy-api/README.md)) |
 
 **Start both tools in Automatic:** double-click [start-discord-damsel-20261014.cmd](start-discord-damsel-20261014.cmd). It first updates this folder from GitHub (only on `main`, only with no local changes, fast-forward only), then starts OpenAI and Anthropic Discord Presence in the background, asks any older copy of either app to quit, switches both to Automatic and opens her page. Keep this folder as the only copy on the PC: `%USERPROFILE%\Documents\Pet Programs\findastra-discord-presence` (`Documents\Projects` until it is renamed). Double-clicking Discord Damsel on the desktop does the same once the desktop pets are rebuilt (astras-pet-os card 014).
@@ -105,9 +105,9 @@ Assistants read [skills/dm-cleanup/SKILL.md](skills/dm-cleanup/SKILL.md). Only y
 permanent, automating a personal account is against Discord's rules, and you approve exactly what goes before you
 click Delete (astras-pet-os farm-security, section 10). Added with Claude Opus 5.5, 2026-10-10; updated 2026-10-17.
 
-### Tool: Sticker Manager (`discord-tower-v1.0-sticker-manager-v1.0`), in her servers module
+### Tool: Sticker Manager (`discord-tower-v1.0-sticker-manager-v1.0`), in her servers panel
 
-Discord Damsel's servers module (`discord-damsel-servers-module`) lists every server you are in; click one to see all
+Discord Damsel's servers panel (`discord-damsel-servers-panel`) lists every server you are in; click one to see all
 of its stickers and click it again to close it. Inside it, the Sticker Manager lets you pick stickers from any server
 and reset your favorite stickers to exactly those, with an undo. It runs inside Discord desktop as a BetterDiscord
 plugin. Install and use: **[discord-tower/sticker-manager/README.md](discord-tower/sticker-manager/README.md)**.
@@ -128,7 +128,7 @@ first Start are Astra's. Added with Claude Opus 5.5, 2026-10-18, at Astra's requ
 
 ### Connections
 
-Each pet Discord Damsel talks to has a connection box in her L2 module (`discord-damsel-L2-module`) on
+Each pet Discord Damsel talks to has a connection box in her L2 panel (`discord-damsel-L2-panel`) on
 [her page](findastra-discord-presence-20261008.html) ([Pet Program Framework](https://github.com/findastra/astras-pet-os/blob/main/PET-PROGRAM-FRAMEWORK.md),
 section 3). Both below are **planned, not connected**, and their ON/OFF starts OFF.
 
