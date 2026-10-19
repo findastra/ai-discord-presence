@@ -96,6 +96,9 @@
       link(box, 'Open controls (this PC only)', url, 'button'); link(box, 'Source', source);
     }
     h('p', 'Connection status has not been checked. If a control page does not open, run that tool\'s Start … Discord Presence.cmd launcher.', 'muted', document.querySelector('main'));
+    { const box = card('discord-tower-v1.0-sticker-manager-v1.0', 'In her servers module (discord-damsel-servers-module): every server you are in, each opening to show its stickers. Pick stickers from any server and reset your favorite stickers to exactly those. Runs inside Discord desktop as a BetterDiscord plugin; this page only links it.');
+      link(box, 'How to install and use it', 'https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/sticker-manager', 'button'); link(box, 'Plugin file', 'https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js');
+      h('p', 'Needs BetterDiscord (third-party; client mods are against Discord\'s Terms of Service). It changes only your favorite stickers, after you confirm, and keeps your previous list so you can put it back.', 'muted', box); }
     checklist('Presence checklist', ['Discord desktop is running.', 'Activity sharing is enabled in Discord.', 'The intended companion is running.', 'The profile card was inspected in Discord.', 'If both apps are running, the visible result was checked rather than assumed.']); notesCard();
   }
 
