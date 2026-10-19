@@ -25,6 +25,7 @@ This repo is the pet **Discord Damsel**; her home (pet program) is **Discord Tow
 ## Privacy
 - Detection reads local metadata only (model, effort, timestamps, folder). Never read or send conversation text, prompts or automatic chat titles (they are made from what the user typed).
 - With project sharing on, a name the user gave a chat or session themselves may be shown (Codex `threads.name`, Claude Code `/rename` records), then a folder's last name, then a saved Codex project name. Nothing leaves the computer unless the user opts in (owner's request, 2026-10-14).
+- A Claude desktop chat started from another chat shows its top-level chat's name, never its own (owner's request, 2026-10-18). The link comes from the desktop app's `claude-code-sessions\…\local_*.json`; keep only `cliSessionId`, `spawnedFrom.sessionId` and `lineageDetached` from those files.
 - Rotation never goes faster than Discord's limit (about five activity updates per 20 seconds per app); `ROTATE_MS` in `src/presence.js` is 6000.
 
 ## Changes

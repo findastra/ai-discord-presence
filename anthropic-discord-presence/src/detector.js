@@ -1,5 +1,5 @@
-import { existsSync, readdirSync, statSync, openSync, fstatSync, readSync, closeSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, readdirSync, readFileSync, statSync, openSync, fstatSync, readSync, closeSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
 import { homedir } from 'node:os';
 import { IDLE_MS, modelLabel, projectLabel, projectDisplayName } from './presence.js';
 
@@ -135,10 +135,11 @@ export function transcriptModel(file) {
 }
 
 // Project name = the folder the session works in (its last path part, never the full path).
-// "No folder" sessions run in the desktop app's scratch workspace and the home folder isn't a project.
+// "No folder" sessions run in the desktop app's scratch workspace (Claude\ or, in the Microsoft Store
+// build, Claude-Data\<package>\) and the home folder isn't a project.
 export function folderProject(cwd, home = homedir()) {
   const path = String(cwd ?? '').replace(/^\\\\\?\\/, '').replace(/[\\/]+$/, '');
-  if (!path || /[\\/]Claude[\\/]scratch-workspaces[\\/]/i.test(path)) return '';
+  if (!path || /[\\/](?:Claude|Claude-Data[\\/][^\\/]+)[\\/]scratch-workspaces[\\/]/i.test(path)) return '';
   if (path.toLowerCase() === home.replace(/[\\/]+$/, '').toLowerCase()) return '';
   return projectDisplayName(path.split(/[\\/]/).pop());
 }
@@ -212,6 +213,94 @@ export function sessionProject(cwd) {
   return cwd && existsSync(cwd) ? folderProject(cwd) : '';
 }
 
+// The Claude desktop app keeps one small file per Code session (claude-code-sessions\<account>\<org>\local_*.json).
+// A chat started from another chat (a side or handed-off session, listed under it in the app's sidebar) records
+// that chat in spawnedFrom, until it is detached. Only three fields are kept: the transcript id (cliSessionId),
+// spawnedFrom.sessionId and lineageDetached. Titles, summaries and reports in these files are never used.
+const SESSION_ID = /^[\w-]{1,100}$/;
+const MAX_DESKTOP_FILE_BYTES = 4 * 1024 * 1024;
+const desktopCache = new Map();
+
+const safeDirs = dir => { try { return readdirSync(dir, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name); } catch { return []; } };
+
+// Where the desktop app keeps those files: %APPDATA%\Claude, or Claude-Data\<package> for the Microsoft Store
+// build (including its older private copy under Packages\Claude_*).
+export function desktopSessionRoots(env = process.env, home = homedir()) {
+  const local = env.LOCALAPPDATA || join(home, 'AppData', 'Local');
+  const roaming = env.APPDATA || join(home, 'AppData', 'Roaming');
+  const roots = [join(roaming, 'Claude', 'claude-code-sessions')];
+  for (const name of safeDirs(join(local, 'Claude-Data'))) roots.push(join(local, 'Claude-Data', name, 'claude-code-sessions'));
+  for (const name of safeDirs(join(local, 'Packages')).filter(n => /^Claude_/i.test(n))) {
+    roots.push(join(local, 'Packages', name, 'LocalCache', 'Roaming', 'Claude', 'claude-code-sessions'));
+  }
+  return roots.filter(root => existsSync(root));
+}
+
+function desktopEntry(file) {
+  try {
+    const stat = statSync(file);
+    const signature = fileSignature(stat);
+    const cached = desktopCache.get(file);
+    if (cached?.signature === signature) return cached;
+    if (stat.size > MAX_DESKTOP_FILE_BYTES) return { signature };
+    const row = JSON.parse(readFileSync(file, 'utf8'));
+    const id = value => typeof value === 'string' && SESSION_ID.test(value) ? value : '';
+    return { signature, local: id(row?.sessionId), cli: id(row?.cliSessionId), parent: id(row?.spawnedFrom?.sessionId), detached: row?.lineageDetached === true };
+  } catch { return undefined; } // Half-written or removed: read again next time.
+}
+
+// Index of every desktop session: by its own id and by its transcript id. Unchanged files are not reparsed.
+export function desktopSessions(roots = desktopSessionRoots()) {
+  const byLocal = new Map(), byCli = new Map(), seen = new Set();
+  const walk = (dir, depth) => {
+    let items;
+    try { items = readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const item of items) {
+      const path = join(dir, item.name);
+      if (item.isDirectory() && depth < 2) walk(path, depth + 1);
+      else if (item.isFile() && /^local_[\w-]+\.json$/.test(item.name)) {
+        const entry = desktopEntry(path);
+        if (!entry) continue;
+        seen.add(path);
+        desktopCache.set(path, entry);
+        if (!entry.local) continue;
+        byLocal.set(entry.local, entry);
+        if (entry.cli) byCli.set(entry.cli, entry);
+      }
+    }
+  };
+  for (const root of roots) walk(root, 0);
+  for (const path of desktopCache.keys()) if (!seen.has(path)) desktopCache.delete(path);
+  return { byLocal, byCli };
+}
+
+// The transcript id of the top-level chat a sub-chat belongs to ('' if that chat has no transcript here), or
+// undefined for a top-level chat or one the desktop app does not list. A detached session, or one whose
+// parent was deleted, is top-level, as in the sidebar.
+export function topLevelSession(cli, sessions) {
+  const start = sessions.byCli.get(cli);
+  let entry = start;
+  const visited = new Set();
+  while (entry?.parent && !entry.detached && !visited.has(entry.local)) {
+    visited.add(entry.local);
+    const parent = sessions.byLocal.get(entry.parent);
+    if (!parent) break;
+    entry = parent;
+  }
+  return entry !== start ? entry.cli : undefined;
+}
+
+// A transcript by id: next to the given one first (same folder), then in any other project folder.
+function transcriptFile(home, cli, near) {
+  const beside = join(dirname(near), `${cli}.jsonl`);
+  if (existsSync(beside)) return beside;
+  for (const dir of safeDirs(join(home, 'projects'))) {
+    const file = join(home, 'projects', dir, `${cli}.jsonl`);
+    if (existsSync(file)) return file;
+  }
+  return '';
+}
+
 // File modification times only narrow the scan; actual event timestamps decide activity below.
 export function recentClaudeCode(home = process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude'), now = Date.now()) {
   const found = [];
@@ -236,11 +325,17 @@ export function isRecent(mtimeMs, now = Date.now()) {
 
 // The name to show for one session, first match wins: its /rename name, then its folder if that
 // folder still exists. Renaming a session changes the card on the next check.
-export function sessionLabel(file, cwd, names = true) {
-  return (names ? sessionName(file) : '') || sessionProject(cwd);
+// A chat started from another chat in the desktop app shows the top-level chat's name instead (or the
+// folder when that chat has none), never its own: the card names what the sidebar lists at the top.
+export function sessionLabel(file, cwd, names = true, { home, sessions } = {}) {
+  if (!names) return sessionProject(cwd);
+  const top = sessions && home ? topLevelSession(basename(file, '.jsonl'), sessions) : undefined;
+  const named = top === undefined ? file : top && transcriptFile(home, top, file);
+  return (named ? sessionName(named) : '') || sessionProject(cwd);
 }
 
-export async function detectClaude({ now = Date.now(), home, names = true } = {}) {
+export async function detectClaude({ now = Date.now(), home = process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude'),
+  names = true, desktopRoots } = {}) {
   try {
     const recent = recentClaudeCode(home, now);
     const active = recent.map(({ file }) => ({ file, event: transcriptMetadata(file, true).activity }))
@@ -248,8 +343,9 @@ export async function detectClaude({ now = Date.now(), home, names = true } = {}
     if (active.length) {
       const sessions = [];
       const seen = new Set();
+      const lineage = { home, sessions: names ? desktopSessions(desktopRoots) : undefined };
       for (const { file, event: { model, effort, cwd } } of active) {
-        const session = { project: sessionLabel(file, cwd, names), model, effort };
+        const session = { project: sessionLabel(file, cwd, names, lineage), model, effort };
         const key = JSON.stringify(session);
         if (!seen.has(key)) { seen.add(key); sessions.push(session); }
       }
