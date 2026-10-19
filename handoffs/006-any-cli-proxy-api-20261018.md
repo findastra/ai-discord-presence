@@ -60,7 +60,9 @@ to the hub branch `claude/sticker-manager-record-20261018` (PR #93).
   OpenAI's and Google's terms allow her use is Astra's to decide; this tool flags, never decides.
 - The maintenance light stays on the PC; it does not reach the Farmer.
 - PR #11 (Codex's page rewrite) replaces the page and the pet.json tool list: whichever merges later carries both
-  new tool cards, the Third Party Programs card and both pet.json tools across.
+  new tool cards, the Third Party Programs card and both pet.json tools across. The same goes for the Token Toucan and
+  Proxy Axolotl connection boxes in `discord-damsel-L2-module` (branch `claude/damsel-cli-proxy-connections-20261019`,
+  Claude Opus 5.5, 2026-10-19).
 
 ## Task
 1. Astra decides whether to run it. If yes: double-click `discord-tower/cli-proxy-api/install-cli-proxy-api-20261018.cmd`
