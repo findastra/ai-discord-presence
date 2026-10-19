@@ -42,7 +42,8 @@ test('its box is Discord Damsel\'s servers panel, the same name as in pet.json a
   assert.equal(tool.panel, 'discord-damsel-servers-panel');
   assert.equal(tool.module, undefined);
   assert.equal(tool.version, '1.0.1');
-  assert.match(readFileSync(join(root, 'findastra-discord-presence-20261008.html'), 'utf8'), /In her servers panel \(discord-damsel-servers-panel\)/);
+  // Her page draws the same panel around the tool box (test/damsel-page-panels-20261019.test.mjs checks how).
+  assert.match(readFileSync(join(root, 'findastra-discord-presence-20261008.html'), 'utf8'), /panelBox\('discord-damsel-servers-panel'\)/);
 });
 
 test('it never makes its own requests, never reads a token and never writes HTML', () => {
