@@ -8,7 +8,10 @@ import { join, basename } from 'node:path';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const file = join(root, 'discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js');
-const source = readFileSync(file, 'utf8');
+// A Windows checkout may turn line ends into CRLF; BetterDiscord reads either.
+const source = readFileSync(file, 'utf8').replace(/
+/g, '
+');
 
 // Load it the way BetterDiscord does: wrapped in a function with module and exports.
 function load() {
