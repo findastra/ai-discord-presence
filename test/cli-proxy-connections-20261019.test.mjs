@@ -38,7 +38,8 @@ function openPage({ saved, answer = true } = {}) {
   const localStorage = { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, v) };
   const fetch = () => Promise.reject(new Error('no network in tests'));
   new Function('window', 'document', 'localStorage', 'fetch', script)(window, document, localStorage, fetch);
-  const panel = all(main).find((e) => e.tagName === 'DETAILS' && e.className === 'panel');
+  // Her page has more than one panel: find the L2 one by its label.
+  const panel = all(main).find((e) => e.tagName === 'DETAILS' && e.className === 'panel' && text(e.children[0]) === 'discord-damsel-L2-panel');
   const boxes = panel ? all(panel).filter((e) => e.tagName === 'FIELDSET' && e.className === 'connection') : [];
   const box = (pet) => boxes.find((b) => text(b.children[0]).endsWith(pet));
   const onoff = (pet) => all(box(pet)).find((e) => e.className === 'switch');
@@ -66,8 +67,8 @@ test('her L2 panel holds a connection box for Token Toucan and for Proxy Axolotl
     assert.ok(rows.State.startsWith('planned, not connected'));
   }
   // The panel comes after her tool boxes and the Third Party Programs card.
-  const titles = p.main.children.map((e) => (e.tagName === 'DETAILS' ? 'L2' : text(e.children[0] || new El('x'))));
-  assert.ok(titles.indexOf('L2') > titles.indexOf('Third Party Programs'));
+  const titles = p.main.children.map((e) => text(e.children[0] || new El('x')));
+  assert.ok(titles.indexOf('discord-damsel-L2-panel') > titles.indexOf('Third Party Programs'));
 });
 
 test('each connection\'s ON/OFF starts OFF, asks before ON, turns OFF without asking, and is kept in this browser', () => {
