@@ -46,7 +46,8 @@
           "channel": "ask-astra-bot",
           "kind": "chat-bot",
           "job": "Lets server members @ the bot in #ask-astra-bot and get an answer from Claude, the way #ask-ken-bot works.",
-          "third_party": "OpenClaw with its Discord channel (ring 5, community tier). Not installed by any agent.",
+          "code": "discord-tower/ask-astra-bot/bot-20261017.mjs",
+          "start": "Start Press Plai Ask Astra Bot.cmd",
           "setup": "docs/press-plai-ask-astra-bot-20261017.md"
         }
       ]
