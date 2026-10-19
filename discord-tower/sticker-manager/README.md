@@ -5,8 +5,8 @@
 
 | | |
 |---|---|
-| Module | `discord-damsel-servers-module` |
-| Tool | `discord-tower-v1.0-sticker-manager-v1.0` (version 1.0.0) |
+| Panel | `discord-damsel-servers-panel` |
+| Tool | `discord-tower-v1.0-sticker-manager-v1.0` (version 1.0.1) |
 | File | [discord-damsel-sticker-manager-20261018.plugin.js](discord-damsel-sticker-manager-20261018.plugin.js) |
 | Runs in | Discord desktop, as a [BetterDiscord](https://betterdiscord.app/) plugin (BetterDiscord is third-party) |
 
@@ -14,7 +14,7 @@
 
 - **Every server you are in**, in the same order as the server list on the left of Discord. Click a server to see all
   of its stickers; click it again to close it. A search box finds a server by name, or a sticker by name or tag.
-- **Sticker Manager**, inside that module: click stickers from any server to pick them (a ✓ and its number), then
+- **Sticker Manager**, inside that panel: click stickers from any server to pick them (a ✓ and its number), then
   **Reset my favorites to these N**. Your favorite stickers become exactly your picks, in the order you picked them.
   A ★ marks the stickers that are favorites now.
 - **Start from my favorites** picks your current favorites, so you can take some off or add more.
@@ -23,7 +23,7 @@
   works. The right one is the maintenance light (blue: working, yellow: requires maintenance). It is kept in this
   plugin only and does not reach the Friendly Farmer yet.
 
-![The servers module with the Sticker Manager, on the test page with pretend servers](../../docs/images/sticker-manager-20261018.png)
+![The servers panel with the Sticker Manager, on the test page with pretend servers](../../docs/images/sticker-manager-20261018.png)
 
 ## Install it (about 3 minutes)
 
@@ -34,7 +34,7 @@
    right-click, **Save as…**, and keep the name exactly (it must end in `.plugin.js`).
 3. In Discord: **User Settings → Plugins** (in the BetterDiscord part of the list) → **Open Plugins Folder**, and move
    the file there. The folder is `%APPDATA%\BetterDiscord\plugins`.
-4. Turn on **DiscordDamselStickerManager** in the Plugins list, then click its **gear** (Settings) to open the module.
+4. Turn on **DiscordDamselStickerManager** in the Plugins list, then click its **gear** (Settings) to open the panel.
 
 ## What it touches
 

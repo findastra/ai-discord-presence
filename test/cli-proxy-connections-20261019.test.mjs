@@ -1,4 +1,4 @@
-// Discord Damsel's two planned connections, Token Toucan and Proxy Axolotl, in her L2 module. The page's own script
+// Discord Damsel's two planned connections, Token Toucan and Proxy Axolotl, in her L2 panel. The page's own script
 // runs in a small pretend browser, so these tests check what the page draws and what its switches do.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -19,7 +19,8 @@ const CONNECTIONS = [
 ];
 
 class El {
-  constructor(tag) { this.tagName = tag.toUpperCase(); this.children = []; this.attrs = {}; this.textContent = ''; this.className = ''; }
+  // style: the Sticker Manager card sizes its picture with style.cssText (PR #19).
+  constructor(tag) { this.tagName = tag.toUpperCase(); this.children = []; this.attrs = {}; this.style = {}; this.textContent = ''; this.className = ''; }
   append(...kids) { this.children.push(...kids); }
   replaceChildren(...kids) { this.children = kids; }
   setAttribute(name, value) { this.attrs[name] = String(value); }
@@ -37,18 +38,18 @@ function openPage({ saved, answer = true } = {}) {
   const localStorage = { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, v) };
   const fetch = () => Promise.reject(new Error('no network in tests'));
   new Function('window', 'document', 'localStorage', 'fetch', script)(window, document, localStorage, fetch);
-  const module = all(main).find((e) => e.tagName === 'DETAILS' && e.className === 'module');
-  const boxes = module ? all(module).filter((e) => e.tagName === 'FIELDSET' && e.className === 'connection') : [];
+  const panel = all(main).find((e) => e.tagName === 'DETAILS' && e.className === 'panel');
+  const boxes = panel ? all(panel).filter((e) => e.tagName === 'FIELDSET' && e.className === 'connection') : [];
   const box = (pet) => boxes.find((b) => text(b.children[0]).endsWith(pet));
   const onoff = (pet) => all(box(pet)).find((e) => e.className === 'switch');
-  return { main, module, boxes, box, onoff, asked, stored: () => JSON.parse(store.get(KEY) || 'null') };
+  return { main, panel, boxes, box, onoff, asked, stored: () => JSON.parse(store.get(KEY) || 'null') };
 }
 
-test('her L2 module holds a connection box for Token Toucan and for Proxy Axolotl', () => {
+test('her L2 panel holds a connection box for Token Toucan and for Proxy Axolotl', () => {
   const p = openPage();
-  assert.ok(p.module, 'the page has a discord-damsel-L2-module');
-  assert.equal(p.module.open, true);
-  assert.equal(text(all(p.module).find((e) => e.tagName === 'SUMMARY')), 'discord-damsel-L2-module');
+  assert.ok(p.panel, 'the page has a discord-damsel-L2-panel');
+  assert.equal(p.panel.open, true);
+  assert.equal(text(all(p.panel).find((e) => e.tagName === 'SUMMARY')), 'discord-damsel-L2-panel');
   assert.equal(p.boxes.length, 2);
   for (const c of CONNECTIONS) {
     const box = p.box(c.pet);
@@ -64,7 +65,7 @@ test('her L2 module holds a connection box for Token Toucan and for Proxy Axolot
     assert.match(rows.Grant, /No write, no run/);
     assert.ok(rows.State.startsWith('planned, not connected'));
   }
-  // The module comes after her tool boxes and the Third Party Programs card.
+  // The panel comes after her tool boxes and the Third Party Programs card.
   const titles = p.main.children.map((e) => (e.tagName === 'DETAILS' ? 'L2' : text(e.children[0] || new El('x'))));
   assert.ok(titles.indexOf('L2') > titles.indexOf('Third Party Programs'));
 });
@@ -116,8 +117,8 @@ test('connection boxes have a border colour of their own, not the tool boxes\' c
 test('no new local addresses: the page names only the ports it already had', () => {
   const ports = [...new Set([...page.matchAll(/127\.0\.0\.1:(\d+)/g)].map((m) => Number(m[1])))].sort((a, b) => a - b);
   assert.deepEqual(ports, [8317, 38761, 38762, 38763]);
-  const module = script.slice(script.indexOf('discord-damsel-L2-module'), script.indexOf("checklist('Presence checklist'"));
-  assert.doesNotMatch(module, /127\.0\.0\.1|localhost|:\d{4,5}\b/);
+  const panel = script.slice(script.indexOf('discord-damsel-L2-panel'), script.indexOf("checklist('Presence checklist'"));
+  assert.doesNotMatch(panel, /127\.0\.0\.1|localhost|:\d{4,5}\b/);
 });
 
 test('the README lists both connections with their grants', () => {

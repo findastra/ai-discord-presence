@@ -2,14 +2,14 @@
  * @name DiscordDamselStickerManager
  * @author Astra
  * @authorLink https://github.com/findastra
- * @description Discord Damsel's servers module: every server you are in, each opening to show its stickers, with the Sticker Manager inside it to reset your favorite stickers to the ones you pick.
- * @version 1.0.0
+ * @description Discord Damsel's servers panel: every server you are in, each opening to show its stickers, with the Sticker Manager inside it to reset your favorite stickers to the ones you pick.
+ * @version 1.0.1
  * @website https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/sticker-manager
  * @source https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js
  */
 /*
  * An Intelligent App, or Pet, by Astra. Discord Damsel (Discord Tower, pet program #13 in Astra's PetOS).
- * Module discord-damsel-servers-module with the tool discord-tower-v1.0-sticker-manager-v1.0.
+ * Panel discord-damsel-servers-panel with the tool discord-tower-v1.0-sticker-manager-v1.0.
  * Written by Claude Opus 5.5 (claude-opus-5-5), 2026-10-18, at Astra's request. MIT license.
  *
  * What it touches: it reads Discord's own lists of your servers, their stickers and your favorite stickers, which the
@@ -21,7 +21,7 @@
 
 const NAME = 'DiscordDamselStickerManager';
 const TOOL = 'discord-tower-v1.0-sticker-manager-v1.0';
-const MODULE = 'discord-damsel-servers-module';
+const PANEL = 'discord-damsel-servers-panel';
 const STYLE_ID = 'discord-damsel-sticker-manager';
 // Discord sticker formats: 1 PNG, 2 APNG, 3 Lottie (Discord's own packs only, no picture file), 4 GIF.
 const FORMAT_EXT = { 1: 'png', 2: 'png', 4: 'gif' };
@@ -275,7 +275,7 @@ module.exports = class DiscordDamselStickerManager {
   }
 };
 
-/** The settings panel BetterDiscord shows for this plugin: the servers module with the Sticker Manager inside. */
+/** The settings panel BetterDiscord shows for this plugin: the servers panel with the Sticker Manager inside. */
 class Panel {
   constructor(plugin) {
     this.plugin = plugin;
@@ -315,22 +315,22 @@ class Panel {
     this.tiles.clear();
     this.summaries.clear();
     const stickerTotal = this.servers.reduce((n, s) => n + s.stickers.length, 0);
-    const module = el('fieldset', { class: 'ddsm-module' }, el('legend', {}, MODULE));
-    module.append(el('p', {}, this.error ? 'Discord Damsel could not read your servers.'
+    const panel = el('fieldset', { class: 'ddsm-panel' }, el('legend', {}, PANEL));
+    panel.append(el('p', {}, this.error ? 'Discord Damsel could not read your servers.'
       : 'Every server you are in: ' + Core.count(this.servers.length, 'server') + ', ' + Core.count(stickerTotal, 'sticker') +
         '. Click a server to see its stickers; click it again to close it.'));
-    module.append(el('div', { class: 'ddsm-pin' }, this.renderTool()));
+    panel.append(el('div', { class: 'ddsm-pin' }, this.renderTool()));
 
     const search = el('input', { type: 'search', placeholder: 'Find a server or sticker', 'aria-label': 'Find a server or sticker' });
     search.value = this.query;
     search.addEventListener('input', () => { this.query = search.value; this.renderList(); });
-    module.append(el('div', { class: 'ddsm-toolbar' }, search,
+    panel.append(el('div', { class: 'ddsm-toolbar' }, search,
       button('Close all', () => { for (const d of this.list.querySelectorAll('details[open]')) d.open = false; }),
       button('Reload', () => { this.reload(); this.say('Reloaded from Discord.'); })));
 
     this.list = el('div', { class: 'ddsm-list' });
-    module.append(this.list);
-    this.root.replaceChildren(module);
+    panel.append(this.list);
+    this.root.replaceChildren(panel);
     this.renderList();
   }
 
