@@ -68,7 +68,7 @@ This is an independent project, not made, endorsed or sponsored by OpenAI, Anthr
 
 ## Discord Damsel
 
-*An Intelligent App, or Pet, by Astra.* Discord Damsel is the pet for this repo. Her pet program (Discord Tower, #13 in
+Discord Damsel is the pet for this repo. Her pet program (Discord Tower, #13 in
 [Astra's PetOS](https://github.com/findastra/astras-pet-os)) runs these tools:
 
 | Tool | Version | What it does |
