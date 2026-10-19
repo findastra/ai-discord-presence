@@ -1,6 +1,6 @@
 # Sticker Manager
 
-*An Intelligent App, or Pet, by Astra.* A tool of **Discord Damsel** (Discord Tower, pet program #13 in
+A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 [Astra's PetOS](https://github.com/findastra/astras-pet-os)).
 
 | | |

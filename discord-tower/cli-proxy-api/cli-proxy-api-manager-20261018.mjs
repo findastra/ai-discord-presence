@@ -1,5 +1,5 @@
 // Discord Damsel's CLI Proxy API manager: tool discord-tower-v1.0-cli-proxy-api-v1.0 of Discord Tower.
-// An Intelligent App, or Pet, by Astra. Written by Claude Opus 5.5 (claude-opus-5-5), 2026-10-18, at Astra's request.
+// By Astra. Written by Claude Opus 5.5 (claude-opus-5-5), 2026-10-18, at Astra's request.
 //
 // CLI Proxy API (router-for-me, MIT) is a third-party program. This tool installs the one verified release from
 // quarantine, writes a config that keeps it on this PC, starts and stops it, and serves a small control page on

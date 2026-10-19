@@ -1,6 +1,6 @@
 # CLI Proxy API manager
 
-*An Intelligent App, or Pet, by Astra.* A tool of **Discord Damsel** (Discord Tower, pet program #13 in
+A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 [Astra's PetOS](https://github.com/findastra/astras-pet-os)). Astra gave CLI Proxy API to Discord Damsel to look
 after on 2026-10-18.
 

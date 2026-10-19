@@ -8,7 +8,7 @@
  * @source https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js
  */
 /*
- * An Intelligent App, or Pet, by Astra. Discord Damsel (Discord Tower, pet program #13 in Astra's PetOS).
+ * By Astra. Discord Damsel (Discord Tower, pet program #13 in Astra's PetOS).
  * Panel discord-damsel-servers-panel with the tool discord-tower-v1.0-sticker-manager-v1.0.
  * Written by Claude Opus 5.5 (claude-opus-5-5), 2026-10-18, at Astra's request. MIT license.
  *
