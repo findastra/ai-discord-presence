@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Astra; Claude Opus 5.5 (claude-opus-5-5), 2026-10-18">
+<title>CLI Proxy API · Discord Damsel</title>
+<!-- Discord Damsel's controls for CLI Proxy API (discord-tower-v1.0-cli-proxy-api-v1.0). Served only on
+     http://127.0.0.1:38763/ by cli-proxy-api-manager-20261018.mjs. Everything shown comes from /api/status and is
+     put on the page as text. -->
+<style>
+  :root { color-scheme: dark; --accent: #bcb9ff; --panel: #23212c; --muted: #b6b0c3; --line: #45404f; --ok: #43b581; --off: #ed4245; --blue: #5b8def; --yellow: #f0c94a; --grey: #6d6878; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #17161d; color: #f3f0f7; font: 16px/1.55 system-ui, sans-serif; }
+  main { max-width: 860px; margin: auto; padding: 28px 20px 40px; display: grid; gap: 18px; }
+  header { display: grid; grid-template-columns: 76px 1fr; gap: 16px; align-items: center; }
+  header img { width: 76px; height: 76px; image-rendering: pixelated; object-fit: contain; }
+  .eyebrow { margin: 0; color: var(--accent); text-transform: uppercase; letter-spacing: .13em; font-size: .72rem; }
+  h1 { margin: 2px 0 0; font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.15; }
+  fieldset { border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px 18px; margin: 0; min-width: 0; background: var(--panel); }
+  legend { padding: 0 8px; font: 600 .8rem/1.4 ui-monospace, Consolas, monospace; color: var(--accent); display: flex; gap: 6px; align-items: center; }
+  .light { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #0009; padding: 0; cursor: pointer; }
+  .light:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid white; outline-offset: 2px; }
+  .on { background: var(--ok); } .off { background: var(--off); } .ok { background: var(--blue); } .fix { background: var(--yellow); } .grey { background: var(--grey); }
+  .health { display: flex; align-items: center; gap: 12px; margin: 6px 0 12px; font-size: 1.05rem; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; flex: 0 0 22px; border: 1px solid #0009; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  button.act, a.act { font: inherit; border: 1px solid var(--accent); color: var(--accent); background: transparent; padding: 8px 16px; border-radius: 10px; cursor: pointer; text-decoration: none; }
+  button.primary { background: var(--accent); color: #19161c; font-weight: 600; }
+  button:disabled, a[aria-disabled="true"] { opacity: .45; cursor: not-allowed; pointer-events: none; }
+  #say { min-height: 1.5em; color: var(--accent); margin: 6px 0 0; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li.block { color: #ff9a9c; } li.warn { color: var(--yellow); } li.info { color: var(--muted); }
+  .muted { color: var(--muted); font-size: .9rem; }
+  .limits { border-color: #7a5b5e; }
+  .limits legend { color: #ffb3b5; }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: .88em; background: #15131a; border: 1px solid #433c4b; border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+  footer { color: var(--muted); font-size: .82rem; display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+  @media (max-width: 560px) { header { grid-template-columns: 56px 1fr; } header img { width: 56px; height: 56px; } main { padding: 18px 16px 32px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="https://raw.githubusercontent.com/findastra/astras-pet-os/main/art/frames/discord-damsel/idle.png" alt="Discord Damsel">
+    <div><p class="eyebrow">Discord Damsel · Discord Tower</p><h1>CLI Proxy API</h1></div>
+  </header>
+
+  <fieldset id="tool">
+    <legend>
+      <button class="light grey" id="light-on" type="button" aria-pressed="false"></button>
+      <button class="light grey" id="light-fix" type="button" aria-pressed="false"></button>
+      discord-tower-v1.0-cli-proxy-api-v1.0
+    </legend>
+    <p class="muted">Starts and stops <strong>CLI Proxy API</strong> (made by router-for-me; third-party, MIT) on this PC only,
+      after checking it is the verified release and that its settings keep it on this PC. It never signs anything in.</p>
+    <div class="health"><span class="dot grey" id="dot"></span><span id="health">Checking…</span></div>
+    <div class="buttons">
+      <button class="act primary" id="start" type="button" disabled>Start</button>
+      <button class="act" id="stop" type="button" disabled>Stop</button>
+      <a class="act" id="console" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Open console ↗</a>
+    </div>
+    <p id="say" role="status" aria-live="polite"></p>
+    <h2 class="muted" style="margin:12px 0 0;font-size:.95rem">Before it can start</h2>
+    <ul id="blocks"></ul>
+    <h2 class="muted" style="margin:12px 0 0;font-size:.95rem">Its settings and sign-ins</h2>
+    <ul id="checks"></ul>
+  </fieldset>
+
+  <fieldset class="limits">
+    <legend>hard limits (Astra's farm rules)</legend>
+    <ul>
+      <li><strong>Never sign it in with your Claude login</strong> (Pro or Max). Claude subscriptions are for your own use in
+        Anthropic's apps, and your whole PetOS runs on that account. The manager refuses to start while a Claude sign-in is
+        in the proxy's folder, and stops the proxy if one appears while this page is open.</li>
+      <li>A Discord bot other people use runs on an <strong>API key with a spend limit</strong>, never on a subscription sign-in.</li>
+      <li>OpenAI (Codex, ChatGPT) and Google (Gemini) sign-ins follow <strong>OpenAI's and Google's own terms</strong>. Read them
+        and decide before you add one; this tool does not decide for you.</li>
+      <li>It is third-party code: it listens on 127.0.0.1 only, with plugins and network discovery off.</li>
+    </ul>
+  </fieldset>
+
+  <footer>
+    <span id="where"></span>
+    <button class="act" id="quit" type="button">Close these controls</button>
+  </footer>
+</main>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  let last = null, busy = false;
+  const post = async (path, body) => {
+    const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Discord-Tower': 'local-action' }, body: JSON.stringify(body || {}) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || ('Error ' + r.status));
+    return data;
+  };
+  const item = (list, text, cls) => { const li = document.createElement('li'); li.textContent = text; if (cls) li.className = cls; list.append(li); };
+  const healthText = {
+    'running': (s) => ['on', 'Running on 127.0.0.1:' + s.port + '.'],
+    'starting': () => ['fix', 'Starting…'],
+    'stopped': () => ['grey', 'Stopped.'],
+    'port-busy': (s) => ['off', 'Something else is using port ' + s.port + '.'],
+    'not-installed': () => ['grey', 'Not installed on this PC.'],
+  };
+  function render(s) {
+    last = s;
+    const on = $('light-on'), fix = $('light-fix');
+    on.className = 'light ' + (s.enabled ? 'on' : 'off');
+    on.setAttribute('aria-pressed', String(s.enabled));
+    on.setAttribute('aria-label', s.tool + ': ' + (s.enabled ? 'on' : 'off'));
+    on.title = (s.enabled ? 'ON' : 'OFF') + ': click to turn the tool ' + (s.enabled ? 'off (this also stops the proxy)' : 'on');
+    fix.className = 'light ' + (s.maintenance ? 'fix' : 'ok');
+    fix.setAttribute('aria-pressed', String(s.maintenance));
+    fix.setAttribute('aria-label', s.tool + ': ' + (s.maintenance ? 'requires maintenance' : 'working correctly'));
+    fix.title = (s.maintenance ? 'Marked as requiring maintenance' : 'Working correctly') + '. Kept on this PC; it does not reach the Farmer yet.';
+    const [cls, text] = (healthText[s.health] || (() => ['grey', s.health]))(s);
+    $('dot').className = 'dot ' + cls;
+    $('health').textContent = s.program + ' ' + s.version + ': ' + text;
+    const running = s.health === 'running' || s.health === 'starting';
+    $('start').disabled = busy || running || s.blocks.length > 0;
+    $('stop').disabled = busy || !running;
+    const consoleOk = running && s.console;
+    $('console').href = consoleOk ? s.consoleUrl : '#';
+    $('console').setAttribute('aria-disabled', String(!consoleOk));
+    $('console').title = consoleOk ? 'Opens the Management Center served by the proxy' : (s.console ? 'Start the proxy first' : 'The console is off until you set a password (console-key)');
+    const blocks = $('blocks'); blocks.replaceChildren();
+    if (s.guard) item(blocks, s.guard.text + ' (' + String(s.guard.at).slice(0, 16).replace('T', ' ') + ')', 'block');
+    if (!s.blocks.length) item(blocks, running ? 'Running.' : 'Nothing is in the way. Start is your click.', 'info');
+    for (const b of s.blocks) item(blocks, b, 'block');
+    const checks = $('checks'); checks.replaceChildren();
+    item(checks, s.installed ? (s.verified ? 'Installed: the verified ' + s.version + '.' : 'Installed, but NOT the verified ' + s.version + '.') : (s.quarantine.found ? 'Waiting in quarantine; not installed yet.' : 'Not downloaded to quarantine.'), s.installed && !s.verified ? 'block' : 'info');
+    for (const p of s.problems) item(checks, p.text, p.level);
+    const n = s.signIns;
+    item(checks, 'Sign-ins in its folder: Claude ' + n.claude + ' (never allowed), OpenAI ' + n.openai + ', Google ' + n.google + ', other ' + n.other + '.', n.claude ? 'block' : 'info');
+    $('where').textContent = 'Everything lives in ' + s.home + '.';
+  }
+  async function refresh() {
+    try { const r = await fetch('/api/status', { cache: 'no-store' }); render(await r.json()); }
+    catch { $('health').textContent = 'These controls stopped. Open cli-proxy-api-20261018.cmd again.'; $('dot').className = 'dot grey'; }
+  }
+  async function act(path, body, doing) {
+    busy = true; if (last) render(last); $('say').textContent = doing;
+    try { render(await post(path, body)); $('say').textContent = 'Done.'; }
+    catch (e) { $('say').textContent = e.message; await refresh(); }
+    finally { busy = false; if (last) render(last); }
+  }
+  $('start').onclick = () => act('/api/start', {}, 'Starting the proxy…');
+  $('stop').onclick = () => act('/api/stop', {}, 'Stopping the proxy…');
+  $('light-on').onclick = () => last && act('/api/enabled', { on: !last.enabled }, last.enabled ? 'Turning the tool off…' : 'Turning the tool on…');
+  $('light-fix').onclick = () => last && act('/api/maintenance', { on: !last.maintenance }, 'Saving…');
+  $('quit').onclick = async () => { try { await post('/api/quit'); } catch {} $('say').textContent = 'Controls closed. The proxy keeps its state.'; };
+  refresh(); setInterval(refresh, 4000);
+})();
+</script>
+</body>
+</html>
