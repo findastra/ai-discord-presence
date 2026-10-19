@@ -98,7 +98,10 @@
     h('p', 'Connection status has not been checked. If a control page does not open, run that tool\'s Start … Discord Presence.cmd launcher.', 'muted', document.querySelector('main'));
     { const box = card('discord-tower-v1.0-sticker-manager-v1.0', 'In her servers module (discord-damsel-servers-module): every server you are in, each opening to show its stickers. Pick stickers from any server and reset your favorite stickers to exactly those. Runs inside Discord desktop as a BetterDiscord plugin; this page only links it.');
       link(box, 'How to install and use it', 'https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/sticker-manager', 'button'); link(box, 'Plugin file', 'https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js');
-      h('p', 'Needs BetterDiscord (third-party; client mods are against Discord\'s Terms of Service). It changes only your favorite stickers, after you confirm, and keeps your previous list so you can put it back.', 'muted', box); }
+      h('p', 'Needs BetterDiscord (third-party; client mods are against Discord\'s Terms of Service). It changes only your favorite stickers, after you confirm, and keeps your previous list so you can put it back.', 'muted', box);
+      // What the module looks like: the picture from its test page, with pretend servers (never your real Discord).
+      const shot = h('img', undefined, '', box); shot.src = 'https://raw.githubusercontent.com/findastra/findastra-discord-presence/main/docs/images/sticker-manager-20261018.png'; shot.alt = 'The servers module with the Sticker Manager: pretend servers, a server opened to its stickers, three picked'; shot.loading = 'lazy'; shot.style.cssText = 'display:block;max-width:100%;width:520px;border:1px solid #494251;border-radius:10px;margin:12px 0';
+      link(box, 'Try it with pretend servers', 'test/sticker-manager-harness-20261018.html?demo'); h('p', 'The test page runs the real plugin with pretend servers and coloured squares, from a copy of this repo. It never talks to Discord.', 'muted', box); }
     { const box = card('discord-tower-v1.0-cli-proxy-api-v1.0', 'Looks after CLI Proxy API (third-party, by router-for-me): installs the verified v8.0.33 from quarantine, keeps it on this PC, and starts and stops it. Start, Stop and the full checks are on its controls page.');
       const health = h('p', 'Checking this PC…', 'badge', box);
       link(box, 'Open controls (this PC only)', 'http://127.0.0.1:38763/', 'button'); link(box, 'Open console', 'http://127.0.0.1:8317/management.html'); link(box, 'How to install and use it', 'https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/cli-proxy-api');
@@ -147,6 +150,25 @@
       }
       h('p', 'The switches start OFF and are saved in this browser only: the core does not enforce them yet (PET-PROGRAM-FRAMEWORK.md, section 4).', 'muted', mod); }
     checklist('Presence checklist', ['Discord desktop is running.', 'Activity sharing is enabled in Discord.', 'The intended companion is running.', 'The profile card was inspected in Discord.', 'If both apps are running, the visible result was checked rather than assumed.']); notesCard();
+    // Related pets (Astra, 2026-10-19): the pets Discord Damsel talks to, from the relations in astras-pet-os
+    // (pets.json and the System Map), each linked to its pet program page there. Pictures come from the hub (A58).
+    { const box = card('Related pets', 'The pets Discord Damsel talks to, or is planned to. Each opens its own pet program.');
+      const hub = 'https://raw.githubusercontent.com/findastra/astras-pet-os/main/';
+      const pages = 'https://findastra.github.io/astras-pet-os/apps/pet-programs/';
+      for (const [pet, home, state, why, picture, repo] of [
+        ['Role Fairy', 'Fairy Ring', 'planned', 'Runs every Discord bot Astra uses; Discord Damsel keeps your own presence and shows how the bots are.', null, 'role-fairy'],
+        ['Mommy\'s Mommies', 'Mommy’s Green Room', 'planned', 'Lists a Discord connection for classes and events; Discord Damsel looks after your Discord apps.', 'art/frames/mommys-mommies/idle.png', 'mommys-mommies'],
+        ['Claude Bot', 'Claude Dock', 'idea, not agreed yet', 'Its status could feed the Anthropic presence card.', 'art/icons/claude-bot-20261012.png', 'claude-bot'],
+        ['Friendly Farmer', 'The Farm', 'works today', 'Every pet reports to him; his daily round checks Discord Damsel.', 'art/frames/farmer/idle-20261008.png', 'astras-pet-os'],
+        ['GitHub Goldfish', 'GitHub Aquarium', 'works today', 'Audits every pet repo on the account, this one too.', 'art/frames/goldfish/idle.png', 'github-goldfish'],
+      ]) {
+        const tile = h('a', undefined, 'record', box); tile.href = pages + repo + '-20261018.html'; tile.target = '_blank'; tile.rel = 'noopener';
+        tile.style.cssText = 'display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit';
+        if (picture) { const img = h('img', undefined, '', tile); img.src = hub + picture; img.alt = pet; img.width = 56; img.height = 56; img.style.cssText = 'image-rendering:pixelated;flex:none'; }
+        else { const none = h('span', 'no picture yet', 'muted', tile); none.style.cssText = 'width:56px;flex:none;font-size:.72rem;text-align:center;border:1px dashed #62586c;border-radius:6px;padding:8px 2px'; }
+        const text = h('div', undefined, '', tile); h('h3', pet, '', text); h('p', home + ' · ' + state, 'badge', text); h('p', why, 'muted', text);
+      }
+    }
   }
 
   if (cfg.type === 'paper') {
