@@ -39,6 +39,8 @@ Project sharing is off by default. Turn on **Show my project on Discord** and ea
 1. **The session's own name**, if you renamed it with `/rename` in Claude Code. Rename it and the card follows within a few seconds.
 2. **The folder** the session works in (its last part only, e.g. `paper-girl`), if that folder still exists.
 
+A chat started from another chat in the Claude desktop app (listed under it in the sidebar) shows the **top-level chat's** name, or that chat's folder when it has no name; its own name is not shown. Detach it in the app and it shows its own name again.
+
 Old folder names of Astra's own project (`Findastra Pet Apps`, `astras-pet-apps`, `astras-pet-os`) show as **Astra's PetOS**; a session name you set always wins over that.
 
 Automatic session titles (made from what you typed) are never used, and full paths are never published. Or type a fixed project label in Settings; it stays until you clear it.
@@ -57,7 +59,7 @@ Create an application in the [Discord Developer Portal](https://discord.com/deve
 
 ## Privacy
 
-The detector scans complete Claude Code JSONL records backwards to extract conversation timestamps, model, effort and working-directory fields, including when an individual record exceeds 64 KB. Conversation text is discarded and never published or retained in the metadata cache. With project sharing on it also reads `/rename` records (`{"type":"custom-title"}`) to name a session; each transcript is read once for these, then only the bytes added since the last check. Automatic titles are never used.
+The detector scans complete Claude Code JSONL records backwards to extract conversation timestamps, model, effort and working-directory fields, including when an individual record exceeds 64 KB. Conversation text is discarded and never published or retained in the metadata cache. With project sharing on it also reads `/rename` records (`{"type":"custom-title"}`) to name a session; each transcript is read once for these, then only the bytes added since the last check. Automatic titles are never used. To find a chat's top-level chat it reads the Claude desktop app's session files (`claude-code-sessions\…\local_*.json`) and keeps three fields: the transcript id, the id of the chat it was started from, and whether it was detached. Titles, summaries and reports in those files are not used.
 
 The control server binds only to `127.0.0.1`, checks Host and Origin for changes, and sends no telemetry. Discord receives activity text, a timestamp, an image URL and an optional project label. Settings remain in the Git-ignored `.local/config.json`. The local status endpoint includes installation/build identity so the launcher can detect old running copies; that identity is not sent to Discord.
 

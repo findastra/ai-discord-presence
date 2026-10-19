@@ -32,7 +32,7 @@ No account, API key or Discord setup needed. Everything runs on your own compute
 > Working on paper-girl
 > 00:42 elapsed
 
-The title is the company; the line under it is the detected model and effort level when available. Your project is opt-in: a chat or session you renamed shows that name (Codex rename, or `/rename` in Claude Code), otherwise the folder you're working in. Renames show within a few seconds. With several projects active, every one takes a turn on the card, one every 6 seconds, each paired with its own model and effort; the control panel lists them all.
+The title is the company; the line under it is the detected model and effort level when available. Your project is opt-in: a chat or session you renamed shows that name (Codex rename, or `/rename` in Claude Code), otherwise the folder you're working in. A chat started from another chat in the Claude desktop app shows the top-level chat's name, as the app's sidebar lists it. Renames show within a few seconds. With several projects active, every one takes a turn on the card, one every 6 seconds, each paired with its own model and effort; the control panel lists them all.
 
 Codex and Claude Code expose model metadata. Anthropic Automatic requires Claude Code conversation activity recorded in the last five minutes, including desktop Code sessions with supported local metadata. An open app or a touched transcript file does not count. Regular Claude desktop chat, Claude on the web and cloud sessions have no reliable automatic detector here; use manual **Start session** and **Stop sharing**, or turn on **Always on** in the Anthropic app's Settings to share whenever it runs. Missing model metadata is labeled **Using Claude** or **Using OpenAI**. Detection does not track foreground focus, and an accepted Discord activity is not proof that the profile displays it.
 
@@ -94,7 +94,8 @@ and the tool list are in [pet.json](pet.json); desktop art is in [desktop-pet-20
   for chats that have no folder of their own.
 
 Pet interface and art: OpenAI Codex (GPT-6), 2026-10-08 and 2026-10-11. Chat and session names, the 6-second shuffle
-and this summary: Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-14.
+and this summary: Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-14. Sub-chats named by their top-level chat:
+Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-18.
 
 ### Trick: DM cleanup (`discord-tower-v1.0-dm-cleanup-trick-v1.0`)
 
