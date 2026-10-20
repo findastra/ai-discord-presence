@@ -102,6 +102,7 @@
     'stopped': () => ['grey', 'Stopped.'],
     'port-busy': (s) => ['off', 'Something else is using port ' + s.port + '.'],
     'not-installed': () => ['grey', 'Not installed on this PC.'],
+    'running-older': (s) => ['fix', 'an older copy (' + (s.older || []).join(', ') + ') is still running. Press Stop, then Start this one.'],
   };
   function render(s) {
     last = s;
@@ -119,7 +120,7 @@
     $('health').textContent = s.program + ' ' + s.version + ': ' + text;
     const running = s.health === 'running' || s.health === 'starting';
     $('start').disabled = busy || running || s.blocks.length > 0;
-    $('stop').disabled = busy || !running;
+    $('stop').disabled = busy || !(running || s.health === 'running-older');
     const consoleOk = running && s.console;
     $('console').href = consoleOk ? s.consoleUrl : '#';
     $('console').setAttribute('aria-disabled', String(!consoleOk));

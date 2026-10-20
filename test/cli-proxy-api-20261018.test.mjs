@@ -2,7 +2,7 @@
 // temporary folders: the real cli-proxy-api.exe is never started.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { request } from 'node:http';
@@ -19,13 +19,14 @@ function temp() {
   return { dir, p, done: () => rmSync(dir, { recursive: true, force: true }) };
 }
 
-function fakePC(p, { hash = M.RELEASE.exe_sha256, busy = false, others = [] } = {}) {
-  const pc = { running: false, spawned: [], killed: [] };
+// `older`: copies of an earlier pinned release this tool installed, still running and answering on the proxy port.
+function fakePC(p, { hash = M.RELEASE.exe_sha256, busy = false, others = [], older = [] } = {}) {
+  const pc = { running: false, spawned: [], killed: [] }, old = [...older];
   Object.assign(pc, {
     installedHash: () => hash,
-    portOpen: async () => pc.running || busy,
-    processes: () => [...(pc.running ? [{ pid: 7, path: p.exe }] : []), ...others],
-    kill: (pid) => { pc.killed.push(pid); if (pid === 7) pc.running = false; return true; },
+    portOpen: async () => pc.running || busy || old.length > 0,
+    processes: () => [...(pc.running ? [{ pid: 7, path: p.exe }] : []), ...old, ...others],
+    kill: (pid) => { pc.killed.push(pid); if (pid === 7) pc.running = false; if (old.some((x) => x.pid === pid)) old.splice(old.findIndex((x) => x.pid === pid), 1); return true; },
     spawnProxy: (exe, args, opts) => { pc.spawned.push({ exe, args, opts }); pc.running = true; return 7; },
     spawnControls() {}, openUrl() {}, sleep: async () => {},
   });
@@ -38,11 +39,15 @@ function ready(p, extra = {}) {
   M.writeSettings(p, { enabled: true, maintenance: false, ...extra });
 }
 
-test('the pinned release is the one checked on 2026-10-18', () => {
-  assert.equal(M.RELEASE.version, 'v8.0.33');
+test('the pinned release is the one checked on 2026-10-19 (v8.0.34), and it is the only pin', () => {
+  assert.equal(M.RELEASE.version, 'v8.0.34');
   assert.match(M.RELEASE.zip_sha256, /^[0-9a-f]{64}$/);
   assert.match(M.RELEASE.exe_sha256, /^[0-9a-f]{64}$/);
   assert.equal(M.RELEASE.source, 'https://github.com/router-for-me/CLIProxyAPI');
+  assert.equal(M.RELEASE.release, `${M.RELEASE.source}/releases/tag/${M.RELEASE.version}`);
+  assert.equal(M.RELEASE.zip, `CLIProxyAPI_${M.RELEASE.version.slice(1)}_windows_amd64.zip`);
+  assert.equal(M.paths({ USERPROFILE: 'X' }).quarantine, join('X', 'Documents', "Astra's PetOS Quarantine", 'cliproxyapi-v8.0.34'));
+  assert.deepEqual(readdirSync(folder).filter((f) => /^release-\d{8}\.json$/.test(f)), ['release-20261019.json']);
 });
 
 test('the config it writes keeps the proxy on this PC and passes its own check', () => {
@@ -144,7 +149,7 @@ test('it refuses a build that is not the verified one, a busy port, an unsafe co
   const t = temp();
   try {
     ready(t.p);
-    await assert.rejects(M.start(fakePC(t.p, { hash: '0'.repeat(64) }), t.p), /not the verified v8\.0\.33/);
+    await assert.rejects(M.start(fakePC(t.p, { hash: '0'.repeat(64) }), t.p), /not the verified v8\.0\.34/);
     await assert.rejects(M.start(fakePC(t.p, { hash: null }), t.p), /Not installed/);
     await assert.rejects(M.start(fakePC(t.p, { busy: true }), t.p), /already using port 8317/);
     writeFileSync(t.p.config, readFileSync(t.p.config, 'utf8').replace('host: "127.0.0.1"', 'host: ""'));
@@ -182,6 +187,44 @@ test('Stop only stops the copy it installed', async () => {
     await M.start(pc, t.p);
     await M.stop(pc, t.p);
     assert.deepEqual(pc.killed, [7]);
+  } finally { t.done(); }
+});
+
+test('after the pin moves, an older copy it installed is still its own: Start waits; Stop, OFF and the Claude guard stop it', async () => {
+  const t = temp();
+  try {
+    ready(t.p);
+    const oldExe = join(t.p.programs, 'v8.0.33', M.RELEASE.exe);
+    assert.equal(M.ownCopy(t.p, oldExe), true);
+    assert.equal(M.ownCopy(t.p, t.p.exe), true);
+    for (const stranger of ['D:\\elsewhere\\cli-proxy-api.exe', join(t.p.programs, M.RELEASE.exe), join(t.p.programs, 'v8.0.33', 'nested', M.RELEASE.exe),
+      join(t.p.programs, 'v8.0.33', 'other.exe'), join(t.p.home, M.RELEASE.exe), t.p.programs + '\\..\\' + M.RELEASE.exe, '']) {
+      assert.equal(M.ownCopy(t.p, stranger), false, stranger);
+    }
+
+    let pc = fakePC(t.p, { older: [{ pid: 33, path: oldExe }], others: [{ pid: 99, path: 'D:\\elsewhere\\cli-proxy-api.exe' }] });
+    const st = await M.status(pc, t.p);
+    assert.equal(st.health, 'running-older');
+    assert.deepEqual(st.older, ['v8.0.33']);
+    assert.ok(st.blocks.some((b) => /older copy it installed is still running \(v8\.0\.33\)/.test(b)), st.blocks.join(' | '));
+    assert.ok(!st.blocks.some((b) => /Something else/.test(b)));
+    await assert.rejects(M.start(pc, t.p), /older copy/);
+    assert.equal(pc.spawned.length, 0);
+    assert.equal((await M.stop(pc, t.p)).health, 'stopped');
+    assert.deepEqual(pc.killed, [33], 'never the copy elsewhere');
+    assert.equal((await M.start(pc, t.p)).health, 'running');
+    assert.equal(pc.spawned[0].exe, t.p.exe, 'Start runs only the pinned release');
+
+    pc = fakePC(t.p, { older: [{ pid: 34, path: oldExe }] });
+    assert.equal((await M.setEnabled(pc, t.p, false)).health, 'stopped');
+    assert.deepEqual(pc.killed, [34], 'OFF stops the older copy too');
+
+    ready(t.p);
+    pc = fakePC(t.p, { older: [{ pid: 35, path: oldExe }] });
+    mkdirSync(t.p.auth, { recursive: true });
+    writeFileSync(join(t.p.auth, 'claude-me.json'), JSON.stringify({ type: 'claude' }));
+    assert.match(await M.guardTick(pc, t.p), /Claude sign-in/);
+    assert.deepEqual(pc.killed, [35], 'the Claude guard stops the older copy too');
   } finally { t.done(); }
 });
 
@@ -262,7 +305,7 @@ test('the manager runs when started through a junction or with a different lette
 });
 
 test('no personal paths, keys or sign-ins in the tool\'s files', () => {
-  for (const f of ['cli-proxy-api-manager-20261018.mjs', 'control-page-20261018.html', 'release-20261018.json', 'README.md']) {
+  for (const f of ['cli-proxy-api-manager-20261018.mjs', 'control-page-20261018.html', 'release-20261019.json', 'README.md']) {
     const text = readFileSync(join(folder, f), 'utf8');
     assert.doesNotMatch(text, /C:\\\\?Users\\\\?[a-z]/i, f);
     assert.doesNotMatch(text, /sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}/, f);

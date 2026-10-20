@@ -1,7 +1,7 @@
 status: done 2026-10-19 (installed and started on Astra's OK; the console password is still hers to set)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-18
-needs: AGENTS.md, CLAUDE.md, discord-tower/cli-proxy-api/README.md, discord-tower/cli-proxy-api/release-20261018.json, test/cli-proxy-api-20261018.test.mjs
+needs: AGENTS.md, CLAUDE.md, discord-tower/cli-proxy-api/README.md, discord-tower/cli-proxy-api/release-20261019.json, test/cli-proxy-api-20261018.test.mjs
 ---
 ## What I did
 
@@ -74,6 +74,23 @@ v8.0.33 now or move to v8.0.34 first). Install and first Start, as the Task belo
   and refreshes them every 3 hours. It sends no prompts. For Proxy Axolotl's egress allowlist later.
 - **Not changed:** v8.0.34 came out on 2026-10-19 (Gemini and reasoning-signature fixes, an access-log escaping fix).
   The tool still pins v8.0.33; moving up goes through quarantine and Astra's OK again.
+
+## Moved to v8.0.34 (2026-10-19)
+
+Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-19, on Astra's OK in chat ("Yes, run it with v8.0.34: download it to
+quarantine and pin it first"), on branch `claude/cli-proxy-v8.0.34-20261019`, stacked on this card's first-run branch.
+The running v8.0.33 was not touched. What is left for Astra is [card 007](007-any-cli-proxy-api-v8.0.34-20261019.md).
+- Downloaded `CLIProxyAPI_8.0.34_windows_amd64.zip` (23,894,969 bytes) and `checksums.txt` from the official v8.0.34
+  release into a new folder, `%USERPROFILE%\Documents\Astra's PetOS Quarantine\cliproxyapi-v8.0.34\`, and unpacked it
+  into `extracted\`. The zip's SHA-256 `f017bef3…` matches `checksums.txt` and GitHub's own digest for the file; the
+  exe `32f0b9c9…` (73,104,384 bytes) is not code-signed. Malwarebytes did not flag it; no separate scan was run.
+- Its `config.example.yaml` differs from v8.0.33 only by a `web-search-result-cache` block (off by default) and a
+  comment on Claude cloak mode: nothing about the network, the console, plugins or discovery.
+- The pin is `release-20261019.json`; `release-20261018.json` is removed, so there is one pin. A dry install into a
+  scratch folder (real quarantine, never started) verified both hashes and wrote a config with nothing that blocks
+  Start.
+- Stop, OFF and the Claude guard now reach any copy the tool installed under `program\` (`ownCopy`), so the running
+  v8.0.33 stays stoppable once the pin moves; Start waits until it is stopped.
 
 ## Not done
 - **The console password** (Astra's): press **Stop** on the controls (install cannot replace the program while it

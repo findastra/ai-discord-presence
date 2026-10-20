@@ -72,7 +72,7 @@
       "name": "cli-proxy-api",
       "label": "discord-tower-v1.0-cli-proxy-api-v1.0",
       "version": "1.0.0",
-      "intended_use": "Looks after CLI Proxy API, a third-party program: installs only the verified v8.0.33 from quarantine, writes a config that keeps it on 127.0.0.1 with plugins and discovery off, and starts and stops it from a control page on this PC. Refuses to start with a Claude sign-in in its folder. Never signs anything in; Start is Astra's click.",
+      "intended_use": "Looks after CLI Proxy API, a third-party program: installs only the verified v8.0.34 from quarantine, writes a config that keeps it on 127.0.0.1 with plugins and discovery off, and starts and stops it from a control page on this PC. Refuses to start with a Claude sign-in in its folder. Never signs anything in; Start is Astra's click.",
       "visibility": "public",
       "runs_on": "Windows, this PC only (controls http://127.0.0.1:38763/, proxy and console http://127.0.0.1:8317/)",
       "third_party": ["CLI Proxy API"],
@@ -88,6 +88,6 @@
   "third_party_programs": [
     { "name": "Discord", "made_by": "Discord Inc.", "used_by": ["openai-discord-presence", "anthropic-discord-presence", "sticker-manager"], "link": "https://discord.com/download" },
     { "name": "BetterDiscord", "made_by": "BetterDiscord (community)", "used_by": ["sticker-manager"], "link": "https://betterdiscord.app/" },
-    { "name": "CLI Proxy API", "made_by": "router-for-me (MIT)", "version": "v8.0.33", "used_by": ["cli-proxy-api"], "link": "https://github.com/router-for-me/CLIProxyAPI" }
+    { "name": "CLI Proxy API", "made_by": "router-for-me (MIT)", "version": "v8.0.34", "used_by": ["cli-proxy-api"], "link": "https://github.com/router-for-me/CLIProxyAPI" }
   ]
 }

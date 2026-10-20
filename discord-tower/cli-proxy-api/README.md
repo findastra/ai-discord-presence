@@ -7,11 +7,11 @@ after on 2026-10-18.
 | | |
 |---|---|
 | Tool | `discord-tower-v1.0-cli-proxy-api-v1.0` (version 1.0.0) |
-| Program it looks after | **CLI Proxy API** [v8.0.33](https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.0.33) by router-for-me: third-party, MIT license, not code-signed |
+| Program it looks after | **CLI Proxy API** [v8.0.34](https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.0.34) by router-for-me: third-party, MIT license, not code-signed |
 | What that program does | A local server that gives OpenAI-, Claude- and Gemini-style API addresses to programs on this PC, passing requests on to the accounts or API keys you add to it. Its console is the Management Center page it serves. |
 | Controls | `http://127.0.0.1:38763/` (this PC only), opened by [cli-proxy-api-20261018.cmd](cli-proxy-api-20261018.cmd) |
 | Proxy and console | `http://127.0.0.1:8317/` and `http://127.0.0.1:8317/management.html` |
-| Files on the PC | `%USERPROFILE%\.cli-proxy-api\` (the program's own default folder): `program\v8.0.33\`, `config.yaml`, `auth\` (its sign-ins), `damsel\` (the lights and the log) |
+| Files on the PC | `%USERPROFILE%\.cli-proxy-api\` (the program's own default folder): `program\v8.0.34\`, `config.yaml`, `auth\` (its sign-ins), `damsel\` (the lights and the log) |
 
 ## Hard limits
 
@@ -29,8 +29,8 @@ after on 2026-10-18.
 
 1. **Install** (once, and only after you have decided to run it): double-click
    [install-cli-proxy-api-20261018.cmd](install-cli-proxy-api-20261018.cmd). It checks the download in
-   `Documents\Astra's PetOS Quarantine\cliproxyapi-v8.0.33` against the release's checksum, copies the verified
-   `cli-proxy-api.exe` into `%USERPROFILE%\.cli-proxy-api\program\v8.0.33\`, and writes `config.yaml` with a new random
+   `Documents\Astra's PetOS Quarantine\cliproxyapi-v8.0.34` against the release's checksum, copies the verified
+   `cli-proxy-api.exe` into `%USERPROFILE%\.cli-proxy-api\program\v8.0.34\`, and writes `config.yaml` with a new random
    client key. Then it asks for a **console password** (hidden; press Enter to keep the console off). Nothing is started.
 2. **Open the controls:** double-click [cli-proxy-api-20261018.cmd](cli-proxy-api-20261018.cmd). Turn the tool **ON**
    (left light green), then press **Start**. That click is the first run. Windows may warn that the program is from
@@ -47,7 +47,7 @@ The same from a terminal: `node cli-proxy-api-manager-20261018.mjs check | insta
 | Check | Why |
 |---|---|
 | The tool is ON | The kill switch. OFF also stops a running proxy. |
-| The installed exe's SHA-256 is the verified v8.0.33 | A changed or newer program is not started until it is checked the same way. |
+| The installed exe's SHA-256 is the verified v8.0.34 | A changed or newer program is not started until it is checked the same way. |
 | `server.host` is `127.0.0.1` | The sample config listens on every network card. |
 | A client key, not a sample one, at least 24 characters | The sample ships guessable keys (`your-api-key-1`). |
 | `management.allow-remote` is off; the console comes from the official repository | The console can change everything. |
@@ -63,12 +63,21 @@ warnings.
 - **First run 2026-10-19** (card 006): v8.0.33 accepted this config and started on `127.0.0.1` only, with no sign-ins.
   Its log is `%USERPROFILE%\.cli-proxy-api\damsel\proxy.log`. At start it fetches the newest Antigravity and Grok CLI
   version numbers from the internet, then every 3 hours.
+- **v8.0.34 has not started yet** (card 007). The pin moved to it on 2026-10-19; its sample config differs from v8.0.33
+  only by a web-search result cache that is off by default. To move a running v8.0.33 across: press **Stop**, run
+  `install-cli-proxy-api-20261018.cmd` again (it keeps your `config.yaml` and asks for the console password), then press
+  **Start**. Until you press Stop, Start waits, and Stop, OFF and the Claude guard still stop the older copy.
+- **Not code-signed, and not scanned by an assistant.** Malwarebytes is this PC's active antivirus and Defender is
+  passive, so scans run from Claude fail. Before you install, you can right-click
+  `Documents\Astra's PetOS Quarantine\cliproxyapi-v8.0.34` and choose **Scan with Malwarebytes** (on Windows 11 it may be
+  under **Show more options**).
 - ON/OFF is enforced by this tool, not by Windows: running `cli-proxy-api.exe` by hand bypasses it, and the Claude
   check while it runs works only while the controls are open.
 - The maintenance light stays on this PC; it does not reach the Friendly Farmer's `broken-tools-on-the-farm` yet.
 - One version only. A new release goes through quarantine again (download, checksum, Astra's OK), then
-  `release-20261018.json` is updated in a new dated file.
+  the pin (`release-20261019.json` today) moves to a new dated file.
 - Windows only.
 
-Written by Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-18, at Astra's request. MIT license, as the rest of this repo.
+Written by Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-18, at Astra's request; moved to v8.0.34 on 2026-10-19, on her
+OK. MIT license, as the rest of this repo.
 CLI Proxy API itself is © router-for-me, MIT license.

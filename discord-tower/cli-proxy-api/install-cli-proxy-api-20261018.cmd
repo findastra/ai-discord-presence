@@ -1,5 +1,5 @@
 @echo off
-rem Discord Damsel: install CLI Proxy API from quarantine (the verified v8.0.33 only), write a config that keeps it
+rem Discord Damsel: install CLI Proxy API from quarantine (only the verified release in release-20261019.json, v8.0.34), write a config that keeps it
 rem on this PC, and ask for a console password. Nothing is started.
 setlocal
 cd /d "%~dp0"
