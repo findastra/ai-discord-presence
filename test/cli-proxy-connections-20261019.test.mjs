@@ -39,7 +39,7 @@ function openPage({ saved, answer = true } = {}) {
   const fetch = () => Promise.reject(new Error('no network in tests'));
   new Function('window', 'document', 'localStorage', 'fetch', script)(window, document, localStorage, fetch);
   // Her page has more than one panel: find the L2 one by its label.
-  const panel = all(main).find((e) => e.tagName === 'DETAILS' && e.className === 'panel' && text(e.children[0]) === 'discord-damsel-L2-panel');
+  const panel = all(main).find((e) => e.tagName === 'DETAILS' && e.className === 'panel' && text(e.children[0]) === 'discord-damsel-L2-tool-panel');
   const boxes = panel ? all(panel).filter((e) => e.tagName === 'FIELDSET' && e.className === 'connection') : [];
   const box = (pet) => boxes.find((b) => text(b.children[0]).endsWith(pet));
   const onoff = (pet) => all(box(pet)).find((e) => e.className === 'switch');
@@ -48,9 +48,9 @@ function openPage({ saved, answer = true } = {}) {
 
 test('her L2 panel holds a connection box for Token Toucan and for Proxy Axolotl', () => {
   const p = openPage();
-  assert.ok(p.panel, 'the page has a discord-damsel-L2-panel');
+  assert.ok(p.panel, 'the page has a discord-damsel-L2-tool-panel');
   assert.equal(p.panel.open, true);
-  assert.equal(text(all(p.panel).find((e) => e.tagName === 'SUMMARY')), 'discord-damsel-L2-panel');
+  assert.equal(text(all(p.panel).find((e) => e.tagName === 'SUMMARY')), 'discord-damsel-L2-tool-panel');
   assert.equal(p.boxes.length, 2);
   for (const c of CONNECTIONS) {
     const box = p.box(c.pet);
@@ -68,7 +68,7 @@ test('her L2 panel holds a connection box for Token Toucan and for Proxy Axolotl
   }
   // The panel comes after her tool boxes and the Third Party Programs card.
   const titles = p.main.children.map((e) => text(e.children[0] || new El('x')));
-  assert.ok(titles.indexOf('discord-damsel-L2-panel') > titles.indexOf('Third Party Programs'));
+  assert.ok(titles.indexOf('discord-damsel-L2-tool-panel') > titles.indexOf('Third Party Programs'));
 });
 
 test('each connection\'s ON/OFF starts OFF, asks before ON, turns OFF without asking, and is kept in this browser', () => {
@@ -118,7 +118,7 @@ test('connection boxes have a border colour of their own, not the tool boxes\' c
 test('no new local addresses: the page names only the ports it already had', () => {
   const ports = [...new Set([...page.matchAll(/127\.0\.0\.1:(\d+)/g)].map((m) => Number(m[1])))].sort((a, b) => a - b);
   assert.deepEqual(ports, [8317, 38761, 38762, 38763]);
-  const panel = script.slice(script.indexOf('discord-damsel-L2-panel'), script.indexOf("checklist('Presence checklist'"));
+  const panel = script.slice(script.indexOf('discord-damsel-L2-tool-panel'), script.indexOf("checklist('Presence checklist'"));
   assert.doesNotMatch(panel, /127\.0\.0\.1|localhost|:\d{4,5}\b/);
 });
 

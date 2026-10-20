@@ -1,6 +1,7 @@
 // Panels on Discord Damsel's page (PET-PROGRAM-FRAMEWORK.md, section 3): each is a <details class="panel"> with its
-// label in the top border, and the Sticker Manager's tool box sits inside discord-damsel-servers-panel with its label
-// in its own border, the way the plugin draws it. Astra, 2026-10-19: the panels on the Sticker Manager "look off".
+// label in the top border, and the Sticker Manager's tool box sits inside discord-damsel-servers-tool-panel with its label
+// in its own border, the way the plugin draws it. Astra, 2026-10-19: the panels on the Sticker Manager "look off". Tool panels since the same day
+// (Astra: "I do want all of it to say tool panel instead of just panel").
 // Claude Opus 5.5 (claude-opus-5-5), 2026-10-19.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -36,13 +37,13 @@ function openPage() {
 
 test('every panel is a details.panel that starts open, with only its label in the summary', () => {
   const { panels } = openPage();
-  assert.deepEqual(panels.map((p) => text(p.children[0])), ['discord-damsel-servers-panel', 'discord-damsel-L2-panel']);
+  assert.deepEqual(panels.map((p) => text(p.children[0])), ['discord-damsel-servers-tool-panel', 'discord-damsel-L2-tool-panel']);
   for (const p of panels) {
     assert.equal(p.className, 'panel');
     assert.equal(p.open, true);
     const [summary] = p.children;
     assert.equal(summary.tagName, 'SUMMARY');
-    assert.equal(summary.title, 'Click the label to fold or unfold this panel');
+    assert.equal(summary.title, 'Click the label to fold or unfold this tool panel');
     assert.deepEqual(summary.children.map((c) => c.className), ['legend']);
   }
 });

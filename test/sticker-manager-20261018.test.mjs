@@ -26,24 +26,25 @@ const sticker = (id, name, extra = {}) => ({ id, name, tags: 'tag', format_type:
 test('the file is a BetterDiscord plugin with Astra credited, named by the repo rules', () => {
   assert.match(source, /^\/\*\*\n \* @name DiscordDamselStickerManager\n/);
   assert.match(source, / \* @author Astra\n/);
-  assert.match(source, / \* @version 1\.0\.2\n/);
+  assert.match(source, / \* @version 1\.0\.3\n/);
   assert.equal(typeof Plugin, 'function');
   assert.equal(typeof Plugin.prototype.getSettingsPanel, 'function');
   assert.match(basename(file), /^[a-z0-9-]+-\d{8}\.plugin\.js$/);
 });
 
-// Panels, not modules (Astra, 2026-10-19): a box on a page is a panel; a module is a file of code.
-test('its box is Discord Damsel\'s servers panel, the same name as in pet.json and on her page', () => {
-  assert.match(source, /^const PANEL = 'discord-damsel-servers-panel';$/m);
+// Panels, not modules (Astra, 2026-10-19): a box on a page is a panel; a module is a file of code. And a tool panel since
+// the same day (Astra: "I do want all of it to say tool panel instead of just panel").
+test('its box is Discord Damsel\'s servers tool panel, the same name as in pet.json and on her page', () => {
+  assert.match(source, /^const PANEL = 'discord-damsel-servers-tool-panel';$/m);
   assert.match(source, /el\('fieldset', \{ class: 'ddsm-panel' \}, el\('legend', \{\}, PANEL\)\)/);
   assert.doesNotMatch(source, /servers-module|ddsm-module|MODULE/);
   const pet = JSON.parse(readFileSync(join(root, 'pet.json'), 'utf8'));
   const tool = pet.tools.find((t) => t.name === 'sticker-manager');
-  assert.equal(tool.panel, 'discord-damsel-servers-panel');
+  assert.equal(tool.panel, 'discord-damsel-servers-tool-panel');
   assert.equal(tool.module, undefined);
-  assert.equal(tool.version, '1.0.2');
+  assert.equal(tool.version, '1.0.3');
   // Her page draws the same panel around the tool box (test/damsel-page-panels-20261019.test.mjs checks how).
-  assert.match(readFileSync(join(root, 'findastra-discord-presence-20261008.html'), 'utf8'), /panelBox\('discord-damsel-servers-panel'\)/);
+  assert.match(readFileSync(join(root, 'findastra-discord-presence-20261008.html'), 'utf8'), /panelBox\('discord-damsel-servers-tool-panel'\)/);
 });
 
 test('it never makes its own requests, never reads a token and never writes HTML', () => {
