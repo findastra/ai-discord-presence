@@ -1,9 +1,30 @@
-status: open (1.0.2 merged and in her plugins folder; waits on the Put back test inside Discord, and on 1.0.3 from #27 being copied in)
+status: open (1.0.3 in her plugins folder since 2026-10-19 23:07; waits only on Astra's Put back test inside Discord)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-18
 needs: AGENTS.md, CLAUDE.md, discord-tower/sticker-manager/README.md, test/sticker-manager-20261018.test.mjs
 ---
 ## What I did
+
+### 2026-10-20, 11:33: 1.0.3 copied in, and BetterDiscord kept through two Discord updates
+
+Claude Opus 5.5, 2026-10-20, the chat that ran the first test. Astra said "Copy 1.0.3 into the plugins folder. Don't
+control Discord; I'll do the Put back test myself." This chat did not touch Discord after that.
+
+- **1.0.3 is in her plugins folder.** At 23:07 on 2026-10-19 it was copied from `main` (`c240310`) by a `.cmd` started
+  through `explorer.exe` (a direct write from Claude would land in the Claude app's private copy of AppData).
+  - Checked at 11:33 on 2026-10-20: the file says `@version 1.0.3`, 33,432 bytes.
+  - Its SHA-256 matches `main`: `e56589d8d2aa9fc277ffb1e59b2528469e4045b30d40a2d81d409834a6367f94`.
+- **The plugin's saved copy is ready for the test.** `DiscordDamselStickerManager.config.json` holds the copy saved
+  before the first test's reset: `stickerIds: []`, saved 2026-10-20 02:05 UTC. So once two favorites are set,
+  **Put back: no favorites** has a list to go back to.
+- **BetterDiscord survived two Discord updates without a reinstall.**
+  - Discord moved to 1.0.9263 (22:03 on 2026-10-19), then to 1.0.9264 (01:04 on 2026-10-20).
+  - Each time, BetterDiscord wrote its own loader into the new folder: `resources\app\index.js` requires
+    `<appData>\BetterDiscord\data\betterdiscord.asar\main.js`, then `../betterdiscord.app.asar`.
+  - The 1.0.9263 folder is now empty and 1.0.9262 is gone.
+  - Discord was not running at 11:33, so BetterDiscord has not been seen running in 1.0.9264. This was seen in the
+    files only.
+- **Not done:** the Put back test. It is Astra's (Task, steps 3 and 4).
 
 ### 2026-10-19, 22:45: merged, copied, and the Discord update
 
@@ -113,9 +134,10 @@ and the System Map entry are on the hub branch `claude/sticker-manager-record-20
 `Documents\Astra's Pet Apps\.claude\launch.json` was removed again.
 
 ## Not done
-- **No Put back has run inside Discord yet.** 1.0.2 has been in `%APPDATA%\BetterDiscord\plugins` since 22:35;
-  1.0.3 is not there yet. A file written from a Claude chat lands in the Claude app's private copy of AppData, so
-  copying it is Astra's step, or goes through a `.cmd` started through `explorer.exe`.
+- **No Put back has run inside Discord yet.** 1.0.3 has been in `%APPDATA%\BetterDiscord\plugins` since
+  2026-10-19 23:07; before that 1.0.2 was there from 22:35. A file written from a Claude chat lands in the Claude app's
+  private copy of AppData, so copying a newer version is Astra's step, or goes through a `.cmd` started through
+  `explorer.exe`.
 - Whether Discord accepts a favorites list from servers the account cannot use without Nitro is not checked (the two
   stickers in the first test came from a server she is in).
 - The maintenance light stays in the plugin's own data; it does not reach the Farmer's `broken-tools-on-the-farm`.
@@ -123,11 +145,10 @@ and the System Map entry are on the hub branch `claude/sticker-manager-record-20
   plugin to send the list to a local Damsel server; not built.
 
 ## Task
-1. Copy 1.0.3 from `main` (README, "Install it", step 2) over the file in `%APPDATA%\BetterDiscord\plugins`. The
-   Plugins list in Discord should show **DiscordDamselStickerManager 1.0.3**. (1.0.2, there now, has the same fixes,
-   so the test also works without this step.)
-2. After Discord restarts into 1.0.9263, check that BetterDiscord is still there (its part of User Settings and the
-   plugin). Run its installer again only if it is gone.
+1. ~~Copy 1.0.3 from `main` over the file in `%APPDATA%\BetterDiscord\plugins`.~~ Done 2026-10-19 23:07. The Plugins
+   list in Discord should show **DiscordDamselStickerManager 1.0.3**.
+2. When Discord opens (now 1.0.9264), check that BetterDiscord is still there: its section in User Settings, and the
+   plugin. Its loader is in place in the files, so run the installer again only if it is gone.
 3. In the panel: pick two stickers, **Reset my favorites to these 2**, and check that the confirmation shows four
    separate lines. Check Discord's sticker picker (Favorites).
 4. Click **Put back: no favorites (clear the 2 now)**, confirm with **Clear my favorites**, and check that Favorites
