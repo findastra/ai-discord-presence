@@ -50,8 +50,9 @@ Claude Opus 5.5, 2026-10-19: one chat ran the first test with Astra, a second on
   browser: `?zero` reset and put back to empty, `?demo`, `?empty` (refuses, says why, saves no copy) and `?broken`.
 - Version 1.0.2 in `pet.json`, `README.md` and `discord-tower/sticker-manager/README.md` (also: the empty put back,
   the installer's hidden button, the first test, `?zero`); a line in `AGENTS.md`; card 008 and `handoffs/README.md`.
-- Not changed: the BetterDiscord line in her page's Third Party Programs box still says "Not loaded in Discord on
-  2026-10-18". PR #25 changes the line next to it; update it after #25 merges, to avoid a merge conflict.
+- `findastra-discord-presence-20261008.html`: the BetterDiscord line in her page's Third Party Programs box said "Not
+  loaded in Discord on 2026-10-18"; it now says v1.14.3 was installed on 2026-10-19 (after `main` with PR #25 was
+  merged in, which changed the line next to it).
 - Seen on her PC (read only): Discord 1.0.9263 was downloading (`app-1.0.9263`, 21:03, no `modules\` yet) while
   Discord ran from 1.0.9262. When the update takes over, BetterDiscord's `resources\app\` stays behind in 1.0.9262,
   and its installer has to run again.
