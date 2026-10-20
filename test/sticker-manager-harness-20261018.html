@@ -8,8 +8,11 @@
   Discord Damsel's Sticker Manager outside Discord: the real plugin file, a pretend BetterDiscord (BdApi) and pretend
   servers and stickers, drawn as coloured squares. Nothing here talks to Discord. Open it over http
   (for example `python -m http.server` in the repo root, then /test/sticker-manager-harness-20261018.html).
-  Add ?empty for a Discord that has no favorites list yet, ?broken for a Discord the plugin cannot find.
-  Claude Opus 5.5 (claude-opus-5-5), 2026-10-18.
+  Add ?zero for an account with 0 favorites (like Astra's before the first test inside Discord, 2026-10-19), ?empty
+  for a Discord that has no favorites list yet, ?broken for a Discord the plugin cannot find.
+  The confirmation draws its content the way BetterDiscord 1.14.3 does: a string becomes inline text with nothing
+  between it and the next one; an element is drawn as it is.
+  Claude Opus 5.5 (claude-opus-5-5), 2026-10-18; ?zero and the BetterDiscord-style confirmation 2026-10-19.
 -->
 <style>
   :root { color-scheme: dark; --background-secondary: #2b2d31; --background-tertiary: #1e1f22; --text-normal: #dbdee1; --text-muted: #949ba4; }
@@ -21,10 +24,11 @@
   .confirm-back { position: fixed; inset: 0; background: #000a; display: grid; place-items: center; z-index: 10; }
   .confirm { background: #313338; border-radius: 8px; width: min(440px, calc(100vw - 32px)); padding: 16px; }
   .confirm h2 { margin: 0 0 8px; font-size: 18px; }
-  .confirm p { margin: 6px 0; }
+  .confirm .content { font-size: 16px; line-height: 20px; } /* BetterDiscord's .bd-modal-content */
   .confirm .row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
   .confirm button { font: inherit; border: 0; border-radius: 4px; padding: 7px 14px; cursor: pointer; }
   .confirm .ok { background: #5865f2; color: white; }
+  .confirm .ok.danger { background: #da373c; }
   .confirm .no { background: transparent; color: #dbdee1; }
   .toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: #23a55a; color: white; padding: 8px 14px; border-radius: 6px; z-index: 11; }
   .toast.error { background: #da373c; }
@@ -61,7 +65,7 @@
     })));
   });
   const byId = new Map([...stickersByGuild.values()].flat().map((s) => [s.id, s]));
-  const value = params.has('empty') ? {} : { favoriteStickers: { stickerIds: ['1000', '1003', '9999'] } };
+  const value = params.has('empty') ? {} : { favoriteStickers: { stickerIds: params.has('zero') ? [] : ['1000', '1003', '9999'] } };
   const frecency = {
     ProtoClass: { typeName: 'discord_protos.discord_users.v1.FrecencyUserSettings' },
     getCurrentValue: () => value,
@@ -79,7 +83,20 @@
   };
   const modules = params.has('broken') ? [] : [{ INFREQUENT_USER_ACTION: 0 }, frecency];
   const data = {};
+  // A pretend React: elements as plain objects, as React makes them, drawn below with textContent only.
+  const React = { createElement: (type, props, ...children) => ({ type, props: { ...props, children: children.length === 1 ? children[0] : children } }) };
+  const draw = (node) => {
+    // BetterDiscord 1.14.3 (src/betterdiscord/ui/modals.ts) turns a string into Discord's inline markdown: inline text.
+    if (typeof node === 'string' || typeof node === 'number') { const span = document.createElement('span'); span.textContent = node; return span; }
+    const tag = /^(div|p|span|strong|em)$/.test(node?.type) ? node.type : 'span';
+    const out = document.createElement(tag);
+    if (node?.props?.className) out.className = node.props.className;
+    if (node?.props?.style?.margin) out.style.margin = node.props.style.margin;
+    for (const child of [].concat(node?.props?.children ?? [])) out.append(draw(child));
+    return out;
+  };
   window.BdApi = {
+    React,
     Webpack: { getStore: (n) => (params.has('broken') ? undefined : stores[n]), getModule: (filter) => modules.find((m) => filter(m)) },
     DOM: {
       addStyle(id, css) { const s = document.createElement('style'); s.id = id; s.textContent = css; document.head.append(s); },
@@ -91,10 +108,12 @@
         const back = document.createElement('div'); back.className = 'confirm-back';
         const box = document.createElement('div'); box.className = 'confirm'; box.setAttribute('role', 'alertdialog');
         const h = document.createElement('h2'); h.textContent = title; box.append(h);
-        for (const line of [].concat(content)) { const p = document.createElement('p'); p.textContent = line; box.append(p); }
+        const body = document.createElement('div'); body.className = 'content';
+        for (const part of [].concat(content)) body.append(draw(part));
+        box.append(body);
         const row = document.createElement('div'); row.className = 'row';
         const no = document.createElement('button'); no.className = 'no'; no.textContent = options.cancelText || 'Cancel';
-        const ok = document.createElement('button'); ok.className = 'ok'; ok.textContent = options.confirmText || 'Okay';
+        const ok = document.createElement('button'); ok.className = 'ok' + (options.danger ? ' danger' : ''); ok.textContent = options.confirmText || 'Okay';
         no.onclick = () => { back.remove(); options.onCancel?.(); };
         ok.onclick = () => { back.remove(); options.onConfirm?.(); };
         row.append(no, ok); box.append(row); back.append(box); document.body.append(back); ok.focus();
@@ -124,7 +143,8 @@
     first.open = true;
     setTimeout(() => { for (const i of [1, 2, 7]) first.querySelectorAll('.ddsm-sticker')[i].click(); }, 50);
   }
-  log('Loaded ' + order.length + ' pretend servers.' + (params.has('empty') ? ' No favorites list yet (?empty).' : '') + (params.has('broken') ? ' Discord not found (?broken).' : ''));
+  log('Loaded ' + order.length + ' pretend servers.' + (params.has('empty') ? ' No favorites list yet (?empty).' : '') +
+    (params.has('zero') && !params.has('empty') ? ' 0 favorites (?zero).' : '') + (params.has('broken') ? ' Discord not found (?broken).' : ''));
 })();
 </script>
 </body>

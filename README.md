@@ -75,7 +75,7 @@ Discord Damsel is the pet for this repo. Her pet program (Discord Tower, #13 in
 |---|---|---|
 | `discord-tower-v1.0-openai-discord-presence-v0.2` | 0.2.0 | Codex: the OpenAI model and effort, and every active chat by its own name, folder or Codex project |
 | `discord-tower-v1.0-anthropic-discord-presence-v0.2` | 0.2.0 | Claude Code: the Anthropic model and effort, and every active session by its `/rename` name or folder |
-| `discord-tower-v1.0-sticker-manager-v1.0` | 1.0.1 | In her servers panel: every server you are in, each opening to its stickers; pick stickers and reset your favorite stickers to them ([how](discord-tower/sticker-manager/README.md)) |
+| `discord-tower-v1.0-sticker-manager-v1.0` | 1.0.2 | In her servers panel: every server you are in, each opening to its stickers; pick stickers and reset your favorite stickers to them ([how](discord-tower/sticker-manager/README.md)) |
 | `discord-tower-v1.0-cli-proxy-api-v1.0` | 1.0.0 | Looks after CLI Proxy API (third-party): installs the verified release, keeps it on this PC, starts and stops it from its controls page ([how](discord-tower/cli-proxy-api/README.md)) |
 
 **Start both tools in Automatic:** double-click [start-discord-damsel-20261014.cmd](start-discord-damsel-20261014.cmd). It first updates this folder from GitHub (only on `main`, only with no local changes, fast-forward only), then starts OpenAI and Anthropic Discord Presence in the background, asks any older copy of either app to quit, switches both to Automatic and opens her page. Keep this folder as the only copy on the PC: `%USERPROFILE%\Documents\Pet Programs\findastra-discord-presence` (`Documents\Projects` until it is renamed). Double-clicking Discord Damsel on the desktop does the same once the desktop pets are rebuilt (astras-pet-os card 014).
@@ -113,8 +113,10 @@ and reset your favorite stickers to exactly those, with an undo. It runs inside 
 plugin. Install and use: **[discord-tower/sticker-manager/README.md](discord-tower/sticker-manager/README.md)**.
 It changes only your favorite stickers, after you confirm, through Discord's own settings saver; it makes no requests
 of its own and never touches your token. BetterDiscord is third-party, and client mods are against Discord's Terms of
-Service. Not yet tested inside Discord (BetterDiscord was not installed on 2026-10-18). Added with Claude Opus 5.5,
-2026-10-18, at Astra's request.
+Service. First tested inside Discord on 2026-10-19 (BetterDiscord v1.14.3, plugin 1.0.1): it read 91 servers and
+1315 stickers and reset her favorites to two picks. 1.0.2 fixes putting back an empty list and the confirmation's
+sentences running together, both found in that test (card 005). Added with Claude Opus 5.5, 2026-10-18, at Astra's
+request.
 
 ### Tool: CLI Proxy API manager (`discord-tower-v1.0-cli-proxy-api-v1.0`)
 
