@@ -8,10 +8,11 @@ Every card has a `## What I did` section that lists explicitly what was changed,
 | --- | --- | --- |
 | [001: Merge the three lines of Damsel work](001-any-merge-damsel-work-20261017.md) | any (Codex first) | open; on branch `claude/rescue-damsel-unsaved-20261017` |
 | [002: Wrap-up of the Claude presence chat (art recipe, image bridge, open items)](002-any-claude-presence-chat-wrapup-20261017.md) | any | open, waits on Astra: merges, restart the apps |
-| [005: Sticker Manager: first test inside Discord](005-any-sticker-manager-20261018.md) | any | open, waits on Astra: install BetterDiscord and the plugin |
+| [005: Sticker Manager: first test inside Discord](005-any-sticker-manager-20261018.md) | any | open: first test done 2026-10-19 (reset worked, put back of an empty list did not); waits on Astra: merge 1.0.2, copy the plugin file, put back once |
 | [006: CLI Proxy API manager: install and first Start](006-any-cli-proxy-api-20261018.md) | any | done 2026-10-19: installed and running on 127.0.0.1 only; the console password is Astra's |
 | [007: CLI Proxy API v8.0.34: Stop, install, Start](007-any-cli-proxy-api-v8.0.34-20261019.md) | any | open, waits on Astra: merges, then Stop, install with her console password, Start |
+| [008: BetterDiscord recovery tool: see installer v2](008-codex-betterdiscord-installer-v2-check-20261019.md) | codex | open: the tool in PRs #10, #11, #12 says "Repair needed" while BetterDiscord v1.14.3 works |
 
-**Next free number: 008.** A number is used once across `main` and every branch. 003 and 004 are on
-`claude/ask-astra-bot-20261017` (PRs #7 and #8); 005 is the Sticker Manager card, 006 the CLI Proxy API card (2026-10-18)
-and 007 the CLI Proxy API v8.0.34 card (2026-10-19).
+**Next free number: 009.** A number is used once across `main` and every branch. 003 and 004 are on
+`claude/ask-astra-bot-20261017` (PRs #7 and #8); 005 is the Sticker Manager card, 006 the CLI Proxy API card (2026-10-18),
+007 the CLI Proxy API v8.0.34 card and 008 the BetterDiscord recovery card for Codex (2026-10-19).
