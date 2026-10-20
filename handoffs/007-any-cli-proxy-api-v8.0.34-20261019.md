@@ -14,6 +14,13 @@ first"). Details are in card 006, "Moved to v8.0.34". In short:
   first run (card 006) stays stoppable after the pin moves. Start waits until it is stopped.
 - Astra's PC: the running v8.0.33, its controls and `%USERPROFILE%\.cli-proxy-api` were not touched.
 
+**Its API key is a key request for API Fairy** (Claude Opus 5.5, 2026-10-20). Since 2026-10-19 every chat that needs a
+key files one (astras-pet-os `skills/key-request`, card 056 there); card 006's "add an API key with a spend limit in the
+console" is filed as `20261018-discord-damsel-cli-proxy-api-key.json` in Astra's
+`Documents\Astra's PetOS Data\api-fairy-ring\key-requests\` (on her PC only), and API Fairy Ring's pet program page lists
+it under waiting on you. **Astra's answer (2026-10-20): which provider's key it gets is decided when she adds it.** Still
+never a Claude login: the manager refuses to start with one.
+
 ## Task
 1. Astra merges #23 first, then the v8.0.34 pull request (her OK in chat; the assistant merges).
 2. A chat fast-forwards `Documents\Astra's PetOS\findastra-discord-presence` to `main` (it is on `main`, with only
@@ -27,6 +34,9 @@ first"). Details are in card 006, "Moved to v8.0.34". In short:
    "CLI Proxy API v8.0.34: Running on 127.0.0.1:8317."
 7. A chat checks that `Get-NetTCPConnection -LocalPort 8317` shows `127.0.0.1` only and that `proxy.log` says
    `Version: 8.0.34`, then closes this card. The old `program\v8.0.33\` folder can stay; removing it is Astra's.
+8. When Astra adds an API key with a spend limit in the console (her provider, her choice then), a chat sets that key
+   request's `"status": "given"` and `"status_date"`: API Fairy can't see inside the proxy's settings, so she only knows
+   from the request.
 
 ## Done when
 v8.0.34 runs from the controls, on 127.0.0.1 only, and this card says so with the date.
