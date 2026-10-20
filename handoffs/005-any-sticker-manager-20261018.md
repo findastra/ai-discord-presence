@@ -1,4 +1,4 @@
-status: open (waiting on Astra: OK and merge of the 1.0.2 pull request, then copy the new plugin file into %APPDATA%\BetterDiscord\plugins and put back once inside Discord)
+status: open (waiting on Astra: OK and merge of PR #26 (1.0.2), then copy the new plugin file into %APPDATA%\BetterDiscord\plugins and put back once inside Discord)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-18
 needs: AGENTS.md, CLAUDE.md, discord-tower/sticker-manager/README.md, test/sticker-manager-20261018.test.mjs
@@ -28,7 +28,7 @@ Claude Opus 5.5, 2026-10-19: one chat ran the first test with Astra, a second on
   picks).2 stickers added"). BetterDiscord 1.14.3's `showConfirmationModal` turns each string of the list into
   Discord's inline markdown (`SimpleMarkdownExt.parseToReact`, `src/betterdiscord/ui/modals.ts`) with nothing between them.
 
-**This repo, branch `claude/sticker-manager-fixes-20261019`** (from `main` at `79ff73e`; one pull request, not merged):
+**This repo, branch `claude/sticker-manager-fixes-20261019`** (from `main` at `79ff73e`; PR #26, not merged):
 - `discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js` 1.0.2:
   - `Core.backup` keeps "nothing saved yet" (null) apart from an empty saved list. With an empty copy the button reads
     **Put back: no favorites (clear the 2 now)**; its confirmation says "After this: no favorite stickers, as before
@@ -105,7 +105,7 @@ and the System Map entry are on the hub branch `claude/sticker-manager-record-20
   plugin to send the list to a local Damsel server; not built.
 
 ## Task
-1. Astra gives her OK in chat and names the 1.0.2 pull request; the assistant merges it.
+1. Astra gives her OK in chat and names PR #26 (1.0.2); the assistant merges it.
 2. Astra downloads the plugin file from `main` (README, "Install it", step 2) and replaces the one in
    `%APPDATA%\BetterDiscord\plugins`. The Plugins list in Discord should show **DiscordDamselStickerManager 1.0.2**.
    If Discord has moved to 1.0.9263 and BetterDiscord is gone, run its installer again first.
