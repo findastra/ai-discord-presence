@@ -6,7 +6,7 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 | | |
 |---|---|
 | Tool panel | `discord-damsel-servers-tool-panel` |
-| Tool | `discord-tower-v1.0-sticker-manager-v1.0` (version 1.0.1) |
+| Tool | `discord-tower-v1.0-sticker-manager-v1.0` (version 1.0.3) |
 | File | [discord-damsel-sticker-manager-20261018.plugin.js](discord-damsel-sticker-manager-20261018.plugin.js) |
 | Runs in | Discord desktop, as a [BetterDiscord](https://betterdiscord.app/) plugin (BetterDiscord is third-party) |
 
@@ -18,7 +18,9 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
   **Reset my favorites to these N**. Your favorite stickers become exactly your picks, in the order you picked them.
   A ★ marks the stickers that are favorites now.
 - **Start from my favorites** picks your current favorites, so you can take some off or add more.
-- **Put back my previous favorites** undoes the last reset: the plugin keeps a copy of the list from before it.
+- **Put back my previous favorites** undoes the last reset: the plugin keeps a copy of the list from before it. If
+  you had no favorites before the reset, the button reads **Put back: no favorites (clear the N now)** and asks first
+  (its button is red). **Reset** never clears your favorites: it needs at least one pick.
 - Its two lights: the left one is ON/OFF (green/red). OFF switches picking and resetting off; the server list still
   works. The right one is the maintenance light (blue: working, yellow: requires maintenance). It is kept in this
   plugin only and does not reach the Friendly Farmer yet.
@@ -28,7 +30,8 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 ## Install it (about 3 minutes)
 
 1. **BetterDiscord** must be installed in Discord desktop: [betterdiscord.app](https://betterdiscord.app/) (official
-   download only). A Discord update can remove it; run its installer again when that happens.
+   download only). A Discord update can remove it; run its installer again when that happens. The installer (v2.0.0
+   on 2026-10-19) can open with its **Install** button below the bottom edge of its window.
 2. Download the plugin: open
    [the plugin file](https://raw.githubusercontent.com/findastra/findastra-discord-presence/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js),
    right-click, **Save as…**, and keep the name exactly (it must end in `.plugin.js`).
@@ -57,8 +60,10 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 - It finds Discord's lists by their names inside the Discord app. A Discord update can rename them; the plugin then
   says what it could not find and changes nothing.
 - **Nitro:** you can favorite any server's stickers, but sending a sticker from another server needs Nitro.
-- **Not tested inside Discord yet.** Checked on 2026-10-18 with the Node tests and the test page, which load the real
-  plugin with a pretend Discord. BetterDiscord was not installed on Astra's PC that day.
+- **First tested inside Discord on 2026-10-19,** with BetterDiscord v1.14.3 and plugin 1.0.1: it listed 91 servers
+  and 1315 stickers and reset the favorites to two picks, which Discord's sticker picker showed. That test found two
+  bugs, fixed in 1.0.2: "Put back" did not show when the list from before was empty, and the confirmation ran its
+  sentences together. 1.0.2 is checked with the Node tests and the test page, not yet inside Discord.
 - A server whose stickers Discord has not loaded says so; open that server once in Discord, then click **Reload**.
 
 ## For developers
@@ -68,8 +73,10 @@ node --test test/sticker-manager-20261018.test.mjs
 ```
 
 The tool panel without Discord: serve the repo (`python -m http.server` in the repo root) and open
-`/test/sticker-manager-harness-20261018.html`. Add `?empty` for an account with no favorites list yet, or `?broken`
-for a Discord the plugin cannot find. It uses pretend servers and coloured squares, and never talks to Discord.
+`/test/sticker-manager-harness-20261018.html`. Add `?zero` for an account with 0 favorites (like Astra's before the
+first test), `?empty` for one with no favorites list yet, or `?broken` for a Discord the plugin cannot find. It uses
+pretend servers and coloured squares, and never talks to Discord. Its confirmation draws the plugin's lines the way
+BetterDiscord 1.14 does (a string is inline text with nothing between it and the next; an element is drawn as it is).
 
 How it finds Discord's internals (the same filters as the Vencord client mod): the stores `GuildStore`,
 `SortedGuildStore`, `StickersStore` and `UserSettingsProtoStore` by name, and the favorites saver as the module whose

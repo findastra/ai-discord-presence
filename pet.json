@@ -55,7 +55,7 @@
     {
       "name": "sticker-manager",
       "label": "discord-tower-v1.0-sticker-manager-v1.0",
-      "version": "1.0.1",
+      "version": "1.0.3",
       "panel": "discord-damsel-servers-tool-panel",
       "intended_use": "Shows every Discord server Astra is in, each opening to its stickers, and resets her favorite stickers to the ones she picks, after she confirms. Reads the Discord app's own server, sticker and favorites lists; changes only the favorite stickers, through Discord's own settings saver. No requests of its own, no token.",
       "visibility": "public",

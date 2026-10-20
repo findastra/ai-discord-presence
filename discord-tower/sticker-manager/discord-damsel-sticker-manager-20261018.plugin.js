@@ -3,7 +3,7 @@
  * @author Astra
  * @authorLink https://github.com/findastra
  * @description Discord Damsel's servers tool panel: every server you are in, each opening to show its stickers, with the Sticker Manager inside it to reset your favorite stickers to the ones you pick.
- * @version 1.0.1
+ * @version 1.0.3
  * @website https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/sticker-manager
  * @source https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js
  */
@@ -99,6 +99,49 @@ const Core = {
     };
   },
 
+  /**
+   * The copy saved before the last reset, or null when nothing is saved yet. An empty saved list is a real copy: it
+   * means there were no favorites before the reset, and putting it back clears them.
+   */
+  backup(raw) {
+    if (!raw || typeof raw !== 'object' || !Array.isArray(raw.stickerIds)) return null;
+    return { savedAt: typeof raw.savedAt === 'string' ? raw.savedAt : '', ids: Core.ids(raw.stickerIds) };
+  },
+
+  /** The words on the "Put back" button, or null when there is nothing to put back. */
+  putBackLabel(current, backup) {
+    if (!backup || Core.plan(current, backup.ids).same) return null;
+    return backup.ids.length ? 'Put back my previous favorites (' + backup.ids.length + ')'
+      : 'Put back: no favorites (clear the ' + Core.ids(current).length + ' now)';
+  },
+
+  /**
+   * What the confirmation asks, or null when there is nothing to ask: no change, or a reset with no picks (a reset
+   * never clears the favorites; only putting back an empty list does, after its own confirmation).
+   */
+  confirmation(current, ids, kind) {
+    const plan = Core.plan(current, ids), undo = kind === 'undo', clears = !plan.next.length;
+    if (plan.same || (clears && !undo)) return null;
+    return {
+      plan,
+      title: undo ? 'Put back your previous favorites?' : 'Reset your favorite stickers?',
+      lines: [
+        'Your favorite stickers now: ' + Core.count(plan.now.length, 'sticker') + '.',
+        clears ? 'After this: no favorite stickers, as before the last reset.'
+          : 'After this: ' + Core.count(plan.next.length, 'sticker') + ', in the order shown' + (undo ? ' (your list from before the last reset).' : ' (your picks).'),
+        Core.count(plan.added.length, 'sticker') + ' added, ' + Core.count(plan.removed.length, 'sticker') + ' taken off.',
+        'Discord saves this to your account, so every device sees it. The plugin keeps a copy of the current list so you can put it back.',
+      ],
+      confirmText: clears ? 'Clear my favorites' : undo ? 'Put them back' : 'Reset favorites',
+      danger: clears,
+    };
+  },
+
+  done(kind, n) {
+    if (kind !== 'undo') return 'Favorites reset to ' + Core.count(n, 'sticker') + '.';
+    return n ? 'Put back ' + Core.count(n, 'sticker') + '.' : 'Put back: no favorite stickers, as before the last reset.';
+  },
+
   togglePick(picks, id) {
     const list = Core.ids(picks), key = String(id);
     return list.includes(key) ? list.filter((x) => x !== key) : [...list, key];
@@ -177,7 +220,10 @@ function readFavorites(d) {
   return Core.ids(value?.stickerIds ?? []);
 }
 
-/** Replaces the favorite stickers with `ids`, through Discord's own settings saver, then reads them back. */
+/**
+ * Replaces the favorite stickers with `ids`, through Discord's own settings saver, then reads them back. An empty
+ * `ids` clears them (only "Put back" asks for that, when the list saved before the last reset was empty).
+ */
 async function saveFavorites(d, ids) {
   if (typeof d.frecency?.updateAsync !== 'function') {
     throw new Error("Could not find Discord's favorites saver (FrecencyUserSettings). Discord may have changed; the plugin needs an update. Nothing was changed.");
@@ -187,6 +233,8 @@ async function saveFavorites(d, ids) {
   await d.frecency.updateAsync('favoriteStickers', (proto) => {
     if (!proto || typeof proto !== 'object') return false;
     handed = true;
+    // Keep the ID type of the list Discord hands over. An empty list has no sample, so the IDs go as strings, which
+    // Discord kept in the first test inside Discord (2026-10-19, from 0 favorites to 2).
     const sample = Array.isArray(proto.stickerIds) ? proto.stickerIds[0] : undefined;
     proto.stickerIds = next.map((id) => (typeof sample === 'bigint' ? BigInt(id) : id));
   }, d.delay);
@@ -196,6 +244,16 @@ async function saveFavorites(d, ids) {
   const after = readFavorites(d);
   if (!Core.plan(after, next).same) throw new Error('Discord did not confirm the new favorites. Open the sticker picker to see what it kept.');
   return after;
+}
+
+/**
+ * The confirmation's lines as separate paragraphs. BetterDiscord 1.14 turns each string in the list into Discord's
+ * inline markdown with nothing between them, so plain strings ran together ("0 stickers.After this: …"). React
+ * elements keep the text as text. Without BdApi.React the lines go as one string with blank lines between them.
+ */
+function confirmContent(api, lines) {
+  if (typeof api?.React?.createElement !== 'function') return lines.join('\n\n');
+  return lines.map((line, i) => api.React.createElement('div', { key: 'line-' + i, className: 'ddsm-confirm-line', style: { margin: '0 0 12px' } }, line));
 }
 
 const CSS = `
@@ -254,7 +312,7 @@ const CSS = `
 
 module.exports = class DiscordDamselStickerManager {
   static Core = Core;
-  static internals = { findDiscord, readServers, readFavorites, saveFavorites, mediaBase };
+  static internals = { findDiscord, readServers, readFavorites, saveFavorites, mediaBase, confirmContent };
 
   constructor(meta) {
     this.meta = meta;
@@ -379,8 +437,6 @@ class Panel {
       : [el('span', { class: 'ddsm-empty' }, on ? 'Nothing picked. Open a server and click stickers to pick them.' : 'Nothing picked.')]));
 
     const plan = Core.plan(this.favorites, this.picks);
-    const backup = this.plugin.load('backup', null);
-    const backupIds = Core.ids(backup?.stickerIds ?? []);
     const reset = button(plan.next.length ? 'Reset my favorites to these ' + plan.next.length : 'Pick stickers to reset your favorites', () => this.confirmReset(this.picks, 'reset'), 'ddsm-primary');
     reset.disabled = !on || !plan.next.length || plan.same;
     if (plan.same && plan.next.length) reset.textContent = 'Your favorites are already these ' + plan.next.length;
@@ -389,10 +445,14 @@ class Panel {
     const clear = button('Clear picks', () => { this.setPicks([]); this.say('Picks cleared. Your favorites are unchanged.'); });
     clear.disabled = !on || !this.picks.length;
     const children = [reset, fromFavorites, clear];
-    if (backupIds.length && !Core.plan(this.favorites, backupIds).same) {
-      const undo = button('Put back my previous favorites (' + backupIds.length + ')', () => this.confirmReset(backupIds, 'undo'));
+    // An empty saved list still offers "Put back" (it clears the favorites); only "nothing saved yet" hides it.
+    const backup = Core.backup(this.plugin.load('backup', null));
+    const putBack = Core.putBackLabel(this.favorites, backup);
+    if (putBack) {
+      const undo = button(putBack, () => this.confirmReset(backup.ids, 'undo'));
       undo.disabled = !on;
-      undo.title = 'Saved ' + String(backup.savedAt || '').slice(0, 16).replace('T', ' ') + ', before the last reset';
+      undo.title = (backup.savedAt ? 'Saved ' + backup.savedAt.slice(0, 16).replace('T', ' ') + ', before' : 'Saved before') + ' the last reset' +
+        (backup.ids.length ? '' : ', when you had no favorite stickers');
       children.push(undo);
     }
     this.actions.replaceChildren(...children);
@@ -496,35 +556,33 @@ class Panel {
   }
 
   confirmReset(ids, kind) {
-    const plan = Core.plan(this.favorites, ids);
-    if (!this.settings.toolOn || !plan.next.length || plan.same) return;
-    const lines = [
-      'Your favorite stickers now: ' + Core.count(plan.now.length, 'sticker') + '.',
-      'After this: ' + Core.count(plan.next.length, 'sticker') + ', in the order shown' + (kind === 'undo' ? ' (your list from before the last reset).' : ' (your picks).'),
-      Core.count(plan.added.length, 'sticker') + ' added, ' + Core.count(plan.removed.length, 'sticker') + ' taken off.',
-      'Discord saves this to your account, so every device sees it. The plugin keeps a copy of the current list so you can put it back.',
-    ];
-    this.api.UI.showConfirmationModal(kind === 'undo' ? 'Put back your previous favorites?' : 'Reset your favorite stickers?', lines, {
-      confirmText: kind === 'undo' ? 'Put them back' : 'Reset favorites',
+    const ask = this.settings.toolOn ? Core.confirmation(this.favorites, ids, kind) : null;
+    if (!ask) return;
+    this.api.UI.showConfirmationModal(ask.title, confirmContent(this.api, ask.lines), {
+      confirmText: ask.confirmText,
       cancelText: 'Cancel',
-      onConfirm: () => { this.reset(plan, kind); },
+      danger: ask.danger,
+      onConfirm: () => { this.reset(ask.plan, kind); },
     });
   }
 
   async reset(plan, kind) {
     this.say('Saving your favorites…');
     const before = readFavorites(this.d);
-    this.plugin.store('backup', { savedAt: new Date().toISOString(), stickerIds: before });
+    // The copy is replaced only once Discord has changed the list, so a failed save keeps the copy from before.
+    const keepCopy = () => this.plugin.store('backup', { savedAt: new Date().toISOString(), stickerIds: before });
     try {
       this.favorites = await saveFavorites(this.d, plan.next);
+      keepCopy();
       if (kind === 'reset') this.setPicks([]);
       this.renderTrays();
       this.refreshMarks();
-      const done = (kind === 'undo' ? 'Put back ' : 'Favorites reset to ') + Core.count(this.favorites.length, 'sticker') + '.';
+      const done = Core.done(kind, this.favorites.length);
       this.say(done);
       try { this.api.UI.showToast(done, { type: 'success' }); } catch { /* the status line says it */ }
     } catch (error) {
       this.favorites = readFavorites(this.d);
+      if (!Core.plan(before, this.favorites).same) keepCopy();
       this.renderTrays();
       this.refreshMarks();
       this.say(error.message);
