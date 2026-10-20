@@ -125,8 +125,9 @@ The manager installs only the verified v8.0.34 from quarantine, writes a config 
 and network discovery off, and starts and stops it from a control page on this PC (`http://127.0.0.1:38763/`). It
 refuses to start while a Claude sign-in is in the proxy's folder: never sign it in with your Claude login. A Discord bot
 other people use runs on an API key with a spend limit. Install and use:
-**[discord-tower/cli-proxy-api/README.md](discord-tower/cli-proxy-api/README.md)**. Never run yet: installing it and the
-first Start are Astra's. Added with Claude Opus 5.5, 2026-10-18, at Astra's request.
+**[discord-tower/cli-proxy-api/README.md](discord-tower/cli-proxy-api/README.md)**. First run 2026-10-19: v8.0.33 runs
+on this PC only, with no sign-ins (card 006). v8.0.34 is checked in quarantine and pinned; moving up is Stop, install,
+Start (card 007). Added with Claude Opus 5.5, 2026-10-18, at Astra's request.
 
 ### Connections
 
