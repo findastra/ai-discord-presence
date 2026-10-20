@@ -20,7 +20,7 @@ import { connect } from 'node:net';
 import { spawn, execFileSync } from 'node:child_process';
 import { createHash, randomBytes } from 'node:crypto';
 import { closeSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, openSync, readFileSync, readSync, readdirSync,
-  renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+  realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { homedir, tmpdir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -567,6 +567,15 @@ export async function main(argv, sys = realSystem, p = paths()) {
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+/** Whether Node was started with this file. Compares real paths: `Astra's PetOS` is a junction to `Astra's Pet Apps`, so
+ *  a double-click there gives Node the junction path while import.meta.url holds the real one (2026-10-19: from the
+ *  junction, install printed nothing and did nothing). */
+export function isMainScript(argv1, metaUrl = import.meta.url) {
+  if (!argv1) return false;
+  try { return realpathSync.native(argv1).toLowerCase() === realpathSync.native(fileURLToPath(metaUrl)).toLowerCase(); }
+  catch { return pathToFileURL(argv1).href === metaUrl; }
+}
+
+if (isMainScript(process.argv[1])) {
   main(process.argv.slice(2)).catch((error) => { console.error(error.message); process.exitCode = 1; });
 }
