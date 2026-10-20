@@ -1,9 +1,25 @@
-status: open (waiting on Astra: merge #23 and the v8.0.34 pin, then Stop, install v8.0.34 with her console password, Start)
+status: open (waiting on Astra: install v8.0.34 with her console password, then Start)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-19
 needs: AGENTS.md, CLAUDE.md, discord-tower/cli-proxy-api/README.md, discord-tower/cli-proxy-api/release-20261019.json, handoffs/006-any-cli-proxy-api-20261018.md
 ---
+## Ownership and state
+
+State: paused, waiting on Astra (2026-10-20: "end chat and leave note we will pick up later").
+Implementer: none, released. Next action: Astra's steps 5 and 6 below (or a chat does them for her, as on 2026-10-19
+for v8.0.33, if she asks), then any chat does step 7.
+
 ## What I did
+
+**2026-10-20, paused** (Claude Opus 5.5, the chat that pinned v8.0.34):
+- Merged on Astra's OK: #23 (`9287566`), #24 (`79ff73e`, the v8.0.34 pin), #25 (`bb4595f`, her page and README say
+  v8.0.33 runs), and astras-pet-os#126 (`bc996c1`, the hub record). Her Damsel folder is on `main`.
+- With the merged code, `cli-proxy-api-manager-20261018.mjs check` on her PC (2026-10-19) reported the running v8.0.33
+  as `running-older` and blocked Start until Stop: the older-copy fix works on the real PC.
+- **Checked 2026-10-20, 11:19 Denver:** CLI Proxy API is **not running**. The PC restarted at 00:33, and the proxy and
+  its controls do not start at sign-in (Start is Astra's click). Its log ends cleanly at 22:19 on 2026-10-19; the
+  tool's switch is still ON; only `program\v8.0.33\` is installed. So steps 1 to 3 are done or no longer needed:
+  start at step 4.
 
 Claude Opus 5.5, 2026-10-19, on Astra's OK in chat ("Yes, run it with v8.0.34: download it to quarantine and pin it
 first"). Details are in card 006, "Moved to v8.0.34". In short:
@@ -22,11 +38,10 @@ it under waiting on you. **Astra's answer (2026-10-20): which provider's key it 
 never a Claude login: the manager refuses to start with one.
 
 ## Task
-1. Astra merges #23 first, then the v8.0.34 pull request (her OK in chat; the assistant merges).
-2. A chat fast-forwards `Documents\Astra's PetOS\findastra-discord-presence` to `main` (it is on `main`, with only
-   untracked files).
-3. Astra, on the controls page that is open now: press **Stop**, then **Close these controls**. That page started before
-   the pin moved, so it still knows only v8.0.33.
+1. Done 2026-10-19: Astra merged #23, then the v8.0.34 pull request (#24).
+2. Done 2026-10-19: her Damsel folder is on `main` (check it again before step 5: fast-forward if behind).
+3. Not needed since the restart of 2026-10-20 (nothing is running). If v8.0.33 is running again: on its controls page
+   press **Stop**, then **Close these controls**.
 4. Optional: right-click `Documents\Astra's PetOS Quarantine\cliproxyapi-v8.0.34` and choose **Scan with Malwarebytes**.
 5. Double-click `discord-tower/cli-proxy-api/install-cli-proxy-api-20261018.cmd`. It installs v8.0.34 next to v8.0.33,
    keeps `config.yaml`, and asks for a console password: type your own, or press Enter to keep the console off.
