@@ -23,8 +23,13 @@ Astra's PC was changed.
   BetterDiscord is installed and running.
 - Also seen: `app-1.0.9263` appeared at 21:03 while every `Discord.exe` still ran from `app-1.0.9262` (an update half
   downloaded: no `modules\` and an empty `resources\`). `health()` takes the highest `app-*` folder, so during a
-  download it looks at a folder Discord does not run yet. When 1.0.9263 takes over, BetterDiscord's `resources\app\`
-  stays behind in 1.0.9262, and "Repair needed" is then right.
+  download it looks at a folder Discord does not run yet.
+- **Correction, 22:45 the same day:** I first wrote here that BetterDiscord would stay behind in 1.0.9262. It did not.
+  1.0.9263 finished downloading at 22:03:27, and at that second BetterDiscord hooked itself into it. It renamed that
+  folder's `resources\app.asar` to `betterdiscord.app.asar` and wrote a shorter `resources\app\index.js` (136 bytes),
+  which requires `<appData>\BetterDiscord\data\betterdiscord.asar\main.js` (a full path) and then
+  `../betterdiscord.app.asar`. Both loaders mention "betterdiscord", so a check of `resources\app\index.js` sees
+  either one. Discord still ran from 1.0.9262 at 22:45, so this is seen in the files only.
 
 ## Task
 In `tools/discord-damsel-20261015.py`, on your own branch:
@@ -34,12 +39,12 @@ In `tools/discord-damsel-20261015.py`, on your own branch:
 2. Look at the `app-*` folder Discord runs from: the newest one whose `resources\` holds `app.asar`,
    `betterdiscord.app.asar` or `app\`, not a half-downloaded one (or the folder of a running `Discord.exe`).
 3. Say which way it found, for example "loader present (installer v2: resources\app)".
-4. Tests with a pretend `%LOCALAPPDATA%\Discord`: the old way, installer v2, plain Discord, and a half-downloaded
-   newer `app-*` folder.
+4. Tests with a pretend `%LOCALAPPDATA%\Discord`: the old way, installer v2, BetterDiscord's own re-hook after an
+   update (the 136-byte `index.js` above), plain Discord, and a half-downloaded newer `app-*` folder.
 
 ## Done when
-On Astra's PC with BetterDiscord v1.14.3 the tool says the loader is present, and it still says "Repair needed" once a
-Discord update leaves BetterDiscord behind.
+On Astra's PC with BetterDiscord v1.14.3 the tool says the loader is present, and it says "Repair needed" for a plain
+Discord with no loader.
 
 ## Return
 Update `## What I did`, set `status: done`, commit on your `codex/` branch.
