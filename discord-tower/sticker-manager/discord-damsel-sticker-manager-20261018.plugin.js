@@ -2,14 +2,14 @@
  * @name DiscordDamselStickerManager
  * @author Astra
  * @authorLink https://github.com/findastra
- * @description Discord Damsel's servers panel: every server you are in, each opening to show its stickers, with the Sticker Manager inside it to reset your favorite stickers to the ones you pick.
+ * @description Discord Damsel's servers tool panel: every server you are in, each opening to show its stickers, with the Sticker Manager inside it to reset your favorite stickers to the ones you pick.
  * @version 1.0.1
  * @website https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/sticker-manager
  * @source https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js
  */
 /*
  * By Astra. Discord Damsel (Discord Tower, pet program #13 in Astra's PetOS).
- * Panel discord-damsel-servers-panel with the tool discord-tower-v1.0-sticker-manager-v1.0.
+ * Tool panel discord-damsel-servers-tool-panel with the tool discord-tower-v1.0-sticker-manager-v1.0.
  * Written by Claude Opus 5.5 (claude-opus-5-5), 2026-10-18, at Astra's request. MIT license.
  *
  * What it touches: it reads Discord's own lists of your servers, their stickers and your favorite stickers, which the
@@ -21,7 +21,7 @@
 
 const NAME = 'DiscordDamselStickerManager';
 const TOOL = 'discord-tower-v1.0-sticker-manager-v1.0';
-const PANEL = 'discord-damsel-servers-panel';
+const PANEL = 'discord-damsel-servers-tool-panel';
 const STYLE_ID = 'discord-damsel-sticker-manager';
 // Discord sticker formats: 1 PNG, 2 APNG, 3 Lottie (Discord's own packs only, no picture file), 4 GIF.
 const FORMAT_EXT = { 1: 'png', 2: 'png', 4: 'gif' };
@@ -275,7 +275,7 @@ module.exports = class DiscordDamselStickerManager {
   }
 };
 
-/** The settings panel BetterDiscord shows for this plugin: the servers panel with the Sticker Manager inside. */
+/** The settings panel BetterDiscord shows for this plugin: the servers tool panel with the Sticker Manager inside. */
 class Panel {
   constructor(plugin) {
     this.plugin = plugin;
