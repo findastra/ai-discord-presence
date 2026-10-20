@@ -119,7 +119,7 @@ Service. Not yet tested inside Discord (BetterDiscord was not installed on 2026-
 ### Tool: CLI Proxy API manager (`discord-tower-v1.0-cli-proxy-api-v1.0`)
 
 Astra gave CLI Proxy API (a third-party local API proxy by router-for-me) to Discord Damsel to look after on 2026-10-18.
-The manager installs only the verified v8.0.33 from quarantine, writes a config that keeps it on 127.0.0.1 with plugins
+The manager installs only the verified v8.0.34 from quarantine, writes a config that keeps it on 127.0.0.1 with plugins
 and network discovery off, and starts and stops it from a control page on this PC (`http://127.0.0.1:38763/`). It
 refuses to start while a Claude sign-in is in the proxy's folder: never sign it in with your Claude login. A Discord bot
 other people use runs on an API key with a spend limit. Install and use:

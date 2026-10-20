@@ -30,7 +30,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 export const TOOL = 'discord-tower-v1.0-cli-proxy-api-v1.0';
 export const CONTROL_PORT = 38763;
 export const PROXY_PORT = 8317;
-export const RELEASE = JSON.parse(readFileSync(join(HERE, 'release-20261018.json'), 'utf8'));
+export const RELEASE = JSON.parse(readFileSync(join(HERE, 'release-20261019.json'), 'utf8'));
 export const OFFICIAL_PANEL = 'https://github.com/router-for-me/Cli-Proxy-API-Management-Center';
 const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '::1']);
 const LOG_LIMIT = 5 * 1024 * 1024;
@@ -42,7 +42,7 @@ export function paths(env = process.env) {
   const program = join(home, 'program', RELEASE.version);
   const damsel = join(home, 'damsel');
   return {
-    home, program, exe: join(program, RELEASE.exe), config: join(home, 'config.yaml'), auth: join(home, 'auth'),
+    home, programs: join(home, 'program'), program, exe: join(program, RELEASE.exe), config: join(home, 'config.yaml'), auth: join(home, 'auth'),
     damsel, settings: join(damsel, 'settings.json'), log: join(damsel, 'proxy.log'),
     quarantine: env.DAMSEL_CLI_PROXY_QUARANTINE || join(profile, 'Documents', "Astra's PetOS Quarantine", 'cliproxyapi-' + RELEASE.version),
   };
@@ -263,6 +263,20 @@ export function writeSettings(p, settings) {
 
 const samePath = (a, b) => Boolean(a && b) && a.replace(/\//g, '\\').toLowerCase() === b.replace(/\//g, '\\').toLowerCase();
 
+/**
+ * A copy this tool installed: <home>\program\<version>\cli-proxy-api.exe, the pinned version or an older one. After the
+ * pin moves to a new release, a copy of the old one that is still running is still this tool's to stop (Stop, OFF, the
+ * Claude guard); Start runs only the pinned one. A cli-proxy-api.exe anywhere else is never touched.
+ */
+export function ownCopy(p, path) {
+  const norm = (s) => String(s || '').replace(/\//g, '\\').toLowerCase();
+  const base = norm(p.programs || join(p.home, 'program')) + '\\';
+  if (!norm(path).startsWith(base)) return false;
+  const rest = norm(path).slice(base.length).split('\\');
+  return rest.length === 2 && rest[0] !== '' && rest[0] !== '..' && rest[1] === RELEASE.exe.toLowerCase();
+}
+const versionOf = (path) => path.replace(/\//g, '\\').split('\\').slice(-2)[0];
+
 /* ---------- The PC: processes, ports, the browser. Tests pass their own. ---------- */
 
 export const realSystem = {
@@ -319,7 +333,10 @@ export async function status(sys, p) {
   const config = configText === null ? null : checkConfig(configText);
   const signIns = scanSignIns(expandHome(config?.authDir) || p.auth);
   const port = config?.port ?? PROXY_PORT;
-  const ours = sys.processes().filter((x) => samePath(x.path, p.exe));
+  const own = sys.processes().filter((x) => ownCopy(p, x.path));
+  const ours = own.filter((x) => samePath(x.path, p.exe));
+  const older = own.filter((x) => !samePath(x.path, p.exe));
+  const olderVersions = [...new Set(older.map((x) => versionOf(x.path)))];
   const answering = await sys.portOpen(port);
   const zip = join(p.quarantine, RELEASE.zip);
   const blocks = [];
@@ -329,13 +346,14 @@ export async function status(sys, p) {
   if (!config) blocks.push('No config yet: run install-cli-proxy-api-20261018.cmd.');
   else for (const pr of config.problems) if (pr.level === 'block') blocks.push(pr.text);
   if (signIns.claude) blocks.push(`A Claude sign-in is in the proxy's folder (${signIns.claude}). Never sign it in with your Claude login: delete that file first.`);
-  if (answering && !ours.length) blocks.push(`Something else is already using port ${port}.`);
-  const health = !installed ? 'not-installed' : ours.length && answering ? 'running' : ours.length ? 'starting' : answering ? 'port-busy' : 'stopped';
+  if (older.length) blocks.push(`An older copy it installed is still running (${olderVersions.join(', ')}): press Stop, then Start the verified ${RELEASE.version}.`);
+  else if (answering && !ours.length) blocks.push(`Something else is already using port ${port}.`);
+  const health = older.length ? 'running-older' : !installed ? 'not-installed' : ours.length && answering ? 'running' : ours.length ? 'starting' : answering ? 'port-busy' : 'stopped';
   return {
-    tool: TOOL, program: RELEASE.program, version: RELEASE.version, health, port,
+    tool: TOOL, program: RELEASE.program, version: RELEASE.version, health, port, older: olderVersions,
     enabled: settings.enabled, maintenance: settings.maintenance, guard: settings.guard || null,
     installed, verified, console: Boolean(config?.console), consoleUrl: `http://127.0.0.1:${port}/management.html`,
-    problems: config ? config.problems : [], signIns, blocks, pids: ours.map((x) => x.pid),
+    problems: config ? config.problems : [], signIns, blocks, pids: own.map((x) => x.pid),
     quarantine: { found: existsSync(zip) }, home: shortPath(p.home),
   };
 }
@@ -364,7 +382,7 @@ export async function start(sys, p) {
 }
 
 export async function stop(sys, p) {
-  for (const x of sys.processes()) if (samePath(x.path, p.exe)) sys.kill(x.pid);
+  for (const x of sys.processes()) if (ownCopy(p, x.path)) sys.kill(x.pid);
   await sys.sleep(300);
   return status(sys, p);
 }
@@ -383,7 +401,7 @@ export async function setMaintenance(sys, p, on) {
 /** While the control page runs: stop the proxy if a Claude sign-in appears or the tool is turned OFF. */
 export async function guardTick(sys, p) {
   const st = await status(sys, p);
-  if (!(st.health === 'running' || st.health === 'starting')) return null;
+  if (!(st.health === 'running' || st.health === 'starting' || st.health === 'running-older')) return null;
   let why = null;
   if (st.signIns.claude) why = 'Stopped: a Claude sign-in appeared in its folder. Delete it before starting again.';
   else if (!st.enabled) why = 'Stopped: the tool is OFF.';

@@ -1,0 +1,19 @@
+{
+  "about": "The one CLI Proxy API release Discord Damsel's manager will install and start. Change it only after checking a new release the same way (official release page, checksums.txt, quarantine) and with Astra's OK.",
+  "program": "CLI Proxy API",
+  "made_by": "router-for-me (third-party, MIT license)",
+  "source": "https://github.com/router-for-me/CLIProxyAPI",
+  "release": "https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.0.34",
+  "version": "v8.0.34",
+  "published": "2026-10-19T11:10:43Z",
+  "zip": "CLIProxyAPI_8.0.34_windows_amd64.zip",
+  "zip_bytes": 23894969,
+  "zip_sha256": "f017bef3d1fdf332a90f1aca31fb63aa6bcdab0f708b54b72b5cdeaef8c1ed02",
+  "exe": "cli-proxy-api.exe",
+  "exe_bytes": 73104384,
+  "exe_sha256": "32f0b9c9a4372e63853063b08b4f25a4f41134f514382a44dab15ae1445610ef",
+  "signed": false,
+  "checked": "2026-10-19, on Astra's OK: the zip's SHA-256 matches both the release's checksums.txt and GitHub's own digest for the file; the exe inside the zip matches exe_sha256; v8.0.34 was the latest release. Its config.example.yaml differs from v8.0.33 only by a new web-search result cache (off by default) and a comment on Claude cloak mode. Not scanned: the Defender command-line scan failed from Claude. Never run by an assistant.",
+  "replaces": "v8.0.33 (release-20261018.json, never installed)",
+  "quarantine": "%USERPROFILE%\\Documents\\Astra's PetOS Quarantine\\cliproxyapi-v8.0.34"
+}
