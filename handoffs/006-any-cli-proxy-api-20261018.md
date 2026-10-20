@@ -1,4 +1,4 @@
-status: open (waiting on Astra: decide to run it, then install and the first Start)
+status: done 2026-10-19 (installed and started on Astra's OK; the console password is still hers to set)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-18
 needs: AGENTS.md, CLAUDE.md, discord-tower/cli-proxy-api/README.md, discord-tower/cli-proxy-api/release-20261018.json, test/cli-proxy-api-20261018.test.mjs
@@ -50,10 +50,37 @@ to the hub branch `claude/sticker-manager-record-20261018` (PR #93).
 **Astra's PC:** nothing installed, nothing started, quarantine untouched (read only). `.claude\launch.json` in
 `Documents\Astra's Pet Apps` got a temporary demo entry, removed again. Worked in a scratchpad worktree.
 
+## First run (2026-10-19)
+
+Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-19, at Astra's word in chat ("do it for me", answering whether to install
+v8.0.33 now or move to v8.0.34 first). Install and first Start, as the Task below says:
+- **Antivirus:** Malwarebytes is the active antivirus on this PC (on, up to date); Microsoft Defender is passive, so
+  `Start-MpScan` cannot run (that is also why the 2026-10-18 command-line scan failed). Malwarebytes did not flag the
+  file in quarantine. No separate scan was run.
+- **Install:** `node cli-proxy-api-manager-20261018.mjs install` from `Documents\Astra's Pet Apps\…`: zip and exe
+  matched `release-20261018.json`; the program is in `%USERPROFILE%\.cli-proxy-api\program\v8.0.33\` with
+  `config.yaml` and `damsel\settings.json`. `console-key` was **not** run: the console password is Astra's to type, so
+  the console stays off.
+- **Bug found and fixed in this branch:** started through `Documents\Astra's PetOS\…` (a junction to `Astra's Pet
+  Apps`), the manager printed nothing and did nothing. Its start check compared `import.meta.url` (the real path) with
+  the path Node was given. `isMainScript` now compares real paths, with a test that uses a real junction.
+- **Controls:** `cli-proxy-api-20261018.cmd` started through `explorer.exe`, as a double-click would, so the controls
+  and the proxy run as Astra, not inside the Claude app's package. Then the tool was turned ON and **Start** was pressed
+  through the control page's own buttons (`/api/enabled`, `/api/start`).
+- **Checked:** health `running`; `Get-NetTCPConnection -LocalPort 8317` shows `127.0.0.1` only; this PC's network
+  address gets no answer; a request without the client key gets 401. The log shows v8.0.33 started with 0 sign-ins
+  and 0 keys.
+- **Seen in the log:** at start the proxy fetches the newest Antigravity and Grok CLI version numbers from the internet
+  and refreshes them every 3 hours. It sends no prompts. For Proxy Axolotl's egress allowlist later.
+- **Not changed:** v8.0.34 came out on 2026-10-19 (Gemini and reasoning-signature fixes, an access-log escaping fix).
+  The tool still pins v8.0.33; moving up goes through quarantine and Astra's OK again.
+
 ## Not done
-- **Never run.** Installing it and the first Start are Astra's (Flash Audit A54). Whether v8.0.33 accepts the short
-  v8 config as written is not confirmed until then; the log is `%USERPROFILE%\.cli-proxy-api\damsel\proxy.log`.
-- The exe is unsigned, and the Defender command-line scan failed from Claude (the other session). Not scanned.
+- **The console password** (Astra's): press **Stop** on the controls (install cannot replace the program while it
+  runs), double-click `install-cli-proxy-api-20261018.cmd` again (it keeps the existing config) and type a new password
+  at the prompt, then press **Start**. Until then **Open console** has nothing to show.
+- **No account or API key is in it yet**, so it answers nothing useful. Add an API key with a spend limit in the
+  console. Never a Claude login: the manager refuses to start with one.
 - ON/OFF is enforced by the manager, not Windows: running the exe by hand bypasses it. The Claude check while
   running works only while the controls are open.
 - Codex sign-ins: by default the proxy sends the official Codex app's headers (`disable-codex-cloaking` off). Whether

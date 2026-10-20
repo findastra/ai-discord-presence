@@ -2,11 +2,11 @@
 // temporary folders: the real cli-proxy-api.exe is never started.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { request } from 'node:http';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as M from '../discord-tower/cli-proxy-api/cli-proxy-api-manager-20261018.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -238,6 +238,27 @@ test('the page puts status on screen as text, and the launchers never start the 
     assert.doesNotMatch(text, /manager-20261018\.mjs (start|on)\b/);
     assert.doesNotMatch(text, /cli-proxy-api\.exe/);
   }
+});
+
+// 2026-10-19: started through the `Astra's PetOS` junction, the manager did nothing, because Node's path for the
+// script and import.meta.url (the real path) differed. Claude Opus 5.5 (claude-opus-5-5).
+test('the manager runs when started through a junction or with a different letter case', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "damsel-cpa-junction's "));
+  try {
+    const real = join(dir, 'real folder');
+    mkdirSync(real);
+    const file = join(real, 'manager.mjs');
+    writeFileSync(file, '');
+    const url = pathToFileURL(file).href;
+    assert.equal(M.isMainScript(file, url), true);
+    assert.equal(M.isMainScript(file.toUpperCase(), url), process.platform === 'win32', 'Windows paths ignore case');
+    try { symlinkSync(real, join(dir, 'junction'), 'junction'); } catch { t.skip('cannot make a junction here'); return; }
+    assert.equal(M.isMainScript(join(dir, 'junction', 'manager.mjs'), url), true, 'a junction path is the same script');
+    writeFileSync(join(real, 'other.mjs'), '');
+    assert.equal(M.isMainScript(join(dir, 'junction', 'other.mjs'), url), false);
+    assert.equal(M.isMainScript(undefined, url), false);
+    assert.equal(M.isMainScript(join(dir, 'missing.mjs'), url), false);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
 test('no personal paths, keys or sign-ins in the tool\'s files', () => {

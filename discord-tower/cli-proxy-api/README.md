@@ -60,9 +60,9 @@ warnings.
 
 ## Limits
 
-- **Never run yet.** Built and tested on 2026-10-18 with a pretend PC (`test/cli-proxy-api-20261018.test.mjs`) and the
-  control page in demo mode (`serve --demo`). Whether v8.0.33 accepts this short config as written is not confirmed
-  until the first Start; if it does not, the log is `%USERPROFILE%\.cli-proxy-api\damsel\proxy.log`.
+- **First run 2026-10-19** (card 006): v8.0.33 accepted this config and started on `127.0.0.1` only, with no sign-ins.
+  Its log is `%USERPROFILE%\.cli-proxy-api\damsel\proxy.log`. At start it fetches the newest Antigravity and Grok CLI
+  version numbers from the internet, then every 3 hours.
 - ON/OFF is enforced by this tool, not by Windows: running `cli-proxy-api.exe` by hand bypasses it, and the Claude
   check while it runs works only while the controls are open.
 - The maintenance light stays on this PC; it does not reach the Friendly Farmer's `broken-tools-on-the-farm` yet.
