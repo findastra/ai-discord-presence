@@ -1,9 +1,26 @@
-status: open (waiting on Astra: OK and merge of PR #26 (1.0.2), then copy the new plugin file into %APPDATA%\BetterDiscord\plugins and put back once inside Discord)
+status: open (1.0.2 merged and in her plugins folder; waits on the Put back test inside Discord, and on 1.0.3 from #27 being copied in)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-18
 needs: AGENTS.md, CLAUDE.md, discord-tower/sticker-manager/README.md, test/sticker-manager-20261018.test.mjs
 ---
 ## What I did
+
+### 2026-10-19, 22:45: merged, copied, and the Discord update
+
+Claude Opus 5.5, 2026-10-19, the chat that wrote 1.0.2, after Astra said "Actually finish those tasks". Read only on
+her PC, except for asking to use Discord.
+- PR #26 (1.0.2) was merged at 22:34 (`3c76242`) on Astra's OK, by the chat that ran the first test. That chat also
+  copied 1.0.2 into `%APPDATA%\BetterDiscord\plugins` at 22:35. At 22:45 the file there says `@version 1.0.2`.
+- PR #27 merged at 22:41 (`c240310`) and made the plugin **1.0.3**. Its only change is the panel's label,
+  `discord-damsel-servers-tool-panel`; the 1.0.2 fixes are the same. 1.0.3 is not in her plugins folder yet.
+- **The Discord update needs no BetterDiscord reinstall.** Discord 1.0.9263 finished downloading at 22:03:27, and at
+  that same second BetterDiscord wrote its own loader into it: `resources\app.asar` became `betterdiscord.app.asar`,
+  and `resources\app\index.js` (136 bytes) requires `<appData>\BetterDiscord\data\betterdiscord.asar\main.js` and
+  then `../betterdiscord.app.asar`. That replaces the earlier note below that "its installer has to run again". This
+  was seen only in the files: at 22:45 Discord still ran from 1.0.9262, so BetterDiscord has not yet been seen
+  running in 1.0.9263.
+- **The Put back test inside Discord was not done.** Astra declined this chat's request to use Discord (22:44), so I
+  stopped there. It is hers, or a chat's that she lets use the screen.
 
 ### 2026-10-19: the first test inside Discord, and plugin 1.0.2
 
@@ -28,7 +45,7 @@ Claude Opus 5.5, 2026-10-19: one chat ran the first test with Astra, a second on
   picks).2 stickers added"). BetterDiscord 1.14.3's `showConfirmationModal` turns each string of the list into
   Discord's inline markdown (`SimpleMarkdownExt.parseToReact`, `src/betterdiscord/ui/modals.ts`) with nothing between them.
 
-**This repo, branch `claude/sticker-manager-fixes-20261019`** (from `main` at `79ff73e`; PR #26, not merged):
+**This repo, branch `claude/sticker-manager-fixes-20261019`** (from `main` at `79ff73e`; PR #26, merged at `3c76242`):
 - `discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js` 1.0.2:
   - `Core.backup` keeps "nothing saved yet" (null) apart from an empty saved list. With an empty copy the button reads
     **Put back: no favorites (clear the 2 now)**; its confirmation says "After this: no favorite stickers, as before
@@ -54,8 +71,8 @@ Claude Opus 5.5, 2026-10-19: one chat ran the first test with Astra, a second on
   loaded in Discord on 2026-10-18"; it now says v1.14.3 was installed on 2026-10-19 (after `main` with PR #25 was
   merged in, which changed the line next to it).
 - Seen on her PC (read only): Discord 1.0.9263 was downloading (`app-1.0.9263`, 21:03, no `modules\` yet) while
-  Discord ran from 1.0.9262. When the update takes over, BetterDiscord's `resources\app\` stays behind in 1.0.9262,
-  and its installer has to run again.
+  Discord ran from 1.0.9262. (I first wrote that BetterDiscord's installer would then have to run again. That was
+  wrong: BetterDiscord hooked itself into 1.0.9263 at 22:03; see the 22:45 entry above.)
 
 ### 2026-10-18: the plugin
 
@@ -96,9 +113,9 @@ and the System Map entry are on the hub branch `claude/sticker-manager-record-20
 `Documents\Astra's Pet Apps\.claude\launch.json` was removed again.
 
 ## Not done
-- **1.0.2 has not run inside Discord yet.** The new file has to reach `%APPDATA%\BetterDiscord\plugins`: a file
-  written from a Claude chat lands in the Claude app's private copy of AppData, so that step is Astra's (or a `.cmd`
-  started through `explorer.exe`).
+- **No Put back has run inside Discord yet.** 1.0.2 has been in `%APPDATA%\BetterDiscord\plugins` since 22:35;
+  1.0.3 is not there yet. A file written from a Claude chat lands in the Claude app's private copy of AppData, so
+  copying it is Astra's step, or goes through a `.cmd` started through `explorer.exe`.
 - Whether Discord accepts a favorites list from servers the account cannot use without Nitro is not checked (the two
   stickers in the first test came from a server she is in).
 - The maintenance light stays in the plugin's own data; it does not reach the Farmer's `broken-tools-on-the-farm`.
@@ -106,17 +123,18 @@ and the System Map entry are on the hub branch `claude/sticker-manager-record-20
   plugin to send the list to a local Damsel server; not built.
 
 ## Task
-1. Astra gives her OK in chat and names PR #26 (1.0.2); the assistant merges it.
-2. Astra downloads the plugin file from `main` (README, "Install it", step 2) and replaces the one in
-   `%APPDATA%\BetterDiscord\plugins`. The Plugins list in Discord should show **DiscordDamselStickerManager 1.0.2**.
-   If Discord has moved to 1.0.9263 and BetterDiscord is gone, run its installer again first.
+1. Copy 1.0.3 from `main` (README, "Install it", step 2) over the file in `%APPDATA%\BetterDiscord\plugins`. The
+   Plugins list in Discord should show **DiscordDamselStickerManager 1.0.3**. (1.0.2, there now, has the same fixes,
+   so the test also works without this step.)
+2. After Discord restarts into 1.0.9263, check that BetterDiscord is still there (its part of User Settings and the
+   plugin). Run its installer again only if it is gone.
 3. In the panel: pick two stickers, **Reset my favorites to these 2**, and check that the confirmation shows four
    separate lines. Check Discord's sticker picker (Favorites).
 4. Click **Put back: no favorites (clear the 2 now)**, confirm with **Clear my favorites**, and check that Favorites
    is empty again.
 
 ## Done when
-Astra has reset and put back her favorites once inside Discord with 1.0.2, and this card says so with the date.
+Astra has reset and put back her favorites once inside Discord with 1.0.2 or later, and this card says so with the date.
 
 ## Return
 Update `## What I did`, set `status: done`, commit on a `claude/` or `codex/` branch.
