@@ -137,8 +137,8 @@ section 3). Both below are **planned, not connected**, and their ON/OFF starts O
 
 | Pet | Pet program | She sends | She receives | Grant |
 |---|---|---|---|---|
-| [Token Toucan](https://github.com/findastra/token-canopy#discord-damsel) | `token-canopy-v1.0` (#52) | What her CLI Proxy API manager reports: which models the proxy used and how many tokens each took. Not reported yet: her tool writes the proxy's config with usage statistics off | Nothing | `toucan-reads-cli-proxy` |
-| [Proxy Axolotl](https://github.com/findastra/proxy-lake#discord-damsel) | `proxy-lake-v1.0` (#64) | Her tool's safety check before every start (this PC only; remote console, network discovery and plugins off) and whether the proxy answers | A finding, when the proxy could be reached from beyond this PC | `axolotl-reads-cli-proxy` |
+| Token Toucan (private repo) | `token-canopy-v1.0` (#52) | What her CLI Proxy API manager reports: which models the proxy used and how many tokens each took. Not reported yet: her tool writes the proxy's config with usage statistics off | Nothing | `toucan-reads-cli-proxy` |
+| Proxy Axolotl (private repo) | `proxy-lake-v1.0` (#64) | Her tool's safety check before every start (this PC only; remote console, network discovery and plugins off) and whether the proxy answers | A finding, when the proxy could be reached from beyond this PC | `axolotl-reads-cli-proxy` |
 
 CLI Proxy API has one owner: her tool `discord-tower-v1.0-cli-proxy-api-v1.0`. Both grants are read only, through that
 tool, and planned in the hub's `system-map.json` ([astras-pet-os#101](https://github.com/findastra/astras-pet-os/pull/101)):
