@@ -134,8 +134,16 @@
     function action(into, text, handler, className) {
       const b = el('button', text, className, into); b.type = 'button'; b.onclick = handler; return b;
     }
+    function safeHref(value) {
+      try {
+        const parsed = new URL(String(value), root.location ? root.location.href : 'https://discord.com/');
+        return (parsed.protocol === 'https:' || parsed.protocol === 'http:') ? parsed.href : 'about:blank';
+      } catch {
+        return 'about:blank';
+      }
+    }
     function link(into, text, href) {
-      const a = el('a', text, '', into); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; return a;
+      const a = el('a', text, '', into); a.href = safeHref(href); a.target = '_blank'; a.rel = 'noopener noreferrer'; return a;
     }
     function fileInput(into, label, folder) {
       const wrap = el('label', undefined, 'da-file-label', into);
