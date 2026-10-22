@@ -1,6 +1,6 @@
 # Findastra Discord Presence
 
-*An Intelligent App, or Pet, by Astra.* The home (Discord Tower) of **Discord Damsel**, one of [Astra's PetOS](https://github.com/findastra/astras-pet-os) pets.
+*By Astra.* The home (Discord Tower) of **Discord Damsel**, one of [Astra's PetOS](https://github.com/findastra/astras-pet-os) pets.
 
 Share AI activity on your Discord profile: the model and effort level when local metadata exposes them, an optional project name, an elapsed timer, and a swirling galaxy.
 
