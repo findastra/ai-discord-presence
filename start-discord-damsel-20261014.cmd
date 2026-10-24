@@ -33,6 +33,9 @@ set "FAILED="
 if errorlevel 1 set "FAILED=1"
 "%PRESENCE_NODE%" anthropic-discord-presence\src\launch.js --background --automatic --replace
 if errorlevel 1 set "FAILED=1"
+rem 2. Is a newer BetterDiscord or Sticker Manager out? The plugin's maintenance light turns yellow if so. In the
+rem    background, so it never holds up the start; offline it just leaves the light as it is.
+start "" /b "%PRESENCE_NODE%" discord-tower\version-check\discord-damsel-version-check-20261024.mjs --quiet
 start "" "%~dp0findastra-discord-presence-20261008.html"
 if defined FAILED (
   echo.

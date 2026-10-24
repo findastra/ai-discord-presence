@@ -26,7 +26,7 @@ const sticker = (id, name, extra = {}) => ({ id, name, tags: 'tag', format_type:
 test('the file is a BetterDiscord plugin with Astra credited, named by the repo rules', () => {
   assert.match(source, /^\/\*\*\n \* @name DiscordDamselStickerManager\n/);
   assert.match(source, / \* @author Astra\n/);
-  assert.match(source, / \* @version 1\.0\.3\n/);
+  assert.match(source, / \* @version 1\.0\.4\n/);
   assert.equal(typeof Plugin, 'function');
   assert.equal(typeof Plugin.prototype.getSettingsPanel, 'function');
   assert.match(basename(file), /^[a-z0-9-]+-\d{8}\.plugin\.js$/);
@@ -42,7 +42,7 @@ test('its box is Discord Damsel\'s servers tool panel, the same name as in pet.j
   const tool = pet.tools.find((t) => t.name === 'sticker-manager');
   assert.equal(tool.panel, 'discord-damsel-servers-tool-panel');
   assert.equal(tool.module, undefined);
-  assert.equal(tool.version, '1.0.3');
+  assert.equal(tool.version, '1.0.4');
   // Her page draws the same panel around the tool box (test/damsel-page-panels-20261019.test.mjs checks how).
   assert.match(readFileSync(join(root, 'findastra-discord-presence-20261008.html'), 'utf8'), /panelBox\('discord-damsel-servers-tool-panel'\)/);
 });
@@ -258,17 +258,23 @@ function fakeDocument() {
   return { createElement: (tag) => new FakeNode(tag), createTextNode: (text) => new FakeText(text) };
 }
 
-function openPanel(discord, saved = {}) {
-  const data = JSON.parse(JSON.stringify(saved)), modals = [], toasts = [];
+// `files` holds other plugin data files by name (the version check's); `bd` is BdApi.version, `version` the plugin's.
+function openPanel(discord, saved = {}, { files = {}, bd = '1.14.3', version = '1.0.4' } = {}) {
+  const data = JSON.parse(JSON.stringify(saved)), modals = [], toasts = [], recached = [];
   globalThis.document = fakeDocument();
   globalThis.BdApi = {
     ...discord.api,
+    version: bd,
     DOM: { addStyle() {}, removeStyle() {} },
-    Data: { load: (name, key) => data[key], save: (name, key, value) => { data[key] = JSON.parse(JSON.stringify(value)); } },
+    Data: {
+      load: (name, key) => (name === 'DiscordDamselStickerManager' ? data[key] : files[name]?.[key]),
+      save: (name, key, value) => { data[key] = JSON.parse(JSON.stringify(value)); },
+      recache: async (name) => { recached.push(name); return true; },
+    },
     UI: { showConfirmationModal: (title, content, options) => modals.push({ title, content, options }), showToast: (text) => toasts.push(text) },
     React: fakeReact,
   };
-  const root = new Plugin({ name: 'DiscordDamselStickerManager' }).getSettingsPanel();
+  const root = new Plugin({ name: 'DiscordDamselStickerManager', version }).getSettingsPanel();
   const buttons = () => root.all().filter((n) => n.tagName === 'button').map((n) => n.textContent);
   const press = (text) => {
     const b = root.all().find((n) => n.tagName === 'button' && n.textContent === text);
@@ -277,7 +283,9 @@ function openPanel(discord, saved = {}) {
     return b;
   };
   const status = () => root.all().find((n) => n.attrs.role === 'status').textContent;
-  return { data, modals, toasts, buttons, press, status };
+  const fixLight = () => root.all().find((n) => n.className.startsWith('ddsm-light ddsm-fix') || n.className.startsWith('ddsm-light ddsm-ok'));
+  const updates = () => root.all().filter((n) => n.className === 'ddsm-update').map((n) => n.textContent);
+  return { data, modals, toasts, buttons, press, status, fixLight, updates, recached };
 }
 const settle = async () => { for (let i = 0; i < 3; i++) await new Promise((r) => setImmediate(r)); };
 after(() => { delete globalThis.document; delete globalThis.BdApi; });
@@ -330,4 +338,50 @@ test('panel: when Discord does not keep the change, the copy from before stays',
   assert.match(p.status(), /did not confirm/);
   assert.deepEqual(p.data.backup, { savedAt: '2026-10-20T02:05:58.618Z', stickerIds: [] });
   assert.ok(p.buttons().includes('Put back: no favorites (clear the 2 now)'), 'still offered');
+});
+
+// 1.0.4 (Astra, 2026-10-24): BetterDiscord 1.14.4 came out and Discord Damsel did not notice. The version check
+// (test/version-check-20261024.test.mjs) saves what it found; the plugin lights its maintenance light from it.
+const found = (bd, plugin) => ({ DiscordDamselVersionCheck: { result: {
+  checkedAt: '2026-10-24T19:01:41.970Z', betterdiscord: { installed: '1.14.3', latest: bd, behind: true },
+  plugin: { installed: '1.0.4', latest: plugin, behind: false }, needsMaintenance: true, errors: [] } } });
+
+test('version notices: an update that is out, judged by the versions running now', () => {
+  const saved = found('1.14.4', '1.0.4').DiscordDamselVersionCheck.result;
+  assert.deepEqual(Core.versionNotices(saved, { betterdiscord: '1.14.3', plugin: '1.0.4' }),
+    ['BetterDiscord 1.14.4 is out (you have 1.14.3). Update it: User Settings › Updates (BetterDiscord) › Update.']);
+  assert.deepEqual(Core.versionNotices(saved, { betterdiscord: '1.14.4', plugin: '1.0.4' }), [], 'updated since the check: blue again');
+  assert.deepEqual(Core.versionNotices({ ...saved, plugin: { latest: 'v1.0.10' } }, { betterdiscord: '1.14.4', plugin: '1.0.4' }),
+    ['Sticker Manager 1.0.10 is out (you have 1.0.4). Download it again: its README, "Install it", step 2.'], '1.0.10 is newer than 1.0.4');
+  assert.deepEqual(Core.versionNotices(saved, {}), [Core.versionNotices(saved, { betterdiscord: '1.14.3' })[0]], 'no live version: the check\'s own');
+  for (const nothing of [null, undefined, 'x', {}, { betterdiscord: { latest: '<b>1.15</b>' } }]) assert.deepEqual(Core.versionNotices(nothing, { betterdiscord: '1.14.3' }), []);
+  assert.equal(Core.older('1.14.3', '1.14.4'), true);
+  assert.equal(Core.older('1.14.4', '1.14.4'), false);
+  assert.equal(Core.older('2.0', '1.99.9'), false);
+});
+
+test('panel: a newer BetterDiscord turns the maintenance light yellow and says what to do', () => {
+  const p = openPanel(fakeDiscord(), {}, { files: found('1.14.4', '1.0.4') });
+  assert.deepEqual(p.recached, ['DiscordDamselVersionCheck'], 'the check\'s file is read again, not taken from memory');
+  assert.equal(p.fixLight().className, 'ddsm-light ddsm-fix');
+  assert.equal(p.fixLight().attrs['aria-label'], 'discord-tower-v1.0-sticker-manager-v1.0: requires maintenance');
+  assert.match(p.fixLight().attrs.title, /^BetterDiscord 1\.14\.4 is out \(you have 1\.14\.3\)\. .* The light turns blue again once that is done\./);
+  assert.deepEqual(p.updates(), ['BetterDiscord 1.14.4 is out (you have 1.14.3). Update it: User Settings › Updates (BetterDiscord) › Update.']);
+  assert.equal(p.fixLight().attrs['aria-pressed'], 'false', 'Astra\'s own mark is separate');
+
+  p.fixLight().click();
+  assert.equal(p.data.settings.maintenance, true);
+  p.fixLight().click();
+  assert.equal(p.data.settings.maintenance, false);
+  assert.equal(p.fixLight().className, 'ddsm-light ddsm-fix', 'still yellow: the update is not in');
+  assert.equal(p.status(), 'Your mark is off. The light stays yellow until the update is in.');
+});
+
+test('panel: blue once BetterDiscord is updated, and blue with no check saved', () => {
+  const updated = openPanel(fakeDiscord(), {}, { files: found('1.14.4', '1.0.4'), bd: '1.14.4' });
+  assert.equal(updated.fixLight().className, 'ddsm-light ddsm-ok');
+  assert.deepEqual(updated.updates(), []);
+  const none = openPanel(fakeDiscord());
+  assert.equal(none.fixLight().className, 'ddsm-light ddsm-ok');
+  assert.match(none.fixLight().attrs.title, /^Working correctly\./);
 });
