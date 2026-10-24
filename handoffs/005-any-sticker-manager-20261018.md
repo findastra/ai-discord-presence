@@ -1,9 +1,27 @@
-status: open (1.0.3 in her plugins folder since 2026-10-19 23:07; waits only on Astra's Put back test inside Discord)
+status: open (1.0.3 in her plugins folder since 2026-10-19 23:07; waits on Astra's Put back test inside Discord, and 1.0.4 waits on review)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-18
-needs: AGENTS.md, CLAUDE.md, discord-tower/sticker-manager/README.md, test/sticker-manager-20261018.test.mjs
+needs: AGENTS.md, CLAUDE.md, discord-tower/sticker-manager/README.md, discord-tower/version-check/README.md, test/sticker-manager-20261018.test.mjs, test/version-check-20261024.test.mjs
 ---
 ## What I did
+
+### 2026-10-24: 1.0.4 and the version check (PR open, not merged)
+
+Claude Opus 5.5, 2026-10-24. BetterDiscord 1.14.4 came out on 2026-10-23 and only BetterDiscord's own notice said so.
+Astra: "give Discord Damsel a BetterDiscord and plugin version check that lights Requires maintenance when a new
+version is out. Open it as a PR for me to review."
+
+- `discord-tower/version-check/discord-damsel-version-check-20261024.mjs` reads the installed versions, asks GitHub
+  for the newest ones, and saves the answer to `DiscordDamselVersionCheck.config.json` in her plugins folder. The start
+  script runs it in the background.
+- Plugin 1.0.4 reads that file and turns its maintenance light yellow while an update is out.
+- I ran it on her PC with `--no-write`: BetterDiscord 1.14.4 is out (she has 1.14.3), and the Sticker Manager 1.0.3 is
+  the newest. Nothing was written to her plugins folder, and Discord was not touched.
+- **Not done, after merge:**
+  1. Copy 1.0.4 into her plugins folder (through `explorer.exe`, as on 2026-10-19). Until then, 1.0.3 cannot show the
+     light, and the check reports the plugin as behind.
+  2. Start Discord Damsel once, or run the check by hand, so the answer file exists.
+  3. Open the Sticker Manager's tool panel: the light should be yellow until BetterDiscord is updated to 1.14.4.
 
 ### 2026-10-20, 11:33: 1.0.3 copied in, and BetterDiscord kept through two Discord updates
 

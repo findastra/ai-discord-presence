@@ -3,7 +3,7 @@
  * @author Astra
  * @authorLink https://github.com/findastra
  * @description Discord Damsel's servers tool panel: every server you are in, each opening to show its stickers, with the Sticker Manager inside it to reset your favorite stickers to the ones you pick.
- * @version 1.0.3
+ * @version 1.0.4
  * @website https://github.com/findastra/findastra-discord-presence/tree/main/discord-tower/sticker-manager
  * @source https://github.com/findastra/findastra-discord-presence/blob/main/discord-tower/sticker-manager/discord-damsel-sticker-manager-20261018.plugin.js
  */
@@ -16,6 +16,10 @@
  * Discord app already holds in memory. It changes one thing, your favorite stickers, and only after you confirm, the
  * same way Discord saves them when you click the star. No network requests of its own, no token, no other settings.
  * Server and sticker names are shown with textContent, never as HTML.
+ *
+ * Since 1.0.4 (2026-10-24) it also reads what Discord Damsel's version check saved (discord-tower/version-check, run
+ * outside Discord when Discord Damsel starts): when a newer BetterDiscord or Sticker Manager is out, the maintenance
+ * light turns yellow and says what to update. The check asks GitHub; the plugin itself still asks nothing.
  */
 'use strict';
 
@@ -23,6 +27,8 @@ const NAME = 'DiscordDamselStickerManager';
 const TOOL = 'discord-tower-v1.0-sticker-manager-v1.0';
 const PANEL = 'discord-damsel-servers-tool-panel';
 const STYLE_ID = 'discord-damsel-sticker-manager';
+// The file Discord Damsel's version check writes next to this plugin's own (DiscordDamselVersionCheck.config.json).
+const VERSION_CHECK = 'DiscordDamselVersionCheck';
 // Discord sticker formats: 1 PNG, 2 APNG, 3 Lottie (Discord's own packs only, no picture file), 4 GIF.
 const FORMAT_EXT = { 1: 'png', 2: 'png', 4: 'gif' };
 
@@ -164,6 +170,35 @@ const Core = {
   },
 
   count(n, one, many = one + 's') { return n + ' ' + (n === 1 ? one : many); },
+
+  /** "v1.14.4" and "1.14.4" alike; null for anything that is not a plain version. */
+  version(raw) {
+    const m = /^v?(\d+(?:\.\d+){1,3})$/.exec(String(raw ?? '').trim());
+    return m ? m[1] : null;
+  },
+
+  older(a, b) {
+    const x = a.split('.').map(Number), y = b.split('.').map(Number);
+    for (let i = 0; i < Math.max(x.length, y.length); i++) if ((x[i] ?? 0) !== (y[i] ?? 0)) return (x[i] ?? 0) < (y[i] ?? 0);
+    return false;
+  },
+
+  /**
+   * What the version check found, one sentence per update that is out, or [] when nothing is. `live` holds the
+   * versions running now (BdApi.version and this plugin's own), which win over the ones the check read, so the light
+   * turns blue again as soon as the update is in.
+   */
+  versionNotices(saved, live = {}) {
+    if (!saved || typeof saved !== 'object') return [];
+    const out = [];
+    const part = (name, found, now, fix) => {
+      const have = Core.version(now) || Core.version(found?.installed), latest = Core.version(found?.latest);
+      if (have && latest && Core.older(have, latest)) out.push(name + ' ' + latest + ' is out (you have ' + have + '). ' + fix);
+    };
+    part('BetterDiscord', saved.betterdiscord, live.betterdiscord, 'Update it: User Settings › Updates (BetterDiscord) › Update.');
+    part('Sticker Manager', saved.plugin, live.plugin, 'Download it again: its README, "Install it", step 2.');
+    return out;
+  },
 };
 
 /** The media server Discord itself uses (GLOBAL_ENV), when it is a plain host; otherwise Discord's public one. */
@@ -308,6 +343,7 @@ const CSS = `
 .ddsm .ddsm-mark.ddsm-pick{right:3px;color:var(--ddsm-accent)}
 .ddsm .ddsm-lottie{width:72px;height:72px;display:grid;place-items:center;font-size:10px;color:var(--ddsm-muted);text-align:center}
 .ddsm .ddsm-note{font-size:12px;color:var(--ddsm-muted);padding:0 12px 10px}
+.ddsm .ddsm-update{color:#f0c94a;font-size:13px;margin:6px 0 0}
 `;
 
 module.exports = class DiscordDamselStickerManager {
@@ -326,6 +362,15 @@ module.exports = class DiscordDamselStickerManager {
     try { const value = this.api.Data.load(NAME, key); return value === undefined || value === null ? fallback : value; } catch { return fallback; }
   }
   store(key, value) { try { this.api.Data.save(NAME, key, value); } catch { /* the panel still works without saving */ } }
+
+  /** The updates the version check found. Its file is read again each time: the check runs outside Discord. */
+  versionNotices() {
+    let saved = null;
+    // BetterDiscord 1.14's recache reads the file before its promise settles; any error it logs itself.
+    try { Promise.resolve(this.api.Data.recache?.(VERSION_CHECK)).catch(() => {}); } catch { /* use what it holds */ }
+    try { saved = this.api.Data.load(VERSION_CHECK, 'result') ?? null; } catch { saved = null; }
+    return Core.versionNotices(saved, { betterdiscord: this.api.version, plugin: this.meta?.version });
+  }
 
   getSettingsPanel() {
     const panel = new Panel(this);
@@ -353,6 +398,7 @@ class Panel {
     this.error = '';
     try { this.servers = readServers(this.d); } catch (error) { this.servers = []; this.error = error.message; }
     this.favorites = readFavorites(this.d);
+    this.updates = this.plugin.versionNotices();
     this.index = new Map();
     for (const server of this.servers) for (const s of server.stickers) this.index.set(s.id, { ...s, serverName: server.name });
     this.render();
@@ -397,14 +443,17 @@ class Panel {
     const lightOn = el('button', { type: 'button', class: 'ddsm-light ' + (on ? 'ddsm-on' : 'ddsm-off'), 'aria-pressed': String(on),
       'aria-label': TOOL + ': ' + (on ? 'on' : 'off'), title: (on ? 'ON' : 'OFF') + ': click to turn the Sticker Manager ' + (on ? 'off' : 'on') });
     lightOn.addEventListener('click', () => { this.setSetting('toolOn', !this.settings.toolOn); });
-    const fix = this.settings.maintenance;
-    const lightFix = el('button', { type: 'button', class: 'ddsm-light ' + (fix ? 'ddsm-fix' : 'ddsm-ok'), 'aria-pressed': String(fix),
+    // Yellow when you marked it, or when the version check found an update that is out.
+    const due = this.updates.length > 0, fix = this.settings.maintenance || due;
+    const lightFix = el('button', { type: 'button', class: 'ddsm-light ' + (fix ? 'ddsm-fix' : 'ddsm-ok'), 'aria-pressed': String(this.settings.maintenance),
       'aria-label': TOOL + ': ' + (fix ? 'requires maintenance' : 'working correctly'),
-      title: (fix ? 'Marked as requiring maintenance' : 'Working correctly') + '. Kept in this plugin only; it does not reach the Farmer yet.' });
+      title: (due ? this.updates.join(' ') + ' The light turns blue again once that is done.'
+        : (fix ? 'Marked as requiring maintenance' : 'Working correctly') + '.') + ' Kept in this plugin only; it does not reach the Farmer yet.' });
     lightFix.addEventListener('click', () => { this.setSetting('maintenance', !this.settings.maintenance); });
 
     const tool = el('fieldset', { class: 'ddsm-tool' + (on ? '' : ' ddsm-is-off') }, el('legend', {}, lightOn, lightFix, TOOL));
     tool.append(el('p', {}, 'Sticker Manager: pick stickers from any server below, then reset your favorite stickers to exactly the ones you picked, in that order.'));
+    for (const update of this.updates) tool.append(el('p', { class: 'ddsm-update' }, update));
     this.favStrip = el('div', { class: 'ddsm-strip' });
     this.pickStrip = el('div', { class: 'ddsm-strip' });
     this.favLabel = el('span');
@@ -424,7 +473,8 @@ class Panel {
     this.settings = { ...this.settings, [key]: value };
     this.plugin.store('settings', this.settings);
     this.render();
-    this.say(key === 'toolOn' ? 'Sticker Manager is ' + (value ? 'ON.' : 'OFF.') : value ? 'Marked as requiring maintenance (in this plugin only).' : 'Marked as working correctly.');
+    this.say(key === 'toolOn' ? 'Sticker Manager is ' + (value ? 'ON.' : 'OFF.') : value ? 'Marked as requiring maintenance (in this plugin only).'
+      : this.updates.length ? 'Your mark is off. The light stays yellow until the update is in.' : 'Marked as working correctly.');
   }
 
   renderTrays() {

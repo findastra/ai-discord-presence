@@ -9,7 +9,8 @@
   servers and stickers, drawn as coloured squares. Nothing here talks to Discord. Open it over http
   (for example `python -m http.server` in the repo root, then /test/sticker-manager-harness-20261018.html).
   Add ?zero for an account with 0 favorites (like Astra's before the first test inside Discord, 2026-10-19), ?empty
-  for a Discord that has no favorites list yet, ?broken for a Discord the plugin cannot find.
+  for a Discord that has no favorites list yet, ?broken for a Discord the plugin cannot find, ?update for a version
+  check that found BetterDiscord 1.14.4 while 1.14.3 runs (2026-10-24).
   The confirmation draws its content the way BetterDiscord 1.14.3 does: a string becomes inline text with nothing
   between it and the next one; an element is drawn as it is.
   Claude Opus 5.5 (claude-opus-5-5), 2026-10-18; ?zero and the BetterDiscord-style confirmation 2026-10-19.
@@ -83,6 +84,10 @@
   };
   const modules = params.has('broken') ? [] : [{ INFREQUENT_USER_ACTION: 0 }, frecency];
   const data = {};
+  // What Discord Damsel's version check saves (discord-tower/version-check), as ?update has it.
+  const files = params.has('update') ? { DiscordDamselVersionCheck: { result: {
+    checkedAt: '2026-10-24T19:01:41.970Z', betterdiscord: { installed: '1.14.3', latest: '1.14.4', behind: true },
+    plugin: { installed: '1.0.4', latest: '1.0.4', behind: false }, needsMaintenance: true, errors: [] } } } : {};
   // A pretend React: elements as plain objects, as React makes them, drawn below with textContent only.
   const React = { createElement: (type, props, ...children) => ({ type, props: { ...props, children: children.length === 1 ? children[0] : children } }) };
   const draw = (node) => {
@@ -102,7 +107,12 @@
       addStyle(id, css) { const s = document.createElement('style'); s.id = id; s.textContent = css; document.head.append(s); },
       removeStyle(id) { document.getElementById(id)?.remove(); },
     },
-    Data: { load: (n, k) => data[k], save: (n, k, v) => { data[k] = JSON.parse(JSON.stringify(v)); } },
+    version: '1.14.3',
+    Data: {
+      load: (n, k) => (n === 'DiscordDamselStickerManager' ? data[k] : files[n]?.[k]),
+      save: (n, k, v) => { data[k] = JSON.parse(JSON.stringify(v)); },
+      recache: async (n) => { log('recache(' + n + ')'); return true; },
+    },
     UI: {
       showConfirmationModal(title, content, options) {
         const back = document.createElement('div'); back.className = 'confirm-back';
@@ -133,7 +143,7 @@
   Plugin.Core.stickerUrl = (s) => (s.format === 3 ? null : square(byId.get(s.id)?.color || '#555', s.name.slice(0, 6)));
   Plugin.Core.iconUrl = (server) => (server.icon ? square(colors[Number(server.id) % colors.length], server.name.slice(0, 2)) : null);
 
-  const plugin = new Plugin({ name: 'DiscordDamselStickerManager' });
+  const plugin = new Plugin({ name: 'DiscordDamselStickerManager', version: '1.0.4' });
   plugin.start();
   document.getElementById('panel').append(plugin.getSettingsPanel());
   window.harness = { value, data, log };
@@ -144,7 +154,8 @@
     setTimeout(() => { for (const i of [1, 2, 7]) first.querySelectorAll('.ddsm-sticker')[i].click(); }, 50);
   }
   log('Loaded ' + order.length + ' pretend servers.' + (params.has('empty') ? ' No favorites list yet (?empty).' : '') +
-    (params.has('zero') && !params.has('empty') ? ' 0 favorites (?zero).' : '') + (params.has('broken') ? ' Discord not found (?broken).' : ''));
+    (params.has('zero') && !params.has('empty') ? ' 0 favorites (?zero).' : '') + (params.has('broken') ? ' Discord not found (?broken).' : '') +
+    (params.has('update') ? ' Version check found BetterDiscord 1.14.4 (?update).' : ''));
 })();
 </script>
 </body>

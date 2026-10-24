@@ -6,7 +6,7 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 | | |
 |---|---|
 | Tool panel | `discord-damsel-servers-tool-panel` |
-| Tool | `discord-tower-v1.0-sticker-manager-v1.0` (version 1.0.3) |
+| Tool | `discord-tower-v1.0-sticker-manager-v1.0` (version 1.0.4) |
 | File | [discord-damsel-sticker-manager-20261018.plugin.js](discord-damsel-sticker-manager-20261018.plugin.js) |
 | Runs in | Discord desktop, as a [BetterDiscord](https://betterdiscord.app/) plugin (BetterDiscord is third-party) |
 
@@ -24,6 +24,10 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 - Its two lights: the left one is ON/OFF (green/red). OFF switches picking and resetting off; the server list still
   works. The right one is the maintenance light (blue: working, yellow: requires maintenance). It is kept in this
   plugin only and does not reach the Friendly Farmer yet.
+- **It turns yellow by itself when an update is out** (1.0.4): when Discord Damsel starts, her
+  [version check](../version-check/README.md) compares this PC's BetterDiscord and Sticker Manager with the newest
+  ones on GitHub. The tool box then says what to update, and the light turns blue again once the update is in. You can
+  still mark it yellow yourself by clicking it.
 
 ![The servers tool panel with the Sticker Manager, on the test page with pretend servers](../../docs/images/sticker-manager-20261018.png)
 
@@ -50,6 +54,8 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
   sticker names are shown as text, never as HTML.
 - **Keeps on the PC:** your picks, the copy of your previous favorites and the two lights, in BetterDiscord's file for
   it (`%APPDATA%\BetterDiscord\plugins\DiscordDamselStickerManager.config.json`). Nothing goes to GitHub.
+- **Reads** the version check's answer from `DiscordDamselVersionCheck.config.json` in the same folder. The check runs
+  outside Discord and is the part that asks GitHub; the plugin itself still asks nothing.
 
 ## Limits
 
@@ -69,7 +75,7 @@ A tool of **Discord Damsel** (Discord Tower, pet program #13 in
 ## For developers
 
 ```sh
-node --test test/sticker-manager-20261018.test.mjs
+node --test test/sticker-manager-20261018.test.mjs test/version-check-20261024.test.mjs
 ```
 
 The tool panel without Discord: serve the repo (`python -m http.server` in the repo root) and open
