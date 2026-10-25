@@ -585,7 +585,7 @@ export async function main(argv, sys = realSystem, p = paths()) {
   }
 }
 
-/** Whether Node was started with this file. Compares real paths: `Astra's PetOS` is a junction to `Astra's Pet Apps`, so
+/** Whether Node was started with this file. Compares real paths: a folder reached through a junction has two paths, so
  *  a double-click there gives Node the junction path while import.meta.url holds the real one (2026-10-19: from the
  *  junction, install printed nothing and did nothing). */
 export function isMainScript(argv1, metaUrl = import.meta.url) {

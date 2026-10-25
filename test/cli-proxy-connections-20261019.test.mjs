@@ -9,7 +9,7 @@ import { join } from 'node:path';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const page = readFileSync(join(root, 'findastra-discord-presence-20261008.html'), 'utf8');
 const script = page.match(/<script>(window\.APP_CONFIG=[\s\S]*?)<\/script>/)[1];
-const KEY = 'astras-pet-apps:findastra-discord-presence:interface:v1';
+const KEY = 'astras-pet-os:findastra-discord-presence:interface:v1';
 // The hub folder next to this repo on Astra's PC (or ASTRAS_PET_OS); the cross-check below skips without it.
 const hub = process.env.ASTRAS_PET_OS || join(root, '../astras-pet-os');
 

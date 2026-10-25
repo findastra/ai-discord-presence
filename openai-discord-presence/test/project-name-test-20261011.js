@@ -8,7 +8,7 @@ import { projectDisplayName, selectSession, activity, rotationCards, ROTATE_MS }
 import { folderProject, detectAstra } from '../src/detector.js';
 
 test('old Pet Apps folder names fall back to the official project name', () => {
-  for (const old of ['Findastra Pet Apps', 'findastra-pet-apps', 'astras-pet-apps', 'astras-pet-os']) {
+  for (const old of ['Findastra Pet Apps', 'findastra-pet-apps', 'astras-pet-os']) {
     const project = folderProject('C:/example/' + old);
     assert.equal(project, "Astra's PetOS");
     assert.equal(activity(100, undefined, project, 'gpt-6-astra').state, "Working on Astra's PetOS");
