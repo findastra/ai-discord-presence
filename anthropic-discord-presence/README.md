@@ -41,7 +41,7 @@ Project sharing is off by default. Turn on **Show my project on Discord** and ea
 
 A chat started from another chat in the Claude desktop app (listed under it in the sidebar) shows the **top-level chat's** name, or that chat's folder when it has no name; its own name is not shown. Detach it in the app and it shows its own name again.
 
-Old folder names of Astra's own project (`Findastra Pet Apps`, `astras-pet-apps`, `astras-pet-os`) show as **Astra's PetOS**; a session name you set always wins over that.
+Old folder names of Astra's own project (`Findastra Pet Apps`, `astras-pet-os`) show as **Astra's PetOS**; a session name you set always wins over that.
 
 Automatic session titles (made from what you typed) are never used, and full paths are never published. Or type a fixed project label in Settings; it stays until you clear it.
 

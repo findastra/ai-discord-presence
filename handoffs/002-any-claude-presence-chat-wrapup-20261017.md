@@ -36,13 +36,13 @@ lines of Damsel work) on `claude/rescue-damsel-unsaved-20261017` at 01:35, and t
 already points at that one. So this card is now `002`. When both reach `main`, `handoffs/README.md` lists both.
 
 **Chat Rat:** Astra asked for this chat to be recorded. Chat Rat's saver (`node chat-rat-20261016.mjs index`, from
-`%USERPROFILE%\Documents\Astra's Pet Apps\chat-rat` on `claude/chat-rat-ask-20261017`) saved it to
+`%USERPROFILE%\Documents\Astra's PetOS\chat-rat` on `claude/chat-rat-ask-20261017`) saved it to
 `%USERPROFILE%\Documents\Chats\claude-opus-5-5\20261006\claude-code\chat-bcea3799b7404881-20261006.{md,json}` (filed
 under the day it started). It reports "incomplete JSONL" only because the chat was still being written; the next save
 picks up the last messages. Chat contents are not in any repo (Chat Rat's rule).
 
 **Astra's PC:**
-- `%USERPROFILE%\Documents\Astra's Pet Apps\findastra-discord-presence`: not touched. The newer rule in
+- `%USERPROFILE%\Documents\Astra's PetOS\findastra-discord-presence`: not touched. The newer rule in
   `astras-pet-os/AGENTS.md` (commit `beed649`, 2026-10-17) moves it to `Documents\Astra's PetOS\<repo>`; that folder did not exist yet. It is on
   `codex/l3-activity-20261016` with about 19 uncommitted files from Codex (mid-work) and a `.bundle` file.
 - I worked in temporary git worktrees under `%TEMP%` (`fdp-wt`, `hub-wt`) and removed them after pushing.

@@ -48,7 +48,7 @@ merges after #15:
 to the hub branch `claude/sticker-manager-record-20261018` (PR #93).
 
 **Astra's PC:** nothing installed, nothing started, quarantine untouched (read only). `.claude\launch.json` in
-`Documents\Astra's Pet Apps` got a temporary demo entry, removed again. Worked in a scratchpad worktree.
+`Documents\Astra's PetOS` got a temporary demo entry, removed again. Worked in a scratchpad worktree.
 
 ## First run (2026-10-19)
 
@@ -57,7 +57,7 @@ v8.0.33 now or move to v8.0.34 first). Install and first Start, as the Task belo
 - **Antivirus:** Malwarebytes is the active antivirus on this PC (on, up to date); Microsoft Defender is passive, so
   `Start-MpScan` cannot run (that is also why the 2026-10-18 command-line scan failed). Malwarebytes did not flag the
   file in quarantine. No separate scan was run.
-- **Install:** `node cli-proxy-api-manager-20261018.mjs install` from `Documents\Astra's Pet Apps\…`: zip and exe
+- **Install:** `node cli-proxy-api-manager-20261018.mjs install` from `Documents\Astra's PetOS\…`: zip and exe
   matched `release-20261018.json`; the program is in `%USERPROFILE%\.cli-proxy-api\program\v8.0.33\` with
   `config.yaml` and `damsel\settings.json`. `console-key` was **not** run: the console password is Astra's to type, so
   the console stays off.

@@ -149,7 +149,7 @@ and the System Map entry are on the hub branch `claude/sticker-manager-record-20
 `%APPDATA%\BetterDiscord` folder (read only). I worked in a git worktree in Claude's scratchpad, not in
 `%USERPROFILE%\Documents\Astra's PetOS\findastra-discord-presence` (that copy is on Codex's
 `codex/l3-activity-20261016` with uncommitted work; untouched). A test-server line I added to
-`Documents\Astra's Pet Apps\.claude\launch.json` was removed again.
+`Documents\Astra's PetOS\.claude\launch.json` was removed again.
 
 ## Not done
 - **No Put back has run inside Discord yet.** 1.0.3 has been in `%APPDATA%\BetterDiscord\plugins` since

@@ -14,7 +14,7 @@ test('a /rename name wins over the folder and updates on the next check', async 
   const dir = mkdtempSync(join(tmpdir(), 'claude-rename-'));
   try {
     mkdirSync(join(dir, 'projects', 'a'), { recursive: true });
-    const folder = join(dir, 'astras-pet-apps'); mkdirSync(folder);
+    const folder = join(dir, 'astras-pet-os'); mkdirSync(folder);
     const file = join(dir, 'projects', 'a', 'session-20261014.jsonl');
     const now = Date.now();
     writeFileSync(file, reply(folder, now - 2000));
