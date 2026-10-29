@@ -144,7 +144,7 @@ if (hosted) {
   $('mode-note').textContent = 'Try the timer here. Download the companion to share it on Discord.';
   $('status').textContent = 'Discord presence needs the companion running on your Windows computer.';
   if (location.protocol === 'file:') {
-    $('download').querySelector('a').href = 'https://github.com/findastra/findastra-discord-presence/raw/main/downloads/anthropic-discord-presence.zip';
+    $('download').querySelector('a').href = 'https://github.com/findastra/ai-discord-presence/raw/main/downloads/anthropic-discord-presence.zip';
   }
 } else void refresh();
 setInterval(refresh, 2000);

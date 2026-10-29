@@ -1,6 +1,6 @@
 # Security Policy
 
-`findastra-discord-presence` is one of Astra's projects and follows the
+`ai-discord-presence` is one of Astra's projects and follows the
 [Astra's PetOS security policy](https://github.com/findastra/astras-pet-os/blob/main/SECURITY.md).
 
 **Never report a vulnerability in a public issue.** Report it privately:

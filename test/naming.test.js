@@ -12,7 +12,7 @@ const files = ['README.md', 'CLAUDE.md', 'ADDING-A-MODEL.md', ...apps.flatMap(([
   ['README.md', 'public/index.html', 'public/app.js', 'src/server.js', 'src/launch.js', 'scripts/startup.js', 'src/windows-startup.js', 'package.json'].map(f => `${app}/${f}`))];
 const forbidden = [
   [/\b(OpenAI|Anthropic|Claude|Astra) Presence\b/, 'app titles are "<Company> Discord Presence"'],
-  [/Findastra Presence/, 'the repo is Findastra Discord Presence; the apps are "<Company> Discord Presence"'],
+  [/Findastra (Discord )?Presence/, 'the repo is AI Discord Presence (renamed 2026-10-28); the apps are "<Company> Discord Presence"'],
   [/\bClaude model\b/i, 'pair the companies: "Anthropic model"'],
   [/findastra\.github\.io\/(openai|anthropic|astra|claude)/, 'old public page'],
 ];

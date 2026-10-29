@@ -3,7 +3,7 @@
 **Before any work, read [AGENTS.md](AGENTS.md) and every file its "Before any work" list names, in full,
 including every SKILL.md on every branch. Never skim or skip them.**
 
-Findastra Discord Presence holds one Windows app per AI company: `openai-discord-presence/` and `anthropic-discord-presence/`, each its own download. More can be added (see [ADDING-A-MODEL.md](ADDING-A-MODEL.md)). Read this before changing anything; `node --test` at the repo root runs every app's tests plus the naming rules.
+AI Discord Presence holds one Windows app per AI company: `openai-discord-presence/` and `anthropic-discord-presence/`, each its own download. More can be added (see [ADDING-A-MODEL.md](ADDING-A-MODEL.md)). Read this before changing anything; `node --test` at the repo root runs every app's tests plus the naming rules.
 
 This repo is only the presence apps (Astra, 2026-10-28). The pet that manages it keeps everything else of hers in her own repo, `findastra/discord-tower`: never add other tools, tricks, pet files, cards or notes here, and do not name her anywhere here, the README included (Astra, 2026-10-28). On Astra's PC this repo lives in `%USERPROFILE%\Documents\Astra's PetOS\findastra-discord-presence` (one working copy; work on a `claude/<topic>-YYYYMMDD` branch and push before you stop). Open handoff cards: [handoffs/](handoffs/README.md).
 
