@@ -28,12 +28,13 @@ header{flex-wrap:nowrap;gap:16px}.brand{min-width:0;white-space:nowrap;overflow:
 .hero{border-bottom:1px solid var(--line)}
 .workspace{flex:1;width:100%;border-top:0;padding:14px 38px;align-content:center;align-items:center;row-gap:10px}
 
-/* The galaxy and its title at every width: the words always either side of it, never stacked under it; both shrink
-   with the window. --g is the galaxy, --t the room the header needs above it when the galaxy is small. */
-:root{--g:max(200px,min(700px,calc(100vh - 380px),70vw));--t:max(0px,calc(64px - var(--g) * .12))}
-.hero{height:calc(var(--g) + var(--t));min-height:0;max-height:none}
-.galaxy{top:var(--t)}.galaxy img{height:var(--g);max-width:none}
-h1{top:var(--t);align-items:center;padding:0 5%;font-size:clamp(18px,4.6vw,64px);letter-spacing:-.03em}
+/* The galaxy and its title at every width: the words always either side of it, never stacked under it. The middle
+   section and the footer keep their size and the galaxy takes the height left over, so the page never scrolls: a
+   shorter or narrower window shrinks the galaxy, not the rest (Astra, 2026-10-28). */
+.hero{height:auto;min-height:180px;max-height:none;flex:1 1 0}
+.galaxy{top:40px;display:block}.galaxy img{position:absolute;inset:0;margin:auto;height:min(100%,700px,70vw);width:auto;max-width:none}
+h1{top:40px;align-items:center;padding:0 5%;font-size:clamp(18px,4.6vw,64px);letter-spacing:-.03em}
+.workspace{flex:none}
 
 /* Two columns when there is room: the text left, the card's controls right, both centred in the section. */
 @media(min-width:861px){.workspace{grid-template-columns:minmax(0,1fr) auto;column-gap:48px}
@@ -64,8 +65,10 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 .elapsed.running .pad{display:block}.elapsed.running #timer{color:#3ba55c}
 
 /* The footer: room around the star, and the sparkles either side of it equally far away. */
-.astra-footer{padding:18px 22px 20px}.astra-footer .footer-sparkle{margin:0}
-/* Narrow (one column): the label, then the card, then the buttons, all as wide as the card, which never stretches. */
-@media(max-width:860px){.controls{grid-template-columns:minmax(0,300px);width:auto;align-self:center}.controls .card-label{grid-column:1;grid-row:1}
+.astra-footer{padding:12px 22px 14px}.astra-footer .footer-sparkle{margin:0}
+/* Phones only, where the stack and the card cannot fit side by side: the label, the card, then the buttons, as wide as the card. */
+@media(max-width:459px){.controls{grid-template-columns:minmax(0,300px);width:auto;align-self:center}.controls .card-label{grid-column:1;grid-row:1}
 .controls .preview{grid-column:1;grid-row:2}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;flex-wrap:wrap;gap:6px}
 .controls .buttons button{flex:1 1 auto;padding:7px 12px}.astra-footer .footer-group{gap:8px}}
+/* One column: the buttons stay stacked beside the card, the pair lined up on the left under the text (Astra, 2026-10-28). */
+@media(min-width:460px) and (max-width:860px){.controls{align-self:flex-start}}
