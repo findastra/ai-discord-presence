@@ -23,7 +23,9 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
   // button names on one row, and only the chosen mode lit.
   test(`${app}: the trimmed controls page`, () => {
     const html = read(app, 'public/index.html');
-    assert.match(html, new RegExp(`<nav><a href="https://github\\.com/findastra/${app}"`));
+    // GitHub sits in the paragraph, linking the app's own repo, so the header has room for the whole name.
+    assert.doesNotMatch(html, /<nav>/);
+    assert.match(html, new RegExp(`instructions</a> on <a href="https://github\\.com/findastra/${app}"[^>]*>GitHub ↗</a>\\.`));
     assert.doesNotMatch(html, /id="(setup|settings|update|status|badge|mode-note|rotation|preview-label)"/);
     assert.match(html, /<h2 class="headline">[^<]*<br>[^<]*<\/h2>\n<div class="session"><p id="intro">/);
     assert.match(html, /<div class="preview-top"><span>Playing<\/span><span class="dots" aria-hidden="true">•••<\/span><\/div>/);

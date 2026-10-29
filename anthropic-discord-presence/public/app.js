@@ -101,5 +101,14 @@ if (hosted) {
     $('download').querySelector('a').href = 'https://github.com/findastra/ai-discord-presence/raw/main/downloads/anthropic-discord-presence.zip';
   }
 } else void refresh();
+// The buttons and card stay side by side at every size: a window too narrow for them scales the pair down together.
+function fitControls() {
+  const controls = document.querySelector('.controls');
+  controls.style.zoom = '';
+  const room = controls.parentElement.clientWidth - 48;
+  controls.style.zoom = String(Math.min(1, room / controls.scrollWidth));
+}
+addEventListener('resize', fitControls);
+fitControls();
 setInterval(refresh, 2000);
 setInterval(drawTimer, 1000);

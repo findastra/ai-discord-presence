@@ -66,12 +66,8 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 
 /* The footer: room around the star, and the sparkles either side of it equally far away. */
 .astra-footer{padding:12px 22px 14px}.astra-footer .footer-sparkle{margin:0}
-/* Phones only, where the stack and the card cannot fit side by side: the label, the card, then the buttons, as wide as the card. */
-@media(max-width:459px){.controls{grid-template-columns:minmax(0,300px);width:auto;align-self:flex-start}.controls .card-label{grid-column:1;grid-row:1}
-.controls .preview{grid-column:1;grid-row:2}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;flex-wrap:wrap;gap:6px}
-.controls .buttons button{flex:1 1 auto;padding:7px 12px}.astra-footer .footer-group{gap:8px}}
 /* One column: the buttons stay stacked beside the card, the pair lined up on the left under the text (Astra, 2026-10-28). */
-@media(min-width:460px) and (max-width:860px){.controls{align-self:flex-start}}
+@media(max-width:860px){.controls{align-self:flex-start}}
 /* A page cannot stop the window opening wider, so past 1140px nothing spreads: the title stays either side of the
    galaxy and the header lines up with the section below; only the background carries on (Astra, 2026-10-28). */
 h1{max-width:1140px;margin:0 auto;padding:0 38px}
