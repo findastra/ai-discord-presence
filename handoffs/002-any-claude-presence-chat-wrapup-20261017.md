@@ -1,4 +1,4 @@
-status: open (waiting on Astra: merge the branches below; OK to restart the presence apps once Codex has pushed)
+status: done 2026-10-28 (both branches merged; both apps start at sign-in from this repo; see the closing note)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-17
 needs: CLAUDE.md, AGENTS.md, README.md, docs/galaxy-art-20261017.md, image-bridge/README.md
@@ -13,9 +13,9 @@ Claude Opus 5.5, one long chat from 2026-10-06 to 2026-10-17 (the presence apps,
   (new `saturate` command), `masters/` (the two gpt-image-2 source galaxies), `README.md`.
 - Added `docs/galaxy-art-20261017.md`: every prompt and command for the card art. Checked that steps 3-4
   rebuild both shipped `public/galaxy.png` files exactly (0 of 3,145,728 values differ).
-- `README.md`: pet credit line (Discord Damsel, Discord Tower), links to the recipe and bridge, a `## Limits` section.
+- `README.md`: a credit line, links to the recipe and bridge, a `## Limits` section.
   Codex's sections at the bottom are unchanged.
-- `CLAUDE.md`: pet and folder context, art recipe pointer, warning that `astras-pet-os` scripts use `image-bridge/imagine.mjs`.
+- `CLAUDE.md`: folder context, art recipe pointer, warning that `astras-pet-os` scripts use `image-bridge/imagine.mjs`.
 - This card and `handoffs/README.md`.
 - Tested: `node --test` at the repo root.
 
@@ -29,11 +29,10 @@ Claude Opus 5.5, one long chat from 2026-10-06 to 2026-10-17 (the presence apps,
 **`findastra/astras-pet-os`, branch `claude/image-bridge-path-20261017`** (not on `main`): the pet art scripts'
 default bridge path now points at `../findastra-discord-presence/image-bridge/imagine.mjs`, and the docs that
 said the bridge was "local, not published" are corrected. Commit `976c913`, then `d7afd23` (merged newer `main` in;
-the Discord Damsel row keeps both errors). `npm test` passes (93) and the branch merges cleanly into `main`.
+the INTELLIGENCE-LEVELS row keeps both errors). `npm test` passes (93) and the branch merges cleanly into `main`.
 
-**Card number:** this card was pushed as `001` at 01:32; another Claude chat pushed its own `001` (merge the three
-lines of Damsel work) on `claude/rescue-damsel-unsaved-20261017` at 01:35, and the hub's INTELLIGENCE-LEVELS row
-already points at that one. So this card is now `002`. When both reach `main`, `handoffs/README.md` lists both.
+**Card number:** this card was pushed as `001` at 01:32; another chat pushed its own `001` on another branch (PR #10)
+at 01:35, and the hub's INTELLIGENCE-LEVELS row already pointed at that one. So this card is `002`.
 
 **Chat Rat:** Astra asked for this chat to be recorded. Chat Rat's saver (`node chat-rat-20261016.mjs index`, from
 `%USERPROFILE%\Documents\Astra's PetOS\chat-rat` on `claude/chat-rat-ask-20261017`) saved it to
@@ -54,10 +53,8 @@ picks up the last messages. Chat contents are not in any repo (Chat Rat's rule).
   and `Anthropic Discord Presence.vbs` point at `%USERPROFILE%\Documents\Projects\findastra-discord-presence\...`,
   a folder that no longer exists. Left alone on purpose: after Codex pushes, run **Enable Automatic Startup.cmd**
   in each app from the repo's current folder (`Documents\Astra's PetOS\findastra-discord-presence` once it is moved) to rewrite them.
-- Codex's uncommitted work in the local copy (above) is now saved on `claude/rescue-damsel-unsaved-20261017`
-  (another chat, commit `e827e7d`); merging it with the other Damsel lines is card 001 on that branch.
-- `main` gained PR #1 (DM cleanup trick) and PR #2 (detector cache) on 2026-10-17; this branch has `main` merged in
-  and its tests pass.
+- Codex's uncommitted work in the local copy (above) was saved by another chat as commit `e827e7d` (PR #10).
+- `main` gained PR #1 and PR #2 (the detector cache) on 2026-10-17; this branch has `main` merged in and its tests pass.
 - The old repos `findastra/openai-discord-presence` and `findastra/anthropic-discord-presence` are not archived
   (needs Astra's OK).
 - Social post drafts announcing the apps were never written.
@@ -75,3 +72,21 @@ at sign-in, and Discord shows the card.
 
 ## Return
 Update this card's `## What I did`, set `status: done`, commit.
+
+## Closing note, 2026-10-28 (Claude Opus 5.5, `claude-opus-5-5`)
+
+- Both branches are on `main`: `claude/galaxy-art-and-handoff-20261017` and `claude/presence-names-shuffle-20261014`
+  are ancestors of `origin/main` (checked with `git merge-base --is-ancestor`).
+- Both apps start at sign-in from this repo: the two Startup `.vbs` files run
+  `…\Documents\Astra's Pet Apps\findastra-discord-presence\<app>\src\launch.js` (the `Astra's PetOS` junction points
+  there), and 127.0.0.1:38761 and :38762 were listening.
+- PR #10 (Codex's saved work) was closed unmerged on Astra's OK. Before that, its presence-app lines were checked
+  against `main`: 269 of 288 are there word for word, and the other 19 are older wording of things `main` does in newer
+  form (the old folder-name list, the earlier `sessionLabel` and `detectClaude` signatures, the Codex project names from
+  `.codex-global-state.json`, and tests that expected "Astra's Pet Apps"). Nothing from it is missing.
+- The old repos: Astra OK'd archiving both once their "Moved" PRs merge (2026-10-28).
+- Still open elsewhere: the hub branch `claude/image-bridge-path-20261017` never merged, so the hub's art scripts still
+  default to `../image-bridge/imagine.mjs` (set `IMAGE_BRIDGE` to `…\findastra-discord-presence\image-bridge\imagine.mjs`).
+  The social post drafts were never written.
+- Only presence work lives in this repo now; other tools that were here moved to `findastra/discord-tower` (Astra,
+  2026-10-28).

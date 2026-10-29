@@ -16,7 +16,7 @@ export async function launch({ fetcher = fetch, spawnProcess = spawn, identity =
     let data;
     try { data = await response.json(); } catch { data = null; }
     if (response.ok === false || data?.app !== app || data.identity?.installationPath !== identity.installationPath || data.identity?.buildId !== identity.buildId) {
-      // --replace (used by Discord Damsel): ask an older copy of this same app to quit, then start this one.
+      // --replace: ask an older copy of this same app to quit, then start this one.
       // Only this app's own control API is called; anything else on the port is left alone.
       if (replace && data?.app === app) {
         await fetcher(url + 'api/quit', { method: 'POST', signal: AbortSignal.timeout(2000),
@@ -43,7 +43,7 @@ export async function launch({ fetcher = fetch, spawnProcess = spawn, identity =
     }
   }
   if (!(await status())) throw new Error('Could not start Anthropic Discord Presence. Run node src/server.js for details.');
-  // --automatic (used by Discord Damsel): switch the running app to Automatic, the same as clicking it.
+  // --automatic: switch the running app to Automatic, the same as clicking it.
   if (automatic) {
     const response = await fetcher(url + 'api/mode', { method: 'POST', signal: AbortSignal.timeout(2000),
       headers: { 'Content-Type': 'application/json', Origin: url.slice(0, -1) }, body: JSON.stringify({ mode: 'auto' }) });

@@ -5,7 +5,7 @@ including every SKILL.md on every branch. Never skim or skip them.**
 
 Findastra Discord Presence holds one Windows app per AI company: `openai-discord-presence/` and `anthropic-discord-presence/`, each its own download. More can be added (see [ADDING-A-MODEL.md](ADDING-A-MODEL.md)). Read this before changing anything; `node --test` at the repo root runs every app's tests plus the naming rules.
 
-This repo is the pet **Discord Damsel**; her home (pet program) is **Discord Tower** (names come only from `pet-programs.json` in `findastra/astras-pet-os`). On Astra's PC it lives in `%USERPROFILE%\Documents\Astra's PetOS\findastra-discord-presence` (the folder rule in `astras-pet-os/AGENTS.md`; on 2026-10-17 the copy was still under its old name, waiting to be moved) (one working copy; work on a `claude/<topic>-YYYYMMDD` branch and push before you stop). Open handoff cards: [handoffs/](handoffs/README.md).
+This repo is only the presence apps (Astra, 2026-10-28). The pet that manages it keeps everything else of hers in her own repo, `findastra/discord-tower`: never add other tools, tricks, pet files, cards or notes here, and name her only in the README's one line. On Astra's PC this repo lives in `%USERPROFILE%\Documents\Astra's PetOS\findastra-discord-presence` (one working copy; work on a `claude/<topic>-YYYYMMDD` branch and push before you stop). Open handoff cards: [handoffs/](handoffs/README.md).
 
 ## High-level decisions
 - Before naming, structuring or publishing anything, look at the owner's other repos on github.com/findastra and follow their conventions (lowercase-hyphen repo and folder names; README title is the same words in Title Case).

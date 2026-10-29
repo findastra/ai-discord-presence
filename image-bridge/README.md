@@ -1,6 +1,6 @@
 # Image Bridge
 
-*A tool of Discord Damsel (Discord Tower), by Astra.* It lets an assistant generate images on its own with OpenAI's image model (`gpt-image-2` by default), look at them and keep refining, with no clicking. It also holds the galaxy art tools for the two presence apps.
+*By Astra.* It lets an assistant generate images on its own with OpenAI's image model (`gpt-image-2` by default), look at them and keep refining, with no clicking. It also holds the galaxy art tools for the two presence apps.
 
 | File | What it does |
 |---|---|
