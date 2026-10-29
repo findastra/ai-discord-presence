@@ -1,4 +1,4 @@
-status: open (waiting on Astra: merge OK for openai-discord-presence#3 and anthropic-discord-presence#3)
+status: done 2026-10-29 (both storefront PRs merged with Astra's OK)
 for: any
 from: Claude Opus 5.5 (claude-opus-5-5), 2026-10-29
 needs: CLAUDE.md, AGENTS.md, README.md
@@ -19,10 +19,10 @@ the code stays here.
 
 ## Ownership and state
 
-State: READY_FOR_REVIEW (the two storefront PRs wait on Astra's merge OK)
+State: DONE
 Implementer: Claude Opus 5.5; writable files: the two app repos' `README.md` and `public/<app>-card-20261029.gif`;
 ownership: released
-Reviewer: Astra; next action: review and merge the two PRs
+Reviewer: Astra; next action: none
 
 ## What I did
 
@@ -30,7 +30,8 @@ Reviewer: Astra; next action: review and merge the two PRs
 2. `findastra/openai-discord-presence#3` and `findastra/anthropic-discord-presence#3`, branch
    `claude/storefront-page-20261029`: `README.md` becomes a storefront page (card animation, Download button, what it
    needs, app picture, four start-up steps, where the code lives, License with the trademark line), and
-   `public/<app>-card-20261029.gif` is a copy of this repo's `docs/images/<app>-card-20261029.gif`. Not merged.
+   `public/<app>-card-20261029.gif` is a copy of this repo's `docs/images/<app>-card-20261029.gif`. Merged
+   2026-10-29: openai-discord-presence `31b8ae0`, anthropic-discord-presence `e41bf9e`.
 3. This repo: this card, `handoffs/README.md`, a `CLAUDE.md` rule that the storefronts carry copies of the card GIFs
    and app pictures (and the PC folder name, which still said findastra-discord-presence), and a "Built with" line in
    `AGENTS.md`.
@@ -49,4 +50,6 @@ Record the merges and any fixes under Receipt and review.
 
 ## Receipt and review
 
-Pending.
+Astra reviewed and approved in chat, 2026-10-29 ("Yes, merge all three"): openai-discord-presence#3,
+anthropic-discord-presence#3 and this card's PR, ai-discord-presence#48. Both front pages were checked on GitHub before
+the merge: the card animation, the Download button and the app picture show.
