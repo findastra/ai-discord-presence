@@ -65,3 +65,5 @@ body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:fle
    for the card (Astra, 2026-10-28). */
 .astra-footer{padding:18px 22px 20px}
 @media(min-width:681px){.workspace{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:48px}}
+/* The card and its label pushed to the right edge, leaving room in the middle (Astra, 2026-10-28). */
+@media(min-width:681px){.card-wrap{justify-self:end;width:min(100%,300px)}}
