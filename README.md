@@ -1,7 +1,6 @@
 # AI Discord Presence
 
-*By Astra.* Show your friends on Discord which AI you're working with, which model, what it's working on and for how
-long. Two small Windows apps, one per company.
+*By Astra.* Let your Discord friends see what your AI is up to. One small Windows app for Codex, one for Claude Code.
 
 ## The Card
 
