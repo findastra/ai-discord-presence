@@ -89,3 +89,5 @@ body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:fle
 .controls{grid-column:2;grid-row:1/span 2;display:grid;grid-template-columns:auto 300px;column-gap:16px;row-gap:10px;align-self:center}
 .controls .card-label{grid-column:2;grid-row:1}.controls .buttons{grid-column:1;grid-row:2}.controls .preview{grid-column:2;grid-row:2}
 .headline{align-self:end}#intro{align-self:start;margin-right:0}}
+/* The sparkle before the star sits as far from it as the sparkle after it (Astra, 2026-10-28). */
+.astra-footer .footer-sparkle{margin:0}

@@ -68,7 +68,15 @@ for (const mode of ['manual', 'off', 'auto']) {
     finally { $(mode).disabled = false; }
   });
 }
+// Quit closes the whole app, so a stray click only asks: a second click within 3 seconds quits.
+let quitAsk;
 $('quit').addEventListener('click', async () => {
+  if (!quitAsk) {
+    $('quit').textContent = 'Click again to quit';
+    quitAsk = setTimeout(() => { quitAsk = null; $('quit').textContent = 'Quit'; }, 3000);
+    return;
+  }
+  clearTimeout(quitAsk);
   try {
     await request('/api/quit', {});
     ended = true;
