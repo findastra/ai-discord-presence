@@ -59,12 +59,8 @@ runs on your PC and only the card goes to your own Discord.
 - Add another AI: [ADDING-A-MODEL.md](ADDING-A-MODEL.md). Full app details: [OpenAI](openai-discord-presence/README.md)
   · [Anthropic](anthropic-discord-presence/README.md).
 
-```sh
-node --test                     # every app's tests plus the naming rules
-node scripts/package.mjs        # rebuilds the downloads in downloads/
-```
-
-No dependencies. Contributor (and AI assistant) rules: [CLAUDE.md](CLAUDE.md).
+Tests (every app plus the naming rules): `node --test`. Rebuild the downloads: `node scripts/package.mjs`. No
+dependencies. Contributor (and AI assistant) rules: [CLAUDE.md](CLAUDE.md).
 
 An independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord. MIT-licensed code; original
 galaxy art.
