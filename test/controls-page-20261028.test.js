@@ -15,16 +15,33 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
     assert.doesNotMatch(html, /hero-bottom|Your presence, (among the stars|in bloom)/);
     const buttons = html.match(/<div class="buttons">([\s\S]*?)<\/div>/)[1];
     assert.deepEqual([...buttons.matchAll(/id="(\w+)"/g)].map((m) => m[1]), ['manual', 'off', 'auto', 'topic', 'quit']);
-    assert.match(html, /<p id="update" class="note" role="status"><\/p>/);
-    assert.match(html, /href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence instructions<\/a>/);
+    // One link, to the instructions on GitHub (Astra, 2026-10-28).
+    assert.match(html, /<p id="intro">Discord presence card showing AI make &amp; model, what it’s working on \(chat title\), and for how long\./);
+    assert.match(html, /See <a href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence on GitHub ↗<\/a>\./);
   });
 
-  test(`${app}: the page learns its version from the app and asks GitHub only for the version number`, () => {
-    assert.match(read(app, 'src/server.js'), /version: VERSION,/);
+  // Trimmed as Astra asked (2026-10-28): GitHub only in the paragraph, the heading on its own row, a card like
+  // Discord's ("Playing", three dots) with nothing under it, no settings section, no PREVIEW label, short button
+  // names, and only the chosen mode lit.
+  test(`${app}: the trimmed controls page`, () => {
+    const html = read(app, 'public/index.html');
+    // No GitHub link in the header, so it has room for the whole name.
+    assert.doesNotMatch(html, /<nav>/);
+    assert.doesNotMatch(html, /id="(setup|settings|update|status|badge|mode-note|rotation|preview-label)"/);
+    assert.match(html, /<h2 class="headline">[^<]*<br>[^<]*<\/h2>\n<div class="session"><p id="intro">/);
+    assert.match(html, /<div class="preview-top"><span>Playing<\/span><span class="dots" aria-hidden="true">•••<\/span><\/div>/);
+    assert.match(html, /<\/p><\/div><\/div><\/div>\n<\/aside>/);
+    const buttons = html.match(/<div class="buttons">([\s\S]*?)<\/div>/)[1];
+    assert.deepEqual([...buttons.matchAll(/>([^<]+)<\/button>/g)].map((m) => m[1]), ['Start', 'Stop', 'Automatic', 'Show Chat Topic', 'Quit']);
+    assert.doesNotMatch(buttons, /class="primary"/);
+    assert.match(read(app, 'public/style.css'), /\.buttons\{display:flex;flex-wrap:nowrap/);
     const js = read(app, 'public/app.js');
-    const urls = [...js.matchAll(/https:\/\/[^'"`\s]+/g)].map((m) => m[0]);
-    assert.ok(urls.includes(`https://raw.githubusercontent.com/findastra/ai-discord-presence/main/${app}/package.json`));
-    assert.match(js, /\$\('topic'\)\.textContent = state\.config\.shareProject \? 'Hide chat topic' : 'Show chat topic'/);
+    assert.match(js, /for \(const mode of \['manual', 'off', 'auto'\]\) \$\(mode\)\.setAttribute\('aria-pressed', String\(state\.mode === mode\)\)/);
+    assert.match(js, /\$\('topic'\)\.textContent = state\.config\.shareProject \? 'Hide Chat Topic' : 'Show Chat Topic'/);
+  });
+
+  test(`${app}: the page learns its state from the app`, () => {
+    assert.match(read(app, 'src/server.js'), /version: VERSION,/);
   });
 }
 
