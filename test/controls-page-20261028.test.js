@@ -14,7 +14,7 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
     const html = read(app, 'public/index.html');
     assert.doesNotMatch(html, /hero-bottom|Your presence, (among the stars|in bloom)/);
     const buttons = html.match(/<div class="buttons">([\s\S]*?)<\/div>/)[1];
-    assert.deepEqual([...buttons.matchAll(/id="(\w+)"/g)].map((m) => m[1]), ['manual', 'off', 'auto', 'topic']);
+    assert.deepEqual([...buttons.matchAll(/id="(\w+)"/g)].map((m) => m[1]), ['manual', 'off', 'auto', 'topic', 'quit']);
     assert.match(html, /<p id="update" class="note" role="status"><\/p>/);
     assert.match(html, /href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence instructions<\/a>/);
   });

@@ -5,8 +5,8 @@
 <div align="center">
 <table>
 <tr>
-<td align="center"><img src="openai-discord-presence/public/galaxy-wide-20261028.png" alt="OpenAI galaxy" width="296" height="296"></td>
-<td align="center"><img src="anthropic-discord-presence/public/galaxy-wide-20261028.png" alt="Anthropic galaxy" width="296" height="296"></td>
+<td align="center"><img src="openai-discord-presence/public/galaxy.png" alt="OpenAI galaxy" width="296" height="296"></td>
+<td align="center"><img src="anthropic-discord-presence/public/galaxy.png" alt="Anthropic galaxy" width="296" height="296"></td>
 </tr>
 <tr>
 <td align="center"><b>OpenAI Discord Presence</b></td>

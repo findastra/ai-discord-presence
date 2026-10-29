@@ -47,22 +47,11 @@ node center.mjs a3.png a4.png 1024                                              
 node galaxy-tools.mjs stars a4.png galaxy.png 900 11                              # OpenAI: 700 23
 ```
 
-## 3b. The margin (Astra, 2026-10-28)
-
-The page, the README and the Discord card show the galaxy with black around it, so no arm is cut off:
-
-```sh
-ffmpeg -i galaxy.png -vf "scale=820:820:flags=lanczos,format=rgb24,geq=r='r(X,Y)*F':g='g(X,Y)*F':b='b(X,Y)*F',pad=1024:1024:102:102:black" galaxy-wide-20261028.png
-# F = clip((1-hypot(X-W/2,Y-H/2)/(W/2))/0.18,0,1): the outer 18% fades out in a circle
-```
-
-The swirls below are made from `galaxy-wide-20261028.png`, not `galaxy.png`.
-
 ## 4. The swirl (`public/galaxy.gif`, `public/galaxy-card.gif`)
 
 ```sh
-node galaxy-tools.mjs gif galaxy-wide-20261028.png galaxy.gif      240 54 8   # page and README
-node galaxy-tools.mjs gif galaxy-wide-20261028.png galaxy-card.gif 160 54 8   # Discord card
+node galaxy-tools.mjs gif galaxy.png galaxy.gif      240 54 8   # page and README
+node galaxy-tools.mjs gif galaxy.png galaxy-card.gif 160 54 8   # Discord card
 ```
 
 What the swirl does, as Astra asked: the whole picture turns; the rim makes one turn per 54-second loop (3× slower than the first version, then 1/3 of that again); stars follow a flat rotation curve, so the core laps the rim about 6.7 times as fast; the arms trail (direction measured from the image, not set by hand); stars are separate points that brighten inside arms and twinkle at their own rhythm; the loop is seamless.
