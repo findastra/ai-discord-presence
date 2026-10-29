@@ -67,7 +67,7 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 /* The footer: room around the star, and the sparkles either side of it equally far away. */
 .astra-footer{padding:12px 22px 14px}.astra-footer .footer-sparkle{margin:0}
 /* Phones only, where the stack and the card cannot fit side by side: the label, the card, then the buttons, as wide as the card. */
-@media(max-width:459px){.controls{grid-template-columns:minmax(0,300px);width:auto;align-self:center}.controls .card-label{grid-column:1;grid-row:1}
+@media(max-width:459px){.controls{grid-template-columns:minmax(0,300px);width:auto;align-self:flex-start}.controls .card-label{grid-column:1;grid-row:1}
 .controls .preview{grid-column:1;grid-row:2}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;flex-wrap:wrap;gap:6px}
 .controls .buttons button{flex:1 1 auto;padding:7px 12px}.astra-footer .footer-group{gap:8px}}
 /* One column: the buttons stay stacked beside the card, the pair lined up on the left under the text (Astra, 2026-10-28). */
@@ -84,9 +84,16 @@ header{padding-left:max(4%,calc((100% - 1140px) / 2 + 38px));padding-right:max(4
    shrinks inside the space above it (Astra, 2026-10-28). */
 :root{--reserve:min(640px,max(340px,min(444px,calc(340px + (1100px - 100vw) * .433)),calc(444px + (650px - 100vw) * .39)))}
 .hero{flex:none;height:max(180px,calc(100vh - var(--reserve)))}.workspace{flex:1 0 auto}
-/* The footer can never be pushed down: the page is exactly the window's height and, when room runs short, the
-   galaxy's space gives way first. That space is never taller than the galaxy itself, and the spiral's empty edges
-   are trimmed, so there is no gap between it and the line (Astra, 2026-10-28). */
-body{height:100vh;min-height:0}main{min-height:0}
-.hero{flex:0 1 auto;min-height:120px;height:min(calc(100vh - var(--reserve)),calc(min(700px,70vw) * .89 + 40px))}
-.galaxy img{inset:-6% 0;height:min(112%,700px,70vw)}
+/* The footer is always in view: the page is exactly the window's height, the galaxy's space gives way first when
+   room runs short, and if a very narrow window still cannot fit everything only the part above the footer scrolls.
+   The galaxy is never cropped; its space is only as tall as the galaxy, so a small galaxy has no empty band under it
+   (Astra, 2026-10-28). */
+body{height:100vh;min-height:0}main{min-height:0;overflow-y:auto}
+.hero{flex:0 1 auto;min-height:120px;height:min(calc(100vh - var(--reserve)),calc(min(700px,70vw) + 40px))}
+/* One edge size for the page (Astra, 2026-10-28): the room at the left and right matches the room above the page's
+   name, for the header, the title and the middle section, up to the 1140px the page stops spreading at. The footer
+   keeps its own spacing. */
+:root{--edge:24px}
+header{height:auto;padding:20px max(var(--edge),calc((100% - 1140px) / 2 + var(--edge)))}
+h1{padding:0 var(--edge)}
+.workspace{padding-left:var(--edge);padding-right:var(--edge)}
