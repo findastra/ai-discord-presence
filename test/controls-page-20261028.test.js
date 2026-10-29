@@ -27,3 +27,12 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
     assert.match(js, /\$\('topic'\)\.textContent = state\.config\.shareProject \? 'Hide chat topic' : 'Show chat topic'/);
   });
 }
+
+for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
+  test(`${app}: the page may load only the footer star and the version number from outside this PC`, () => {
+    const csp = read(app, 'src/server.js').match(/'Content-Security-Policy': "([^"]+)"/)[1];
+    assert.match(csp, /img-src 'self' https:\/\/findastra\.github\.io;/);
+    assert.match(csp, /connect-src 'self' https:\/\/raw\.githubusercontent\.com;/);
+    assert.match(csp, /script-src 'self';/);
+  });
+}
