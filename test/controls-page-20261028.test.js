@@ -16,7 +16,8 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
     const buttons = html.match(/<div class="buttons">([\s\S]*?)<\/div>/)[1];
     assert.deepEqual([...buttons.matchAll(/id="(\w+)"/g)].map((m) => m[1]), ['manual', 'off', 'auto', 'topic', 'quit']);
     // One link, to the instructions on GitHub (Astra, 2026-10-28).
-    assert.match(html, /See the <a href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence instructions on GitHub ↗<\/a>\./);
+    assert.match(html, /<p id="intro">Discord presence card showing AI make &amp; model, what it’s working on \(chat title\), and for how long\./);
+    assert.match(html, /See <a href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence on GitHub ↗<\/a>\./);
   });
 
   // Trimmed as Astra asked (2026-10-28): GitHub only in the paragraph, the heading on its own row, a card like
