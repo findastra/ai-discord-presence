@@ -8,6 +8,7 @@ import { detectClaude } from './detector.js';
 import { DiscordRPC } from './rpc.js';
 import { startupEnabled, setStartup } from './windows-startup.js';
 import { SOURCE_IDENTITY } from './source-identity-20261008.js';
+import { WebCard } from './web-card-20261029.js';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const VERSION = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
@@ -18,6 +19,8 @@ const origin = `http://127.0.0.1:${port}`;
 let config = { clientId: BUILT_IN_CLIENT_ID, image: GALAXY_URL };
 try { config = validateConfig(JSON.parse(readFileSync(configPath, 'utf8'))); } catch { /* Setup stays available. */ }
 const presence = new Presence();
+// The website copy of the card, when config.webCardGist names a gist (Astra's own PC only).
+const webCard = new WebCard('anthropic.json');
 presence.setMode(launchMode(config));
 const rpc = new DiscordRPC();
 let detection = { active: false, model: '', message: 'Choose Automatic for recent Claude Code conversations, or Start session for regular Claude desktop chat.' };
@@ -60,6 +63,7 @@ async function sync() {
       published = false;
       lastSent = null;
       rpc.disconnect();
+      void webCard.push(config.webCardGist, null);
       message = presence.mode === 'off' ? 'Sharing is off.' : detection.message;
       return;
     }
@@ -76,6 +80,7 @@ async function sync() {
       lastSent = signature;
     }
     published = true;
+    void webCard.push(config.webCardGist, payload);
     message = 'Activity accepted by Discord. Your settings and Discord client control its visibility; only one card may appear.';
   } catch (error) {
     published = false;
@@ -123,7 +128,7 @@ const server = http.createServer(async (req, res) => {
   try {
     if (req.method === 'GET' && req.url === '/api/status') {
       return send(res, 200, { app: 'anthropic-discord-presence', version: VERSION, identity: SOURCE_IDENTITY, config, mode: presence.mode, startedAt: presence.startedAt, published,
-        connected: rpc.ready, message, startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'Claude', detection: detection.message,
+        connected: rpc.ready, message, webCard: config.webCardGist ? webCard.error || 'on' : 'off', startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'Claude', detection: detection.message,
         projects: config.shareProject && !config.projectName ? [...new Set(rotationCards(detection.sessions ?? []).map(s => s.project).filter(Boolean))] : [],
         rotateSeconds: ROTATE_MS / 1000 });
     }
@@ -185,6 +190,7 @@ async function shutdown() {
   clearInterval(interval);
   presence.setMode('off');
   try { if (rpc.ready) await rpc.setActivity(null); } catch { /* Closing IPC also removes presence. */ }
+  await webCard.push(config.webCardGist, null, Date.now(), true);
   rpc.disconnect();
   server.close();
   server.closeAllConnections();

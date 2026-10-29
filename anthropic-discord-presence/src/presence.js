@@ -1,3 +1,5 @@
+import { validGist } from './web-card-20261029.js';
+
 export const IDLE_MS = 5 * 60 * 1000;
 
 export class Presence {
@@ -113,7 +115,7 @@ export function validateConfig(input) {
   // Either an uploaded Discord asset key or an https image link.
   if (!/^[a-z0-9_-]{1,128}$/.test(image) && !/^https:\/\/[^\s"<>]{1,240}$/.test(image)) throw new Error('Use an uploaded asset key or an https image link.');
   return { clientId, image, shareProject: input.shareProject === true, projectName: projectLabel(input.projectName),
-    automaticOnStart: input.automaticOnStart === true, alwaysOn: input.alwaysOn === true };
+    automaticOnStart: input.automaticOnStart === true, webCardGist: validGist(input.webCardGist), alwaysOn: input.alwaysOn === true };
 }
 
 // The mode a launch starts in. Always on shares straight away, because Claude on the web, desktop chat and
