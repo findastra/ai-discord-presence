@@ -5,7 +5,7 @@ including every SKILL.md on every branch. Never skim or skip them.**
 
 AI Discord Presence holds one Windows app per AI company: `openai-discord-presence/` and `anthropic-discord-presence/`, each its own download. More can be added (see [ADDING-A-MODEL.md](ADDING-A-MODEL.md)). Read this before changing anything; `node --test` at the repo root runs every app's tests plus the naming rules.
 
-This repo is only the presence apps (Astra, 2026-10-28). The pet that manages it keeps everything else of hers in her own repo, `findastra/discord-tower`: never add other tools, tricks, pet files, cards or notes here, and do not name her anywhere here, the README included (Astra, 2026-10-28). On Astra's PC this repo lives in `%USERPROFILE%\Documents\Astra's PetOS\findastra-discord-presence` (one working copy; work on a `claude/<topic>-YYYYMMDD` branch and push before you stop). Open handoff cards: [handoffs/](handoffs/README.md).
+This repo is only the presence apps (Astra, 2026-10-28). The pet that manages it keeps everything else of hers in her own repo, `findastra/discord-tower`: never add other tools, tricks, pet files, cards or notes here, and do not name her anywhere here, the README included (Astra, 2026-10-28). On Astra's PC this repo lives in `%USERPROFILE%\Documents\Astra's PetOS\ai-discord-presence` (one working copy; work on a `claude/<topic>-YYYYMMDD` branch and push before you stop). Open handoff cards: [handoffs/](handoffs/README.md).
 
 ## High-level decisions
 - Before naming, structuring or publishing anything, look at the owner's other repos on github.com/findastra and follow their conventions (lowercase-hyphen repo and folder names; README title is the same words in Title Case).
@@ -31,3 +31,4 @@ This repo is only the presence apps (Astra, 2026-10-28). The pet that manages it
 ## Changes
 - Add tests with every behaviour change (`cd openai-discord-presence && node --test`). Rebuild downloads with `node scripts/package.mjs` before pushing changes that affect an app.
 - Search for references before moving or renaming files or folders.
+- `findastra/openai-discord-presence` and `findastra/anthropic-discord-presence` are storefront pages for the two apps (Astra, 2026-10-29; [card 011](handoffs/011-any-storefront-repos-20261029.md)). Their READMEs link to this repo's `downloads/` ZIPs and carry copies of `docs/images/<app>-card-20261029.gif` and `docs/images/<app>-app-20261029.png` in their `public/`. When a ZIP name or one of those pictures changes, update the storefront too.

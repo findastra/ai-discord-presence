@@ -21,3 +21,5 @@ Built with:
   their top-level chat: Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-18.
 - Presence only, with the other tools moved out and the two old repos turned into "Moved" pages: Claude Opus 5.5
   (`claude-opus-5-5`), 2026-10-28, at Astra's request.
+- The two app repos as storefront pages again: Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-29, at Astra's request
+  ([card 011](handoffs/011-any-storefront-repos-20261029.md)).
