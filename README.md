@@ -1,7 +1,6 @@
 # AI Discord Presence
 
-*By Astra.* Show the AI model you're using on your Discord profile: the model and effort level, an optional project
-name, an elapsed timer and a swirling galaxy. Two small Windows apps, one per company.
+*By Astra.* Show the AI model and active chat on your Discord profile: ai make and model, it's effort level, the chat name it's working on, an elapsed timer, and a swirling galaxy. Two small Windows apps, one per company.
 
 <div align="center">
 <table>
