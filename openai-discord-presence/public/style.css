@@ -71,3 +71,5 @@ body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:fle
 @media(min-width:681px){.workspace{grid-template-columns:minmax(0,1fr) minmax(0,240px) 300px;column-gap:40px}
 .session{display:contents}.headline{grid-column:1;grid-row:1}#intro{grid-column:1;grid-row:2;margin:0}
 .buttons{grid-column:2;grid-row:1/span 2;align-self:center;flex-wrap:wrap;justify-content:center}.card-wrap{grid-column:3;grid-row:1/span 2;align-self:center}}
+/* Every button is off or on, nothing else: on is the white outline, never a white fill (Astra, 2026-10-28). */
+#manual[aria-pressed=true],#off[aria-pressed=true],#auto[aria-pressed=true],button[aria-pressed=true]{background:#ffffff24;color:var(--text);border-color:#fff}
