@@ -55,7 +55,7 @@ Create an application in the [Discord Developer Portal](https://discord.com/deve
 
 The detector opens Codex’s local SQLite task database read-only and reads model, effort, update time and folder metadata. It never reads prompts, replies or automatic chat titles. With project sharing on it also reads the name you gave a chat (only when you renamed it) and saved project names. The project-name file is read at most every 30 seconds and only when it changed.
 
-The control server binds only to `127.0.0.1`, checks Host and Origin for changes, and sends no telemetry. Discord receives activity text, a timestamp, an image URL and an optional project label. Settings remain in the Git-ignored `.local/config.json`. The local status endpoint includes installation/build identity so the launcher can detect old running copies; that identity is not sent to Discord.
+The control server binds only to `127.0.0.1`, checks Host and Origin for changes, and sends no telemetry. The controls page asks GitHub once for the newest version number (this app's `package.json` on `main`), to say whether an update is out. Discord receives activity text, a timestamp, an image URL and an optional project label. Settings remain in the Git-ignored `.local/config.json`. The local status endpoint includes installation/build identity so the launcher can detect old running copies; that identity is not sent to Discord.
 
 ## Development
 

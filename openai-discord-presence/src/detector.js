@@ -110,7 +110,7 @@ export function detectAstra(home = process.env.CODEX_HOME || join(homedir(), '.c
     }
     const project = shareProject && active ? (sessions[0]?.project ?? chatProject(home, row, getProjectState)) : '';
     const projects = [...new Set(sessions.map(session => session.project).filter(Boolean))];
-    return { active, model, effort: level, project, projects, sessions, message: active ? `Recent ${modelLabel(model)} activity detected in Codex.` : 'Waiting for recent activity in Codex.' };
+    return { active, model, effort: level, project, projects, sessions, message: active ? `Recent ${modelLabel(model)} activity detected in Codex.` : 'Automatic is on. Your card appears as soon as a Codex chat starts working.' };
   } catch {
     return { active: false, message: 'Automatic detection unavailable. Manual mode still works.' };
   } finally { db?.close(); }

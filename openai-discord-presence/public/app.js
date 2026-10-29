@@ -3,12 +3,43 @@ const hosted = document.body.hasAttribute('data-hosted') || location.protocol ==
 let state;
 let initialized = false;
 let ended = false;
+let updateChecked = false;
+// Is a newer version out? The page asks GitHub for the version number in this app's package.json on main, once.
+async function checkUpdate(current) {
+  const line = $('update');
+  try {
+    const response = await fetch('https://raw.githubusercontent.com/findastra/ai-discord-presence/main/openai-discord-presence/package.json', { cache: 'no-store' });
+    const latest = (await response.json()).version;
+    const newer = String(latest).split('.').map(Number).some((n, i, all) => { const c = String(current).split('.').map(Number); return all.slice(0, i).every((m, j) => m === c[j]) && n > (c[i] ?? 0); });
+    line.textContent = '';
+    if (newer) {
+      line.append(`Update available: version ${latest} (you have ${current}). `);
+      const link = document.createElement('a');
+      link.href = 'https://github.com/findastra/ai-discord-presence#start-it-about-2-minutes'; link.target = '_blank'; link.rel = 'noreferrer';
+      link.textContent = 'How to update';
+      line.append(link);
+    } else line.textContent = `Version ${current}: up to date.`;
+  } catch { line.textContent = `Version ${current}. Could not check for updates.`; }
+}
+$('topic').addEventListener('click', async () => {
+  if (hosted) {
+    const on = $('topic').getAttribute('aria-pressed') !== 'true';
+    $('topic').setAttribute('aria-pressed', String(on));
+    $('topic').textContent = on ? 'Hide chat topic' : 'Show chat topic';
+    $('project-preview').textContent = on ? 'Working on Astra’s Infinite Pole' : 'Exploring ideas';
+    return;
+  }
+  if (!state) return;
+  $('topic').disabled = true;
+  try { await request('/api/config', { ...state.config, shareProject: !state.config.shareProject }); await refresh(); }
+  catch (error) { $('status').textContent = error.message; }
+  finally { $('topic').disabled = false; }
+});
 const motionButton = $('motion');
 motionButton.addEventListener('click', () => {
   const paused = document.querySelector('.galaxy').classList.toggle('paused');
   motionButton.setAttribute('aria-pressed', String(paused));
-  motionButton.setAttribute('aria-label', paused ? 'Resume galaxy motion' : 'Pause galaxy motion');
-  motionButton.textContent = paused ? '▷' : 'Ⅱ';
+  motionButton.textContent = paused ? 'Play galaxy' : 'Pause galaxy';
 });
 
 async function request(path, body) {
@@ -48,6 +79,10 @@ async function refresh() {
     $('rotation').textContent = turns;
     $('rotation').hidden = !turns;
     $('model-preview').textContent = `Using ${state.modelLabel}${state.effortLabel ? ` on ${state.effortLabel}` : ''}`;
+    $('topic').textContent = state.config.shareProject ? 'Hide chat topic' : 'Show chat topic';
+    $('topic').setAttribute('aria-pressed', String(state.config.shareProject === true));
+    $('share-project').checked = state.config.shareProject;
+    if (!updateChecked) { updateChecked = true; void checkUpdate(state.version); }
     $('dot').className = state.published ? 'live' : '';
     $('badge').textContent = state.published ? 'SHARING' : state.mode === 'off' ? 'OFF' : 'WAITING';
     $('auto').setAttribute('aria-pressed', String(state.mode === 'auto'));
@@ -126,6 +161,12 @@ if (hosted) {
   $('off').textContent = 'Reset preview';
   $('mode-note').textContent = 'Try the timer here. Download the companion to share it on Discord.';
   $('status').textContent = 'Discord presence needs the companion running on your Windows computer.';
+  $('model-preview').textContent = 'Using GPT-6 Astra on Ultra';
+  $('project-preview').textContent = 'Working on Astra’s Infinite Pole';
+  $('topic').textContent = 'Hide chat topic';
+  $('topic').setAttribute('aria-pressed', 'true');
+  state = { startedAt: Math.floor(Date.now() / 1000) - 42 * 60 };
+  drawTimer();
   if (location.protocol === 'file:') {
     $('download').querySelector('a').href = 'https://github.com/findastra/ai-discord-presence/raw/main/downloads/openai-discord-presence.zip';
   }
