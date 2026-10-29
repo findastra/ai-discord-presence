@@ -17,3 +17,12 @@
 
 #share-project,#automatic-start{width:auto;margin-right:.6rem;accent-color:#92cfff}
 .connection #badge{flex:none;font-size:11px;padding:2px 9px;margin-top:1px}
+
+/* A few text sizes only (Astra, 2026-10-28): 12 labels, 14 text, 20 names, 28 the heading, the hero title.
+   The paragraph matches the card's "Exploring ideas" line. */
+.brand{font-size:20px}nav{font-size:14px}.card-label{font-size:12px}.preview strong{font-size:20px}
+#intro{font-size:14px;line-height:1.55;color:var(--muted)}.preview p,#timer,button{font-size:14px}
+/* The footer always sits at the bottom; the controls spread into the room above it. */
+body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:flex;flex-direction:column}
+.workspace{flex:1;width:100%;align-content:space-evenly;align-items:center}
+.session h2{margin-top:0}
