@@ -20,8 +20,8 @@ test('a /rename name wins over the folder and updates on the next check', async 
     writeFileSync(file, reply(folder, now - 2000));
     // Folder only: the old folder slug falls back to the official name.
     assert.equal((await detectClaude({ home: dir, now })).project, "Astra's PetOS");
-    appendFileSync(file, rename('Discord Damsel'));
-    assert.equal((await detectClaude({ home: dir, now })).project, 'Discord Damsel');
+    appendFileSync(file, rename('Galaxy Cards'));
+    assert.equal((await detectClaude({ home: dir, now })).project, 'Galaxy Cards');
     // Renamed again later in a long session: only the appended bytes are read, and the newest name wins.
     appendFileSync(file, reply(folder, now - 1000) + rename("Astra's PetOS fixes") + reply(folder, now - 500));
     assert.equal((await detectClaude({ home: dir, now })).project, "Astra's PetOS fixes");

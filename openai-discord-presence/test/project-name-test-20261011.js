@@ -40,8 +40,8 @@ test('renaming the chat in Codex changes the card on the next check', () => {
     db.exec("INSERT INTO projects VALUES ('p1', 'Pet Programs'); UPDATE threads SET project_id = 'p1'");
     assert.equal(detectAstra(dir, 1_000_000, true).project, "Astra's PetOS");
     // Renaming the chat beats both, exactly as written.
-    db.exec("UPDATE threads SET name = 'Discord Damsel'");
-    assert.equal(detectAstra(dir, 1_000_000, true).project, 'Discord Damsel');
+    db.exec("UPDATE threads SET name = 'Galaxy Cards'");
+    assert.equal(detectAstra(dir, 1_000_000, true).project, 'Galaxy Cards');
     db.exec("UPDATE threads SET name = '  Pet   Apps\nv2 '");
     assert.equal(detectAstra(dir, 1_000_000, true).project, 'Pet Apps v2');
     // Clearing the chat name falls back again; a chat in Codex's own scratch folder uses the project name
