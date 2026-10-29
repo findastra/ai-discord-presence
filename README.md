@@ -8,10 +8,12 @@ Two small Windows apps, one for each company's models. Both can run together, bu
 
 | | |
 |:---:|:---:|
-| ![OpenAI galaxy](openai-discord-presence/public/galaxy-card.gif) | ![Anthropic galaxy](anthropic-discord-presence/public/galaxy-card.gif) |
+| <img src="openai-discord-presence/public/galaxy-card.gif" alt="OpenAI galaxy" width="320"> | <img src="anthropic-discord-presence/public/galaxy-card.gif" alt="Anthropic galaxy" width="320"> |
 | **OpenAI Discord Presence** | **Anthropic Discord Presence** |
-| Automatic for **Codex** | Automatic for **Claude Code**; manual or **Always on** for Claude on the web, desktop chat and cloud sessions |
+| Automatic for **Codex** | Automatic for **Claude Code** |
 | **[⬇ Download for Windows](https://github.com/findastra/findastra-discord-presence/raw/main/downloads/openai-discord-presence.zip)** | **[⬇ Download for Windows](https://github.com/findastra/findastra-discord-presence/raw/main/downloads/anthropic-discord-presence.zip)** |
+
+Claude on the web, the desktop chat and cloud sessions leave nothing on your PC to detect: use **Start session**, or turn on **Always on** in the Anthropic app.
 
 ## Start it (about 2 minutes)
 
