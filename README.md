@@ -1,4 +1,4 @@
-# Findastra Discord Presence
+# AI Discord Presence
 
 *By Astra.* Show the AI model you're using on your Discord profile: the model and effort level, an optional project
 name, an elapsed timer and a swirling galaxy. Two small Windows apps, one per company.
@@ -18,8 +18,8 @@ name, an elapsed timer and a swirling galaxy. Two small Windows apps, one per co
 <td align="center">Automatic for <b>Claude Code</b></td>
 </tr>
 <tr>
-<td align="center"><b><a href="https://github.com/findastra/findastra-discord-presence/raw/main/downloads/openai-discord-presence.zip">⬇ Download for Windows</a></b></td>
-<td align="center"><b><a href="https://github.com/findastra/findastra-discord-presence/raw/main/downloads/anthropic-discord-presence.zip">⬇ Download for Windows</a></b></td>
+<td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/openai-discord-presence.zip">⬇ Download for Windows</a></b></td>
+<td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/anthropic-discord-presence.zip">⬇ Download for Windows</a></b></td>
 </tr>
 </table>
 </div>

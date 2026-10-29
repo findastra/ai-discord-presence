@@ -2,7 +2,7 @@
 
 A free Windows companion for sharing Codex activity on Discord, with locally detected model information, an elapsed timer and an animated galaxy.
 
-**[Download for Windows](https://github.com/findastra/findastra-discord-presence/raw/main/downloads/openai-discord-presence.zip)**
+**[Download for Windows](https://github.com/findastra/ai-discord-presence/raw/main/downloads/openai-discord-presence.zip)**
 
 ## Start it
 

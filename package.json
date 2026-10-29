@@ -1,5 +1,5 @@
 {
-  "name": "findastra-discord-presence",
+  "name": "ai-discord-presence",
   "version": "1.0.0",
   "private": true,
   "description": "Show the exact AI model you're using on Discord: OpenAI Discord Presence and Anthropic Discord Presence.",

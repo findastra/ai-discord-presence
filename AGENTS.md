@@ -1,4 +1,4 @@
-# Findastra Discord Presence
+# AI Discord Presence
 
 *By Astra.* Rules for AI assistants. Claude also reads [CLAUDE.md](CLAUDE.md); Codex reads this file and CLAUDE.md.
 
