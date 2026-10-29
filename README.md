@@ -5,8 +5,8 @@
 <div align="center">
 <table>
 <tr>
-<td align="center"><img src="openai-discord-presence/public/galaxy-spin-20261028.gif" alt="OpenAI galaxy" width="320" height="320"></td>
-<td align="center"><img src="anthropic-discord-presence/public/galaxy-spin-20261028.gif" alt="Anthropic galaxy" width="320" height="320"></td>
+<td align="center"><img src="openai-discord-presence/public/galaxy-swirl-20261028.gif" alt="OpenAI galaxy, swirling" width="296" height="296"></td>
+<td align="center"><img src="anthropic-discord-presence/public/galaxy-swirl-20261028.gif" alt="Anthropic galaxy, swirling" width="296" height="296"></td>
 </tr>
 <tr>
 <td align="center"><b>OpenAI Discord Presence</b></td>
@@ -36,6 +36,27 @@ No account, API key or Discord setup. Everything runs on your PC; only the card 
 update, choose **Quit app** in the old controls first (the launcher refuses to let an older copy stand in), and enable
 startup again if you moved the folder. Full details: [OpenAI app](openai-discord-presence/README.md) ·
 [Anthropic app](anthropic-discord-presence/README.md).
+
+## Three parts: the app, the card and the galaxy
+
+- **The app** (OpenAI Discord Presence or Anthropic Discord Presence) is a small program on your PC. Its controls open
+  as a page in your browser, where you click **Automatic**, start or stop sharing and change settings.
+- **The card** is what your friends see on your Discord profile while the app is sharing. The app's page shows a
+  preview of it under **On your profile**.
+- **The galaxy** is the swirling picture on the card and on the app's page.
+
+<div align="center">
+<table>
+<tr>
+<td align="center"><img src="docs/images/openai-controls-20261028.png" alt="OpenAI Discord Presence's page, with its card preview" width="400"></td>
+<td align="center"><img src="docs/images/anthropic-controls-20261028.png" alt="Anthropic Discord Presence's page, with its card preview" width="400"></td>
+</tr>
+<tr>
+<td align="center">The OpenAI app's page</td>
+<td align="center">The Anthropic app's page</td>
+</tr>
+</table>
+</div>
 
 ## What the card shows
 
