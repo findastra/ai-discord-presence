@@ -5,8 +5,8 @@
 <div align="center">
 <table>
 <tr>
-<td align="center"><img src="openai-discord-presence/public/galaxy.png" alt="OpenAI galaxy" width="296" height="296"></td>
-<td align="center"><img src="anthropic-discord-presence/public/galaxy.png" alt="Anthropic galaxy" width="296" height="296"></td>
+<td align="center"><img src="docs/images/openai-card-20261029.png" alt="OpenAI Discord Presence card: Using GPT-6 Astra on Ultra, 42:04 elapsed" width="400"></td>
+<td align="center"><img src="docs/images/anthropic-card-20261029.png" alt="Anthropic Discord Presence card: Using Claude Opus 5.5 on Max, 42:04 elapsed" width="400"></td>
 </tr>
 <tr>
 <td align="center"><b>OpenAI Discord Presence</b></td>
@@ -42,21 +42,8 @@ startup again if you moved the folder. Full details: [OpenAI app](openai-discord
 - **The app** (OpenAI Discord Presence or Anthropic Discord Presence) is a small program on your PC. Its controls open
   as a page in your browser, where you click **Automatic**, start or stop sharing and change settings.
 - **The card** is what your friends see on your Discord profile while the app is sharing. The app's page shows a
-  preview of it under **On your profile**.
+  preview of it under **Discord presence on your profile**, like the pictures at the top.
 - **The galaxy** is the swirling picture on the card and on the app's page.
-
-<div align="center">
-<table>
-<tr>
-<td align="center"><img src="docs/images/openai-controls-20261028.png" alt="OpenAI Discord Presence's page, with its card preview" width="400"></td>
-<td align="center"><img src="docs/images/anthropic-controls-20261028.png" alt="Anthropic Discord Presence's page, with its card preview" width="400"></td>
-</tr>
-<tr>
-<td align="center">The OpenAI app's page</td>
-<td align="center">The Anthropic app's page</td>
-</tr>
-</table>
-</div>
 
 ## What the card shows
 
