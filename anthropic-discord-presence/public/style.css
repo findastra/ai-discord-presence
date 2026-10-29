@@ -28,16 +28,12 @@ header{flex-wrap:nowrap;gap:16px}.brand{min-width:0;white-space:nowrap;overflow:
 .hero{border-bottom:1px solid var(--line)}
 .workspace{flex:1;width:100%;border-top:0;padding:14px 38px;align-content:center;align-items:center;row-gap:10px}
 
-/* Wide: a big galaxy with the title either side of it, sized so the page fits one screen. */
-@media(min-width:901px){.hero{height:min(700px,calc(100vh - 380px),90vw);min-height:360px}
-.galaxy img{height:min(700px,calc(100vh - 380px),90vw);max-width:90%}
-h1{font-size:clamp(34px,4.6vw,64px);letter-spacing:-2px;padding:0 5%}}
-/* Narrow: the galaxy centred under the header, the title stacked beneath it, sitting on the line. */
-@media(max-width:900px){:root{--g:min(440px,80vw,max(240px,calc(100vh - 560px)))}
-.hero{height:auto;min-height:0;max-height:none;display:flex;flex-direction:column;align-items:center;padding:56px 0 14px}
-.galaxy{position:relative;inset:auto;width:100%;height:calc(var(--g) * .8);place-items:start center}
-.galaxy img{height:var(--g);max-width:none;margin-top:calc(var(--g) * -.1)}
-h1{position:relative;z-index:1;flex-direction:column;align-items:center;padding:0;font-size:clamp(30px,6vw,44px);letter-spacing:-1.5px;line-height:1.05}}
+/* The galaxy and its title at every width: the words always either side of it, never stacked under it; both shrink
+   with the window. --g is the galaxy, --t the room the header needs above it when the galaxy is small. */
+:root{--g:max(200px,min(700px,calc(100vh - 380px),70vw));--t:max(0px,calc(64px - var(--g) * .12))}
+.hero{height:calc(var(--g) + var(--t));min-height:0;max-height:none}
+.galaxy{top:var(--t)}.galaxy img{height:var(--g);max-width:none}
+h1{top:var(--t);align-items:center;padding:0 5%;font-size:clamp(18px,4.6vw,64px);letter-spacing:-.03em}
 
 /* Two columns when there is room: the text left, the card's controls right, both centred in the section. */
 @media(min-width:861px){.workspace{grid-template-columns:minmax(0,1fr) auto;column-gap:48px}
@@ -46,7 +42,7 @@ h1{position:relative;z-index:1;flex-direction:column;align-items:center;padding:
 @media(max-width:860px){.workspace{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:14px;padding:18px 22px}}
 
 /* The buttons stacked beside the card, exactly as tall as it, so they read as its controls. */
-.controls{display:grid;grid-template-columns:auto minmax(0,300px);column-gap:16px;row-gap:10px}.card-wrap{display:contents}
+.controls{display:grid;grid-template-columns:auto 300px;column-gap:16px;row-gap:10px}.card-wrap{display:contents}
 .controls .card-label{grid-column:2;grid-row:1;margin:0}.controls .preview{grid-column:2;grid-row:2;align-self:start}
 .controls .buttons{grid-column:1;grid-row:2;align-self:stretch;flex-direction:column;flex-wrap:nowrap;justify-content:space-between;gap:4px;margin:0}
 .controls .buttons button{flex:1;padding:2px 16px;font-size:12px;line-height:1.2;white-space:nowrap}
@@ -56,7 +52,7 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 /* The card as Discord draws it on a profile, a touch larger: "Playing" and three dots, a rounded galaxy square,
    Discord's fonts (gg sans where installed, then its fallbacks), long lines cut off with "…", and the elapsed
    time green beside a controller. */
-.preview{display:block;width:100%;max-width:300px;background:#ffffff12;padding:10px 12px 12px;border-radius:8px;font-family:"gg sans","Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif;color:#f2f3f5}
+.preview{display:block;width:300px;max-width:100%;background:#ffffff12;padding:10px 12px 12px;border-radius:8px;font-family:"gg sans","Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif;color:#f2f3f5}
 .preview-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;margin-bottom:8px}
 .preview-top .dots{letter-spacing:2px;color:var(--muted)}
 .preview-body{display:flex;gap:10px;align-items:flex-start}.preview-body>div{min-width:0}
@@ -69,7 +65,7 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 
 /* The footer: room around the star, and the sparkles either side of it equally far away. */
 .astra-footer{padding:18px 22px 20px}.astra-footer .footer-sparkle{margin:0}
-/* Narrow (one column): the label, then the card, then the buttons, each all the way across (Astra, 2026-10-28). */
-@media(max-width:860px){.controls{grid-template-columns:minmax(0,1fr);width:100%}.controls .card-label{grid-column:1;grid-row:1}
-.controls .preview{grid-column:1;grid-row:2;max-width:none}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;flex-wrap:wrap;gap:6px}
+/* Narrow (one column): the label, then the card, then the buttons, all as wide as the card, which never stretches. */
+@media(max-width:860px){.controls{grid-template-columns:minmax(0,300px);width:auto;align-self:center}.controls .card-label{grid-column:1;grid-row:1}
+.controls .preview{grid-column:1;grid-row:2}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;flex-wrap:wrap;gap:6px}
 .controls .buttons button{flex:1 1 auto;padding:7px 12px}.astra-footer .footer-group{gap:8px}}
