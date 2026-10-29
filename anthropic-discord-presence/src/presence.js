@@ -88,7 +88,7 @@ export function effortLabel(id) {
 // The project's own Discord application. Application IDs are public, so friends can use it without any setup.
 export const BUILT_IN_CLIENT_ID = '1555096326734094356';
 
-export const GALAXY_URL = 'https://raw.githubusercontent.com/findastra/ai-discord-presence/main/anthropic-discord-presence/public/galaxy-card.gif?v=8';
+export const GALAXY_URL = 'https://raw.githubusercontent.com/findastra/ai-discord-presence/main/anthropic-discord-presence/public/galaxy-card.gif?v=9';
 
 export function activity(startedAt, image = GALAXY_URL, project = '', model = '', effort = '') {
   if (startedAt === null) return null;

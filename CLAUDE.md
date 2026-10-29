@@ -18,7 +18,7 @@ This repo is only the presence apps (Astra, 2026-10-28). The pet that manages it
 
 ## Art
 - Original galaxies only (never art captured from a company's site). One arm per current model generation: OpenAI 6 (GPT-6), Anthropic 5 (Claude 5). When a new generation ships, re-render with one more arm and bump `?v=` in `GALAXY_URL` (`src/presence.js`) so Discord refetches.
-- Each image is centred, fills the square, black background. GIFs stay under 10 MB (GitHub serves larger raw files without an image type).
+- Each image is centred on black with a margin, so no arm touches an edge (Astra, 2026-10-28): `galaxy-wide-20261028.png` is `galaxy.png` at 80% with a round fade, and the swirls (`galaxy.gif`, `galaxy-card.gif`) are made from it. `galaxy.png` itself still fills the square. GIFs stay under 10 MB (GitHub serves larger raw files without an image type).
 - The recipe (prompts, commands, swirl physics) is [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); the tools are in [image-bridge/](image-bridge/README.md). Rebuilding from `image-bridge/masters/` reproduces the shipped `galaxy.png` exactly; keep it that way. Generating new images costs Astra money: ask first, regenerate one image, never a set.
 - `image-bridge/imagine.mjs` is also used by `astras-pet-os` (`scripts/generate-pets.mjs`, `scripts/generate-seeds-20261012.mjs`). Don't rename or move it without updating those scripts.
 

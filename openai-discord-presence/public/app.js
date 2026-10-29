@@ -35,12 +35,6 @@ $('topic').addEventListener('click', async () => {
   catch (error) { $('status').textContent = error.message; }
   finally { $('topic').disabled = false; }
 });
-const motionButton = $('motion');
-motionButton.addEventListener('click', () => {
-  const paused = document.querySelector('.galaxy').classList.toggle('paused');
-  motionButton.setAttribute('aria-pressed', String(paused));
-  motionButton.textContent = paused ? 'Play galaxy' : 'Pause galaxy';
-});
 
 async function request(path, body) {
   const response = await fetch(path, body === undefined ? {} : {
@@ -82,7 +76,7 @@ async function refresh() {
     $('topic').textContent = state.config.shareProject ? 'Hide chat topic' : 'Show chat topic';
     $('topic').setAttribute('aria-pressed', String(state.config.shareProject === true));
     $('share-project').checked = state.config.shareProject;
-    if (!updateChecked) { updateChecked = true; void checkUpdate(state.version); }
+    if (!updateChecked && state.version) { updateChecked = true; void checkUpdate(state.version); }
     $('dot').className = state.published ? 'live' : '';
     $('badge').textContent = state.published ? 'SHARING' : state.mode === 'off' ? 'OFF' : 'WAITING';
     $('auto').setAttribute('aria-pressed', String(state.mode === 'auto'));

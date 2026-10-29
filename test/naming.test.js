@@ -14,7 +14,7 @@ const forbidden = [
   [/\b(OpenAI|Anthropic|Claude|Astra) Presence\b/, 'app titles are "<Company> Discord Presence"'],
   [/Findastra (Discord )?Presence/, 'the repo is AI Discord Presence (renamed 2026-10-28); the apps are "<Company> Discord Presence"'],
   [/\bClaude model\b/i, 'pair the companies: "Anthropic model"'],
-  [/findastra\.github\.io\/(openai|anthropic|astra|claude)/, 'old public page'],
+  [/findastra\.github\.io\/(openai|anthropic|astra|claude)(-discord)?-presence/, 'old public page'],
 ];
 
 test('user-facing text follows the naming rules', () => {
