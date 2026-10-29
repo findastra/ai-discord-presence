@@ -17,20 +17,8 @@ long. Two small Windows apps, one per company.
 <td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/anthropic-discord-presence.zip">⬇ Download for Windows</a></b></td>
 </tr>
 <tr>
-<td valign="top">
-<b>Automatic sees:</b> Codex chats (not archived chats or subagents).<br><br>
-<b>Start file:</b> Start OpenAI Discord Presence.cmd<br><br>
-<b>Chat Topic:</b> the name you gave the chat in Codex, else its folder, else its saved Codex project.<br><br>
-<b>No model found:</b> the card says Using OpenAI.<br><br>
-<a href="openai-discord-presence/README.md">Everything about this app</a>
-</td>
-<td valign="top">
-<b>Automatic sees:</b> Claude Code, including Code sessions in the Claude desktop app. Claude on the web, desktop chat and cloud sessions leave nothing to detect: click <b>Start</b>.<br><br>
-<b>Start file:</b> Start Anthropic Discord Presence.cmd<br><br>
-<b>Chat Topic:</b> the name you gave it with <code>/rename</code>, else its folder. A chat started from another chat shows the first chat's name.<br><br>
-<b>No model found:</b> the card says Using Claude.<br><br>
-<a href="anthropic-discord-presence/README.md">Everything about this app</a>
-</td>
+<td valign="top"><a href="openai-discord-presence/README.md"><img src="docs/images/openai-app-20261029.png" alt="OpenAI Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
+<td valign="top"><a href="anthropic-discord-presence/README.md"><img src="docs/images/anthropic-app-20261029.png" alt="Anthropic Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
 </tr>
 </table>
 
@@ -57,6 +45,8 @@ runs on your PC and only the card goes to your own Discord.
 
 ## Quirks
 
+- **Automatic** sees Codex and Claude Code only. Claude on the web, desktop chat and cloud sessions leave nothing on
+  your PC to detect: click **Start** instead.
 - Automatic counts activity from the last five minutes, so a long silent think can drop off for a moment.
 - Both apps can run together, but Discord may show only one card.
 - To update, click **Quit** in the old copy first, and run **Enable Automatic Startup.cmd** again if you moved the
@@ -69,7 +59,8 @@ runs on your PC and only the card goes to your own Discord.
 - Anthropic Discord Presence, the shared repo and the galaxy art: Claude Opus 5.5.
 - Each galaxy has one arm per model generation (6 for GPT-6, 5 for Claude 5). Recipe:
   [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md).
-- Add another AI: [ADDING-A-MODEL.md](ADDING-A-MODEL.md).
+- Add another AI: [ADDING-A-MODEL.md](ADDING-A-MODEL.md). Full app details: [OpenAI](openai-discord-presence/README.md)
+  · [Anthropic](anthropic-discord-presence/README.md).
 
 Tests (every app plus the naming rules): `node --test`. Rebuild the downloads: `node scripts/package.mjs`. No
 dependencies. Contributor (and AI assistant) rules: [CLAUDE.md](CLAUDE.md).
