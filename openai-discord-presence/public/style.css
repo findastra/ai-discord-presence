@@ -84,3 +84,9 @@ header{padding-left:max(4%,calc((100% - 1140px) / 2 + 38px));padding-right:max(4
    shrinks inside the space above it (Astra, 2026-10-28). */
 :root{--reserve:min(640px,max(340px,min(444px,calc(340px + (1100px - 100vw) * .433)),calc(444px + (650px - 100vw) * .39)))}
 .hero{flex:none;height:max(180px,calc(100vh - var(--reserve)))}.workspace{flex:1 0 auto}
+/* The footer can never be pushed down: the page is exactly the window's height and, when room runs short, the
+   galaxy's space gives way first. That space is never taller than the galaxy itself, and the spiral's empty edges
+   are trimmed, so there is no gap between it and the line (Astra, 2026-10-28). */
+body{height:100vh;min-height:0}main{min-height:0}
+.hero{flex:0 1 auto;min-height:120px;height:min(calc(100vh - var(--reserve)),calc(min(700px,70vw) * .89 + 40px))}
+.galaxy img{inset:-6% 0;height:min(112%,700px,70vw)}
