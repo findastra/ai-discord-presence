@@ -126,7 +126,6 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 
 ## Legal
 
-1. An independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord.
-2. Their names appear only to say which product you're using.
+1. An independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord; their names appear only to say which product you're using.
 3. The code is MIT-licensed: [LICENSE](LICENSE).
 4. The galaxy art is original.
