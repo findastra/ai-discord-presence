@@ -18,13 +18,7 @@ What your friends see on your Discord profile while the app is sharing:
 </tr>
 </table>
 
-- **Title:** the company.
-- **Model and effort** it detects. When local metadata has none, the card says **Using OpenAI** or **Using Claude**.
-- **Chat Topic** (off until you click **Show Chat Topic**): a chat you renamed shows that name (rename in Codex, or
-  `/rename` in Claude Code), otherwise its folder. A chat started from another chat in the Claude desktop app shows the
-  first chat's name. Renames show within seconds.
-- **The time** since sharing started.
-- **Several chats at once** take 6-second turns, each with its own model and effort.
+The company, the model and effort, the chat's name (if you turn it on) and the time. Several chats take turns.
 
 ## The app
 
@@ -53,25 +47,11 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 
 | Button | What it does |
 | --- | --- |
-| <kbd>Start</kbd> | Puts the card on your profile now and starts the timer. It stays up until you click **Stop** or **Quit**. Use it for Claude on the web, desktop chat and cloud sessions, which Automatic can't see. |
-| <kbd>Stop</kbd> | Takes the card off your profile. The app keeps running. |
-| <kbd>Automatic</kbd> | Shows the card while Codex (OpenAI app) or Claude Code (Anthropic app) has been active in the last five minutes, and hides it after. |
-| <kbd>Show Chat Topic</kbd> | Adds the chat's name to the card. Click it again (**Hide Chat Topic**) to take the name off. |
-| <kbd>Quit</kbd> | Closes the app and takes the card off. Click it twice within 3 seconds, so a stray click can't close it. |
-
-Start, Stop and Automatic are one choice: only the one in use is lit. The card on the page is a live preview of what
-your friends see. Start, Automatic, Stop and Quit are also in the app's galaxy tray icon by the clock (right-click it).
-Closing the browser tab leaves the app running.
-
-### Start it (about 2 minutes)
-
-1. Install [Node.js 24 or later](https://nodejs.org/en/download).
-2. Download your app from the table above, unzip it and double-click **Start OpenAI Discord Presence.cmd** (or
-   **Start Anthropic Discord Presence.cmd**).
-3. Click **Automatic**, and keep Discord desktop open with activity sharing on.
-
-Optional: **Enable Automatic Startup.cmd** starts it with Windows. No account, API key or Discord setup; everything
-runs on your PC and only the card goes to your own Discord app.
+| <img src="docs/images/button-start-20261029.png" alt="Start" width="118"> | Puts the card on your profile now and starts the timer, until you click Stop or Quit. Use it for Claude on the web, desktop chat and cloud sessions. |
+| <img src="docs/images/button-stop-20261029.png" alt="Stop" width="118"> | Takes the card off your profile. The app keeps running. |
+| <img src="docs/images/button-automatic-20261029.png" alt="Automatic" width="118"> | Shows the card while Codex or Claude Code is working, and hides it five minutes after. |
+| <img src="docs/images/button-chat-topic-20261029.png" alt="Hide Chat Topic" width="118"> | Takes the chat's name off the card. Click it again (Show Chat Topic) to put it back. |
+| <img src="docs/images/button-quit-20261029.png" alt="Quit" width="118"> | Closes the app. Click it twice within 3 seconds. |
 
 ## Quirks
 
