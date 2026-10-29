@@ -76,3 +76,9 @@ body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:fle
 /* The buttons stacked in one column right beside the card, so they read as its controls (Astra, 2026-10-28). */
 @media(min-width:681px){.workspace{grid-template-columns:minmax(0,1fr) auto 300px;column-gap:16px}#intro{margin-right:40px}
 .buttons{flex-direction:column;flex-wrap:nowrap;align-items:stretch;justify-self:end;gap:5px}.buttons button{padding:4px 16px}}
+/* The stack exactly as tall as the card box: the label sits in the heading's row, the card and the stack share the
+   next row and the buttons stretch to fill it (Astra, 2026-10-28). */
+@media(min-width:681px){.card-wrap{display:contents}.card-label{grid-column:3;grid-row:1;align-self:end;margin:0}
+.preview{grid-column:3;grid-row:2;align-self:start;width:100%}
+.buttons{grid-row:2;align-self:stretch;justify-content:space-between;gap:4px}
+.buttons button{flex:1;padding:2px 16px;font-size:12px;line-height:1.2}}

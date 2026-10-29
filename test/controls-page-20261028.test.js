@@ -29,12 +29,12 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
     assert.match(html, /<div class="preview-top"><span>Playing<\/span><span class="dots" aria-hidden="true">•••<\/span><\/div>/);
     assert.match(html, /<\/p><\/div><\/div><\/div>\n<\/aside>/);
     const buttons = html.match(/<div class="buttons">([\s\S]*?)<\/div>/)[1];
-    assert.deepEqual([...buttons.matchAll(/>([^<]+)<\/button>/g)].map((m) => m[1]), ['Start', 'Stop', 'Automatic', 'Show chat topic', 'Quit']);
+    assert.deepEqual([...buttons.matchAll(/>([^<]+)<\/button>/g)].map((m) => m[1]), ['Start', 'Stop', 'Automatic', 'Show Chat Topic', 'Quit']);
     assert.doesNotMatch(buttons, /class="primary"/);
     assert.match(read(app, 'public/style.css'), /\.buttons\{display:flex;flex-wrap:nowrap/);
     const js = read(app, 'public/app.js');
     assert.match(js, /for \(const mode of \['manual', 'off', 'auto'\]\) \$\(mode\)\.setAttribute\('aria-pressed', String\(state\.mode === mode\)\)/);
-    assert.match(js, /\$\('topic'\)\.textContent = state\.config\.shareProject \? 'Hide chat topic' : 'Show chat topic'/);
+    assert.match(js, /\$\('topic'\)\.textContent = state\.config\.shareProject \? 'Hide Chat Topic' : 'Show Chat Topic'/);
   });
 
   test(`${app}: the page learns its state from the app`, () => {

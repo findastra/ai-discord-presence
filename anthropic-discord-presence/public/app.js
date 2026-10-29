@@ -6,7 +6,7 @@ $('topic').addEventListener('click', async () => {
   if (hosted) {
     const on = $('topic').getAttribute('aria-pressed') !== 'true';
     $('topic').setAttribute('aria-pressed', String(on));
-    $('topic').textContent = on ? 'Hide chat topic' : 'Show chat topic';
+    $('topic').textContent = on ? 'Hide Chat Topic' : 'Show Chat Topic';
     $('project-preview').textContent = on ? 'Working on Astra’s Infinite Pole' : 'Exploring ideas';
     return;
   }
@@ -43,7 +43,7 @@ async function refresh() {
     state = await request('/api/status');
     $('project-preview').textContent = state.project ? `Working on ${state.project}` : 'Exploring ideas';
     $('model-preview').textContent = `Using ${state.modelLabel}${state.effortLabel ? ` on ${state.effortLabel}` : ''}`;
-    $('topic').textContent = state.config.shareProject ? 'Hide chat topic' : 'Show chat topic';
+    $('topic').textContent = state.config.shareProject ? 'Hide Chat Topic' : 'Show Chat Topic';
     $('topic').setAttribute('aria-pressed', String(state.config.shareProject === true));
     // Start, Stop and Automatic are one choice: only the current mode is lit.
     for (const mode of ['manual', 'off', 'auto']) $(mode).setAttribute('aria-pressed', String(state.mode === mode));
@@ -83,7 +83,7 @@ if (hosted) {
   $('quit').hidden = true;
   $('model-preview').textContent = 'Using Claude Opus 5.5 on Max';
   $('project-preview').textContent = 'Working on Astra’s Infinite Pole';
-  $('topic').textContent = 'Hide chat topic';
+  $('topic').textContent = 'Hide Chat Topic';
   $('topic').setAttribute('aria-pressed', 'true');
   $('manual').setAttribute('aria-pressed', 'true');
   $('off').setAttribute('aria-pressed', 'false');
