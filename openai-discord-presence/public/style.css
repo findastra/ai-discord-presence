@@ -72,3 +72,10 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 .controls .buttons button{flex:1 1 auto;padding:7px 12px}.astra-footer .footer-group{gap:8px}}
 /* One column: the buttons stay stacked beside the card, the pair lined up on the left under the text (Astra, 2026-10-28). */
 @media(min-width:460px) and (max-width:860px){.controls{align-self:flex-start}}
+/* A page cannot stop the window opening wider, so past 1140px nothing spreads: the title stays either side of the
+   galaxy and the header lines up with the section below; only the background carries on (Astra, 2026-10-28). */
+h1{max-width:1140px;margin:0 auto;padding:0 38px}
+header{padding-left:max(4%,calc((100% - 1140px) / 2 + 38px));padding-right:max(4%,calc((100% - 1140px) / 2 + 38px))}
+/* The same room above and below the middle section at every width, so the footer always sits the same distance
+   under it (Astra, 2026-10-28). */
+.workspace{padding-top:18px;padding-bottom:18px}
