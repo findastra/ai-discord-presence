@@ -15,17 +15,17 @@ for (const app of ['openai-discord-presence', 'anthropic-discord-presence']) {
     assert.doesNotMatch(html, /hero-bottom|Your presence, (among the stars|in bloom)/);
     const buttons = html.match(/<div class="buttons">([\s\S]*?)<\/div>/)[1];
     assert.deepEqual([...buttons.matchAll(/id="(\w+)"/g)].map((m) => m[1]), ['manual', 'off', 'auto', 'topic', 'quit']);
-    assert.match(html, /href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence instructions<\/a>/);
+    // One link, to the instructions on GitHub (Astra, 2026-10-28).
+    assert.match(html, /See the <a href="https:\/\/github\.com\/findastra\/ai-discord-presence\/blob\/main\/ADDING-A-MODEL\.md"[^>]*>AI Discord Presence instructions on GitHub ↗<\/a>\./);
   });
 
-  // Trimmed as Astra asked (2026-10-28): GitHub links to the app's own repo, the heading on its own row, a card
-  // like Discord's ("Playing", three dots) with nothing under it, no settings section, no PREVIEW label, short
-  // button names on one row, and only the chosen mode lit.
+  // Trimmed as Astra asked (2026-10-28): GitHub only in the paragraph, the heading on its own row, a card like
+  // Discord's ("Playing", three dots) with nothing under it, no settings section, no PREVIEW label, short button
+  // names, and only the chosen mode lit.
   test(`${app}: the trimmed controls page`, () => {
     const html = read(app, 'public/index.html');
-    // GitHub sits in the paragraph, linking the app's own repo, so the header has room for the whole name.
+    // No GitHub link in the header, so it has room for the whole name.
     assert.doesNotMatch(html, /<nav>/);
-    assert.match(html, new RegExp(`instructions</a> on <a href="https://github\\.com/findastra/${app}"[^>]*>GitHub ↗</a>\\.`));
     assert.doesNotMatch(html, /id="(setup|settings|update|status|badge|mode-note|rotation|preview-label)"/);
     assert.match(html, /<h2 class="headline">[^<]*<br>[^<]*<\/h2>\n<div class="session"><p id="intro">/);
     assert.match(html, /<div class="preview-top"><span>Playing<\/span><span class="dots" aria-hidden="true">•••<\/span><\/div>/);
