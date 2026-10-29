@@ -30,5 +30,26 @@ body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:fle
    the name, the image about six text lines tall. */
 .preview{border-radius:8px;align-items:flex-start}.preview img{border-radius:8px}
 /* A bigger galaxy with a smaller title beside it, so the words sit clear of the spiral. */
-@media(min-width:681px){.hero{height:calc(min(700px,calc(100vh - 380px),90vw) + 16px)}.galaxy img{height:min(700px,calc(100vh - 380px),90vw);max-width:90%}}
+@media(min-width:681px){.hero{height:min(700px,calc(100vh - 340px),90vw)}.galaxy img{height:min(700px,calc(100vh - 340px),90vw);max-width:90%}}
 @media(min-width:681px){h1{font-size:clamp(34px,4.6vw,64px);letter-spacing:-2px;padding:0 5%}}
+/* "A little signal" on a row of its own; the paragraph and the card's label start level under it, with more
+   room above the buttons (Astra, 2026-10-28). */
+.workspace{align-items:start;align-content:center;row-gap:18px}.headline{grid-column:1/-1;margin:0}
+#intro{margin:0 0 26px}.session h2{margin-top:0}
+/* Discord's card has "Playing" and three dots across the top, and the galaxy square's corners are rounded.
+   A lighter card lets the black square's rounding show, as on Discord (Astra, 2026-10-28). */
+.preview{display:block;background:#ffffff12;padding:16px 18px 20px}.preview-top{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;margin-bottom:12px}
+.preview-top .dots{letter-spacing:2px;color:var(--muted)}.preview-body{display:flex;gap:18px;align-items:flex-start}.preview img{border-radius:10px;display:block}
+/* The card in Discord's own fonts, sizes and colours (Astra, 2026-10-28): gg sans where it is installed, with
+   Discord's fallbacks; name 20, lines 16; the elapsed time green with a controller, as Discord shows it. */
+.preview{font-family:"gg sans","Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif;color:#f2f3f5}
+.preview-top{font-size:16px;font-weight:600}.preview strong{font-size:20px;font-weight:700}
+.preview p,.preview .small{font-size:16px;line-height:1.35;margin:2px 0;color:#f2f3f5}.preview img{width:104px;height:104px}
+.elapsed{display:flex;align-items:center;gap:6px}.elapsed .pad{display:none;width:20px;height:20px;fill:#3ba55c;flex:none}
+.elapsed.running .pad{display:block}.elapsed.running #timer{color:#3ba55c}
+#timer{font:16px/1.35 "gg mono","Source Code Pro",Consolas,"Andale Mono WT","Andale Mono","Lucida Console",monospace;color:#b5bac1}
+/* The card back up beside the heading, and every row as short as it can be, so the page fits one screen without
+   scrolling (Astra, 2026-10-28). */
+@media(min-width:681px){.headline{grid-column:1}.card-wrap{grid-column:2;grid-row:1/span 2}}
+.workspace{padding:14px 38px;row-gap:10px;column-gap:32px}#intro{margin-bottom:18px}
+.card-label{margin-bottom:10px}.astra-footer{padding:8px 22px 10px}

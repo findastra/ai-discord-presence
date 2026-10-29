@@ -27,13 +27,14 @@ async function request(path, body) {
 }
 
 function drawTimer() {
+  $('timer').parentElement.classList.remove('running');
   if (ended) { $('timer').textContent = 'App closed. You can close this tab.'; return; }
   if (!state?.startedAt) { $('timer').textContent = 'Ready when you are'; return; }
   const elapsed = Math.max(0, Math.floor(Date.now() / 1000) - state.startedAt);
-  const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-  const m = String(Math.floor(elapsed / 60) % 60).padStart(2, '0');
-  const s = String(elapsed % 60).padStart(2, '0');
-  $('timer').textContent = `${h}:${m}:${s} elapsed`;
+  // Discord writes elapsed time as 0:17, 12:05 or 1:02:09, in green beside a controller.
+  const h = Math.floor(elapsed / 3600), m = Math.floor(elapsed / 60) % 60, sec = String(elapsed % 60).padStart(2, '0');
+  $('timer').textContent = h ? `${h}:${String(m).padStart(2, '0')}:${sec}` : `${m}:${sec}`;
+  $('timer').parentElement.classList.add('running');
 }
 
 async function refresh() {
