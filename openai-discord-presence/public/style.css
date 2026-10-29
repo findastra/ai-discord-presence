@@ -108,3 +108,10 @@ h1{padding:0 var(--edge)}
 --drop:max(8px,min(var(--centre),calc(var(--centre) - (1000px - 100vw) * .36)))}
 .hero{height:var(--hh)}.galaxy img{height:min(100%,var(--gw))}
 h1{font-size:var(--fs);line-height:1;align-items:flex-end;padding-bottom:var(--drop)}
+/* When the window is too narrow for the buttons beside the card, the five buttons drop below it in one row as wide as
+   the card, lined up under it on the left. The card text never shrinks: in a window narrower than the card, the card narrows and
+   cuts long lines off with "…" as Discord does (Astra, 2026-10-28). */
+@media(max-width:483px){.controls{grid-template-columns:minmax(0,300px);width:100%}.controls .card-label{grid-column:1;grid-row:1}
+.controls .preview{grid-column:1;grid-row:2}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;gap:4px}
+.controls .buttons button{flex:1 1 auto;min-width:0;padding:6px 4px}}
+@media(max-width:360px){:root{--edge:16px}.controls .buttons{gap:3px}}
