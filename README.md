@@ -3,26 +3,15 @@
 *By Astra.* Show your friends on Discord which AI you're working with, which model, what it's working on and for how
 long. Two small Windows apps, one per company.
 
-<table>
-<tr>
-<th width="50%"><a href="https://github.com/findastra/openai-discord-presence">OpenAI Discord Presence</a></th>
-<th width="50%"><a href="https://github.com/findastra/anthropic-discord-presence">Anthropic Discord Presence</a></th>
-</tr>
-<tr>
-<td align="center">for Codex</td>
-<td align="center">for Claude Code</td>
-</tr>
-<tr>
-<td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/openai-discord-presence.zip">⬇ Download for Windows</a></b></td>
-<td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/anthropic-discord-presence.zip">⬇ Download for Windows</a></b></td>
-</tr>
-</table>
-
 ## The card
 
 What your friends see on your Discord profile while the app is sharing:
 
 <table>
+<tr>
+<th width="50%"><a href="https://github.com/findastra/openai-discord-presence">OpenAI Discord Presence</a><br><sub>for Codex</sub></th>
+<th width="50%"><a href="https://github.com/findastra/anthropic-discord-presence">Anthropic Discord Presence</a><br><sub>for Claude Code</sub></th>
+</tr>
 <tr>
 <td width="50%"><a href="https://github.com/findastra/openai-discord-presence"><img src="docs/images/openai-card-20261029.gif" alt="OpenAI Discord Presence card: Using GPT-6 Astra on Ultra, Working on Astra's Infinite Pole, timer running" width="100%"></a></td>
 <td width="50%"><a href="https://github.com/findastra/anthropic-discord-presence"><img src="docs/images/anthropic-card-20261029.gif" alt="Anthropic Discord Presence card: Using Claude Opus 5.5 on Max, Working on Astra's Infinite Pole, timer running" width="100%"></a></td>
@@ -43,8 +32,16 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 
 <table>
 <tr>
+<th width="50%">OpenAI Discord Presence</th>
+<th width="50%">Anthropic Discord Presence</th>
+</tr>
+<tr>
 <td width="50%"><a href="openai-discord-presence/README.md"><img src="docs/images/openai-app-20261029.png" alt="OpenAI Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
 <td width="50%"><a href="anthropic-discord-presence/README.md"><img src="docs/images/anthropic-app-20261029.png" alt="Anthropic Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
+</tr>
+<tr>
+<td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/openai-discord-presence.zip">⬇ Download for Windows</a></b></td>
+<td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/anthropic-discord-presence.zip">⬇ Download for Windows</a></b></td>
 </tr>
 <tr>
 <td align="center"><a href="openai-discord-presence/README.md">Everything about the OpenAI app</a></td>
@@ -59,7 +56,7 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 ### Start it (about 2 minutes)
 
 1. Install [Node.js 24 or later](https://nodejs.org/en/download).
-2. Download your app from the top of this page, unzip it and double-click **Start OpenAI Discord Presence.cmd** (or
+2. Download your app from the table above, unzip it and double-click **Start OpenAI Discord Presence.cmd** (or
    **Start Anthropic Discord Presence.cmd**).
 3. Click **Automatic**, and keep Discord desktop open with activity sharing on.
 
