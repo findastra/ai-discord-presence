@@ -43,8 +43,7 @@ h1{position:relative;z-index:1;flex-direction:column;align-items:center;padding:
 @media(min-width:861px){.workspace{grid-template-columns:minmax(0,1fr) auto;column-gap:48px}
 .headline{grid-column:1;grid-row:1;align-self:end}.session{grid-column:1;grid-row:2;align-self:start}
 .controls{grid-column:2;grid-row:1/span 2;align-self:center}}
-@media(max-width:860px){.workspace{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:14px;padding:18px 22px}
-.controls{align-self:center;width:min(100%,436px)}}
+@media(max-width:860px){.workspace{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:14px;padding:18px 22px}}
 
 /* The buttons stacked beside the card, exactly as tall as it, so they read as its controls. */
 .controls{display:grid;grid-template-columns:auto minmax(0,300px);column-gap:16px;row-gap:10px}.card-wrap{display:contents}
@@ -70,7 +69,7 @@ button[aria-pressed=true],#manual[aria-pressed=true],#off[aria-pressed=true],#au
 
 /* The footer: room around the star, and the sparkles either side of it equally far away. */
 .astra-footer{padding:18px 22px 20px}.astra-footer .footer-sparkle{margin:0}
-/* Phone width: no room beside the card, so the card takes the width and the buttons sit under it, as wide as it. */
-@media(max-width:520px){.controls{grid-template-columns:minmax(0,1fr);width:100%}.controls .card-label{grid-column:1;grid-row:1}
+/* Narrow (one column): the label, then the card, then the buttons, each all the way across (Astra, 2026-10-28). */
+@media(max-width:860px){.controls{grid-template-columns:minmax(0,1fr);width:100%}.controls .card-label{grid-column:1;grid-row:1}
 .controls .preview{grid-column:1;grid-row:2;max-width:none}.controls .buttons{grid-column:1;grid-row:3;flex-direction:row;flex-wrap:wrap;gap:6px}
 .controls .buttons button{flex:1 1 auto;padding:7px 12px}.astra-footer .footer-group{gap:8px}}
