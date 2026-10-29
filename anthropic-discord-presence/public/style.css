@@ -79,3 +79,8 @@ header{padding-left:max(4%,calc((100% - 1140px) / 2 + 38px));padding-right:max(4
 /* The same room above and below the middle section at every width, so the footer always sits the same distance
    under it (Astra, 2026-10-28). */
 .workspace{padding-top:18px;padding-bottom:18px}
+/* The line under the galaxy glides as the window changes, never jumps: the room kept below it grows smoothly as the
+   window narrows (340px from 1100px wide up, 444px by the switch to one column, more on phones), and the galaxy
+   shrinks inside the space above it (Astra, 2026-10-28). */
+:root{--reserve:min(640px,max(340px,min(444px,calc(340px + (1100px - 100vw) * .433)),calc(444px + (650px - 100vw) * .39)))}
+.hero{flex:none;height:max(180px,calc(100vh - var(--reserve)))}.workspace{flex:1 0 auto}
