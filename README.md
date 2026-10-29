@@ -3,7 +3,7 @@
 *By Astra.* Show your friends on Discord which AI you're working with, which model, what it's working on and for how
 long. Two small Windows apps, one per company.
 
-## The card
+## The Card
 
 What your friends see on your Discord profile while the app is sharing:
 
@@ -20,7 +20,7 @@ What your friends see on your Discord profile while the app is sharing:
 
 The company, the model and effort, the chat's name (if you turn it on) and the time. Several chats take turns.
 
-## The app
+## The App
 
 A small program on your PC. Its page opens in your browser and shows a live preview of your card.
 
@@ -43,7 +43,7 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 </tr>
 </table>
 
-### The buttons
+### Buttons & Instructions
 
 <table>
 <tr>
@@ -84,7 +84,7 @@ A small program on your PC. Its page opens in your browser and shows a live prev
   **Enable Automatic Startup.cmd** again if you moved the folder.
 - Windows only, with Node.js 24+ and Discord desktop.
 
-## How it was made
+## Developer Notes
 
 - OpenAI Discord Presence: OpenAI Codex (GPT-6), from 2026-09-12.
 - Anthropic Discord Presence, the shared repo and the galaxy art: Claude Opus 5.5.
