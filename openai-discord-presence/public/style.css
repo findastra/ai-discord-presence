@@ -26,3 +26,9 @@
 body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:flex;flex-direction:column}
 .workspace{flex:1;width:100%;align-content:space-evenly;align-items:center}
 .session h2{margin-top:0}
+/* The card as Discord draws it (Astra's screenshot, 2026-10-28): small rounded corners, the image's top level with
+   the name, the image about six text lines tall. */
+.preview{border-radius:8px;align-items:flex-start}.preview img{border-radius:8px}
+/* A bigger galaxy with a smaller title beside it, so the words sit clear of the spiral. */
+@media(min-width:681px){.hero{height:calc(min(700px,calc(100vh - 380px),90vw) + 16px)}.galaxy img{height:min(700px,calc(100vh - 380px),90vw);max-width:90%}}
+@media(min-width:681px){h1{font-size:clamp(34px,4.6vw,64px);letter-spacing:-2px;padding:0 5%}}
