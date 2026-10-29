@@ -49,9 +49,19 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 </tr>
 </table>
 
-- **Start** shares until you click **Stop**. **Automatic** shares while Codex or Claude Code is working.
-- **Show Chat Topic** adds the chat's name to the card. **Quit** closes the app.
-- Start, Automatic, Stop and Quit are also in its galaxy tray icon by the clock (right-click it).
+### The buttons
+
+| Button | What it does |
+| --- | --- |
+| <kbd>Start</kbd> | Puts the card on your profile now and starts the timer. It stays up until you click **Stop** or **Quit**. Use it for Claude on the web, desktop chat and cloud sessions, which Automatic can't see. |
+| <kbd>Stop</kbd> | Takes the card off your profile. The app keeps running. |
+| <kbd>Automatic</kbd> | Shows the card while Codex (OpenAI app) or Claude Code (Anthropic app) has been active in the last five minutes, and hides it after. |
+| <kbd>Show Chat Topic</kbd> | Adds the chat's name to the card. Click it again (**Hide Chat Topic**) to take the name off. |
+| <kbd>Quit</kbd> | Closes the app and takes the card off. Click it twice within 3 seconds, so a stray click can't close it. |
+
+Start, Stop and Automatic are one choice: only the one in use is lit. The card on the page is a live preview of what
+your friends see. Start, Automatic, Stop and Quit are also in the app's galaxy tray icon by the clock (right-click it).
+Closing the browser tab leaves the app running.
 
 ### Start it (about 2 minutes)
 
