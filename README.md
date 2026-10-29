@@ -1,29 +1,42 @@
 # Findastra Discord Presence
 
-*By Astra.* Managed by **Discord Damsel**, one of the pets in [Astra's PetOS](https://github.com/findastra/astras-pet-os).
+*By Astra.* Show the AI model you're using on your Discord profile: the model and effort level, an optional project
+name, an elapsed timer and a swirling galaxy. Two small Windows apps, one per company.
 
-Share AI activity on your Discord profile: the model and effort level when local metadata exposes them, an optional project name, an elapsed timer, and a swirling galaxy.
-
-Two small Windows apps, one for each company's models. Both can run together, but Discord may display only one card even when it accepts both activities. Each card was verified individually on Discord desktop; simultaneous display is not guaranteed.
-
-| | |
-|:---:|:---:|
-| ![OpenAI galaxy](openai-discord-presence/public/galaxy-card.gif) | ![Anthropic galaxy](anthropic-discord-presence/public/galaxy-card.gif) |
-| **OpenAI Discord Presence** | **Anthropic Discord Presence** |
-| Automatic for **Codex** | Automatic for **Claude Code**; manual or **Always on** for Claude on the web, desktop chat and cloud sessions |
-| **[⬇ Download for Windows](https://github.com/findastra/findastra-discord-presence/raw/main/downloads/openai-discord-presence.zip)** | **[⬇ Download for Windows](https://github.com/findastra/findastra-discord-presence/raw/main/downloads/anthropic-discord-presence.zip)** |
+<div align="center">
+<table>
+<tr>
+<td align="center"><img src="openai-discord-presence/public/galaxy.gif" alt="OpenAI galaxy" width="240" height="240"></td>
+<td align="center"><img src="anthropic-discord-presence/public/galaxy.gif" alt="Anthropic galaxy" width="240" height="240"></td>
+</tr>
+<tr>
+<td align="center"><b>OpenAI Discord Presence</b></td>
+<td align="center"><b>Anthropic Discord Presence</b></td>
+</tr>
+<tr>
+<td align="center">Automatic for <b>Codex</b></td>
+<td align="center">Automatic for <b>Claude Code</b></td>
+</tr>
+<tr>
+<td align="center"><b><a href="https://github.com/findastra/findastra-discord-presence/raw/main/downloads/openai-discord-presence.zip">⬇ Download for Windows</a></b></td>
+<td align="center"><b><a href="https://github.com/findastra/findastra-discord-presence/raw/main/downloads/anthropic-discord-presence.zip">⬇ Download for Windows</a></b></td>
+</tr>
+</table>
+</div>
 
 ## Start it (about 2 minutes)
 
-1. Install [Node.js 24 or later](https://nodejs.org/en/download) if you don't have it.
-2. Download and unzip the app(s) you want.
-3. Double-click **Start OpenAI Discord Presence.cmd** (or **Start Anthropic Discord Presence.cmd**) in the unzipped folder. Your browser opens its controls.
-4. Click **Automatic** for Codex or Claude Code. For regular Claude desktop chat, use **Start session** and **Stop sharing**, or turn on **Always on** in Settings. Keep Discord desktop open with activity sharing enabled.
-5. Optional: double-click **Enable Automatic Startup.cmd** once so it starts with Windows.
+1. Install [Node.js 24 or later](https://nodejs.org/en/download).
+2. Unzip the download and double-click **Start OpenAI Discord Presence.cmd** (or **Start Anthropic Discord
+   Presence.cmd**). Its controls open in your browser.
+3. Click **Automatic**. For Claude on the web, the desktop chat or cloud sessions, which leave nothing on your PC to
+   detect, use **Start session** / **Stop sharing**, or turn on **Always on** in Settings.
+4. Keep Discord desktop open with activity sharing on. Optional: **Enable Automatic Startup.cmd** starts it with Windows.
 
-When updating, quit the running companion from its control panel before opening the new copy. The launcher checks the installation and build so an older process cannot silently stand in for the update. If you move the folder, enable startup again from the new location.
-
-No account, API key or Discord setup needed. Everything runs on your own computer; nothing is sent anywhere except the card itself to your own Discord app. Details: [OpenAI app](openai-discord-presence/README.md) · [Anthropic app](anthropic-discord-presence/README.md).
+No account, API key or Discord setup. Everything runs on your PC; only the card goes to your own Discord app. To
+update, choose **Quit app** in the old controls first (the launcher refuses to let an older copy stand in), and enable
+startup again if you moved the folder. Full details: [OpenAI app](openai-discord-presence/README.md) ·
+[Anthropic app](anthropic-discord-presence/README.md).
 
 ## What the card shows
 
@@ -32,26 +45,32 @@ No account, API key or Discord setup needed. Everything runs on your own compute
 > Working on paper-girl
 > 00:42 elapsed
 
-The title is the company; the line under it is the detected model and effort level when available. Your project is opt-in: a chat or session you renamed shows that name (Codex rename, or `/rename` in Claude Code), otherwise the folder you're working in. A chat started from another chat in the Claude desktop app shows the top-level chat's name, as the app's sidebar lists it. Renames show within a few seconds. With several projects active, every one takes a turn on the card, one every 6 seconds, each paired with its own model and effort; the control panel lists them all.
-
-Codex and Claude Code expose model metadata. Anthropic Automatic requires Claude Code conversation activity recorded in the last five minutes, including desktop Code sessions with supported local metadata. An open app or a touched transcript file does not count. Regular Claude desktop chat, Claude on the web and cloud sessions have no reliable automatic detector here; use manual **Start session** and **Stop sharing**, or turn on **Always on** in the Anthropic app's Settings to share whenever it runs. Missing model metadata is labeled **Using Claude** or **Using OpenAI**. Detection does not track foreground focus, and an accepted Discord activity is not proof that the profile displays it.
-
-## The galaxies
-
-Each galaxy has **one arm per model generation**: 6 for OpenAI (GPT-6) and 5 for Anthropic (Claude 5). When a new generation ships, its galaxy grows an arm. The animation follows real galaxy physics: stars near the core orbit several times faster than the rim, the arms trail, and stars brighten as they pass through an arm. How the art is made, with every prompt and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); the tools are in [image-bridge/](image-bridge/README.md).
-
-## Adding another AI
-
-Want a card for Gemini, Copilot or another model? Each app is a self-contained folder, so a new one is a copy of an existing app with its detection, labels, Discord application and galaxy changed. Step-by-step guide: **[ADDING-A-MODEL.md](ADDING-A-MODEL.md)**.
+- **Title:** the company. **Next line:** the detected model and effort; when local metadata has none, **Using OpenAI**
+  or **Using Claude**.
+- **Project (off by default):** turn on **Show my project on Discord**. A chat you renamed shows that name (Codex
+  rename, or `/rename` in Claude Code), otherwise its folder. A chat started from another chat in the Claude desktop app
+  shows the top-level chat's name. Renames show within seconds.
+- **Several projects:** each takes a 6-second turn with its own model and effort; the controls list them all.
+- **Automatic** counts only Codex or Claude Code activity from the last five minutes. An open app or a touched file
+  does not count, window focus is not tracked, and long silent thinking can run past the five minutes.
 
 ## Limits
 
-- Windows only, with Node.js 24 or later and Discord desktop open.
-- Discord accepts both cards, but may show only one of them on your profile; check your profile to see what friends see.
-- Automatic needs local metadata: Codex for OpenAI, Claude Code for Anthropic. Claude desktop chat, Claude on the web and cloud sessions need **Start session** or **Always on**.
-- Model, effort and project come from local metadata and can be missing; the card then says **Using OpenAI** or **Using Claude**.
-- Detection does not follow which window is in front, and long silent thinking can exceed the five-minute window.
-- New galaxy art costs money to generate and needs Astra's approval ([docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md)).
+- Windows only, with Node.js 24+ and Discord desktop.
+- Both apps can run together, but Discord may show only one card; check your profile to see what friends see.
+- Discord adds streaks and marathons only to games it recognises; an app's card cannot set them.
+
+## The galaxies
+
+One arm per model generation: 6 for OpenAI (GPT-6), 5 for Anthropic (Claude 5); a new generation adds an arm. Stars
+near the core orbit faster than the rim, the arms trail, and stars brighten as they pass through an arm. Every prompt
+and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); tools in [image-bridge/](image-bridge/README.md).
+New art costs money to generate and needs Astra's approval.
+
+## Adding another AI
+
+Each app is a self-contained folder: copy one and change its detection, labels, Discord application and galaxy.
+Step by step: **[ADDING-A-MODEL.md](ADDING-A-MODEL.md)**.
 
 ## For developers
 
@@ -60,6 +79,7 @@ node --test                     # every app's tests plus the naming rules
 node scripts/package.mjs        # rebuilds the downloads in downloads/
 ```
 
-No dependencies; Node.js 24 only. Rules for contributors (and AI assistants) are in [CLAUDE.md](CLAUDE.md).
+No dependencies. Contributor (and AI assistant) rules: [CLAUDE.md](CLAUDE.md).
 
-This is an independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord. Their names and model names are their trademarks and appear only to say which product you're using. The code is MIT-licensed; the galaxy art is original.
+An independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord; their names appear only to say
+which product you're using. MIT-licensed code; original galaxy art.
