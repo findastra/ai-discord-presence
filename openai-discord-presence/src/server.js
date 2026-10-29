@@ -10,6 +10,7 @@ import { startupEnabled, setStartup } from './windows-startup.js';
 import { SOURCE_IDENTITY } from './source-identity-20261008.js';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const VERSION = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
 const configPath = join(root, '.local', 'config.json');
 const port = Number(process.env.OPENAI_PRESENCE_PORT || 38761);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Invalid OPENAI_PRESENCE_PORT.');
@@ -120,7 +121,7 @@ const server = http.createServer(async (req, res) => {
   if (req.headers.host !== `127.0.0.1:${port}`) return send(res, 403, { error: 'Local requests only.' });
   try {
     if (req.method === 'GET' && req.url === '/api/status') {
-      return send(res, 200, { app: 'openai-discord-presence', identity: SOURCE_IDENTITY, config, mode: presence.mode, startedAt: presence.startedAt, published,
+      return send(res, 200, { app: 'openai-discord-presence', version: VERSION, identity: SOURCE_IDENTITY, config, mode: presence.mode, startedAt: presence.startedAt, published,
         connected: rpc.ready, message, startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'OpenAI', detection: detection.message,
         projects: config.shareProject && !config.projectName ? [...new Set(rotationCards(detection.sessions ?? []).map(s => s.project).filter(Boolean))] : [],
         rotateSeconds: ROTATE_MS / 1000 });

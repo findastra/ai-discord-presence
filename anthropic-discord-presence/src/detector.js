@@ -353,7 +353,7 @@ export async function detectClaude({ now = Date.now(), home = process.env.CLAUDE
       const projects = [...new Set(sessions.map(session => session.project).filter(Boolean))];
       return { active: true, model, effort, project, projects, sessions, message: `Recent ${modelLabel(model) || 'Claude Code'} activity detected.` };
     }
-    return { active: false, model: '', effort: '', project: '', message: 'Waiting for recent Claude conversation activity.' };
+    return { active: false, model: '', effort: '', project: '', message: 'Automatic is on. Your card appears as soon as a Claude Code chat starts working.' };
   } catch {
     return { active: false, model: '', effort: '', project: '', message: 'Automatic detection unavailable. Manual mode still works.' };
   }
