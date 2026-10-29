@@ -7,18 +7,16 @@ long. Two small Windows apps, one per company.
 
 What your friends see on your Discord profile:
 
-<div align="center">
-<table>
-<tr>
-<td align="center"><img src="docs/images/openai-card-20261029.gif" alt="OpenAI Discord Presence card: Using GPT-6 Astra on Ultra, Working on Astra's Infinite Pole, timer running" width="400"></td>
-<td align="center"><img src="docs/images/anthropic-card-20261029.gif" alt="Anthropic Discord Presence card: Using Claude Opus 5.5 on Max, Working on Astra's Infinite Pole, timer running" width="400"></td>
-</tr>
-<tr>
-<td align="center"><b>OpenAI Discord Presence</b><br>for Codex</td>
-<td align="center"><b>Anthropic Discord Presence</b><br>for Claude Code</td>
-</tr>
-</table>
-</div>
+<p align="center">
+<a href="https://github.com/findastra/openai-discord-presence"><img src="docs/images/openai-card-20261029.gif" alt="OpenAI Discord Presence card: Using GPT-6 Astra on Ultra, Working on Astra's Infinite Pole, timer running" width="48%"></a>
+<a href="https://github.com/findastra/anthropic-discord-presence"><img src="docs/images/anthropic-card-20261029.gif" alt="Anthropic Discord Presence card: Using Claude Opus 5.5 on Max, Working on Astra's Infinite Pole, timer running" width="48%"></a>
+</p>
+
+<p align="center">
+<b><a href="https://github.com/findastra/openai-discord-presence">OpenAI Discord Presence</a></b> for Codex
+&nbsp;·&nbsp;
+<b><a href="https://github.com/findastra/anthropic-discord-presence">Anthropic Discord Presence</a></b> for Claude Code
+</p>
 
 - **The company**, then **the model and effort** it detects.
 - **The chat's name**, only if you turn on **Show Chat Topic**.
