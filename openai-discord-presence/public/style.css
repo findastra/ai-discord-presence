@@ -53,3 +53,11 @@ body{min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:fle
 @media(min-width:681px){.headline{grid-column:1}.card-wrap{grid-column:2;grid-row:1/span 2}}
 .workspace{padding:14px 38px;row-gap:10px;column-gap:32px}#intro{margin-bottom:18px}
 .card-label{margin-bottom:10px}.astra-footer{padding:8px 22px 10px}
+/* The card at the size Discord shows it on a profile, a touch larger (Astra's screenshot, 2026-10-28): about 300px
+   wide, a 64px galaxy, name 14 bold, lines 12, long lines cut off with "…" as Discord does. */
+@media(min-width:681px){.workspace{grid-template-columns:1fr 320px}}
+.preview{max-width:300px;padding:10px 12px 12px;border-radius:8px}.preview-top{font-size:12px;margin-bottom:8px}
+.preview-body{gap:10px;align-items:flex-start}.preview img{width:64px;height:64px;border-radius:6px;flex:none}
+.preview-body>div{min-width:0}.preview strong{font-size:14px;line-height:1.3}
+.preview p,.preview .small,#timer{font-size:12px;line-height:1.35;margin:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.elapsed{gap:4px}.elapsed .pad{width:14px;height:14px}
