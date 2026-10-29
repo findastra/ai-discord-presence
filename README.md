@@ -47,11 +47,11 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 
 | Button | What it does |
 | --- | --- |
-| <img src="docs/images/button-start-20261029.png" alt="Start" width="118"> | Puts the card on your profile now and starts the timer, until you click Stop or Quit. Use it for Claude on the web, desktop chat and cloud sessions. |
-| <img src="docs/images/button-stop-20261029.png" alt="Stop" width="118"> | Takes the card off your profile. The app keeps running. |
-| <img src="docs/images/button-automatic-20261029.png" alt="Automatic" width="118"> | Shows the card while Codex or Claude Code is working, and hides it five minutes after. |
-| <img src="docs/images/button-chat-topic-20261029.png" alt="Hide Chat Topic" width="118"> | Takes the chat's name off the card. Click it again (Show Chat Topic) to put it back. |
-| <img src="docs/images/button-quit-20261029.png" alt="Quit" width="118"> | Closes the app. Click it twice within 3 seconds. |
+| <img src="docs/images/button-start-20261029.png" alt="Start" width="178"> | Puts the card on your profile now and starts the timer, until you click Stop or Quit. Use it for Claude on the web, desktop chat and cloud sessions. |
+| <img src="docs/images/button-stop-20261029.png" alt="Stop" width="178"> | Takes the card off your profile. The app keeps running. |
+| <img src="docs/images/button-automatic-20261029.png" alt="Automatic" width="178"> | Shows the card while Codex or Claude Code is working, and hides it five minutes after. |
+| <img src="docs/images/button-chat-topic-20261029.png" alt="Hide Chat Topic" width="178"> | Takes the chat's name off the card. Click it again (Show Chat Topic) to put it back. |
+| <img src="docs/images/button-quit-20261029.png" alt="Quit" width="178"> | Closes the app. Click it twice within 3 seconds. |
 
 ## Quirks
 
