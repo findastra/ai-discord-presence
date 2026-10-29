@@ -78,24 +78,52 @@ A small program on your PC. Its page opens in your browser and shows a live prev
   your PC to detect: click **Start** instead.
 - Automatic counts activity from the last five minutes. An open app or a touched file does not count, window focus is
   not tracked, and a long silent think can run past the five minutes.
+- Discord desktop must be open, with activity sharing on.
+- When no model is found, the card says **Using OpenAI** or **Using Claude** instead of guessing.
+- **Chat Topic** is the name you gave the chat (rename in Codex, `/rename` in Claude Code), otherwise its folder. A
+  chat started from another chat in the Claude desktop app shows the first chat's name. Automatic chat titles are
+  never used.
+- Several chats take 6-second turns: Discord accepts about five updates per 20 seconds.
+- The timer counts time shared, not the AI's thinking time.
+- Closing the browser tab leaves the app running. Start, Automatic, Stop and Quit are also in its galaxy tray icon by
+  the clock (right-click it).
 - Both apps can run together, but Discord may show only one card; check your profile to see what friends see.
 - Discord adds streaks and marathons only to games it recognises; an app's card cannot set them.
+- **Privacy:** the apps read only the model, effort, times and folder or chat names, never prompts, replies or automatic
+  titles. Only the card goes to your Discord.
 - To update, click **Quit** in the old copy first (the launcher refuses to let an older copy stand in), and run
   **Enable Automatic Startup.cmd** again if you moved the folder.
 - Windows only, with Node.js 24+ and Discord desktop.
 
 ## Developer Notes
 
-- OpenAI Discord Presence: OpenAI Codex (GPT-6), from 2026-09-12.
-- Anthropic Discord Presence, the shared repo and the galaxy art: Claude Opus 5.5.
+- **Built with:** OpenAI Discord Presence by OpenAI Codex (GPT-6), from 2026-09-12. Anthropic Discord Presence, the
+  shared repo, the galaxy art and the image bridge by Claude Opus 5.5, from 2026-10-06. Full list: the "Built with"
+  lines in [AGENTS.md](AGENTS.md).
+- **What's where:** one folder per app (`openai-discord-presence/`, `anthropic-discord-presence/`, each with `src/`,
+  `public/`, `scripts/` and `test/`); `downloads/` holds the built ZIPs; `image-bridge/` makes the galaxies; `docs/`
+  has the art recipe and the README pictures; `test/` checks names and the controls pages across both apps.
+- **Run from source:** `node src/server.js` in an app folder. The page is `http://127.0.0.1:38761/` (OpenAI) or
+  `http://127.0.0.1:38762/` (Anthropic); `OPENAI_PRESENCE_PORT` or `ANTHROPIC_PRESENCE_PORT` changes it. The server
+  listens on 127.0.0.1 only and checks Host and Origin on every change.
+- **Settings** live in each app's git-ignored `.local/config.json`. Never commit it, or any log or cache.
+- **Tests** (every app plus the naming rules): `node --test`. Add tests with every behaviour change. **Rebuild the
+  downloads** with `node scripts/package.mjs` before pushing any app change. No dependencies.
+- **The card's galaxy** is loaded by Discord from `<app>/public/galaxy-card.gif` on this repo's `main` branch
+  (`GALAXY_URL` in `src/presence.js`). Moving or renaming it breaks every running card; when the art changes, bump
+  its `?v=` so Discord fetches it again.
 - **The galaxies:** one arm per model generation (6 for GPT-6, 5 for Claude 5); a new generation adds an arm. Stars
-  near the core orbit faster than the rim, the arms trail, and stars brighten as they pass through an arm. Every prompt
-  and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); tools in [image-bridge/](image-bridge/README.md).
-  New art costs money to generate and needs Astra's approval.
+  near the core orbit faster than the rim, the arms trail, and stars brighten as they pass through an arm. GIFs stay
+  under 10 MB. Every prompt and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); tools in
+  [image-bridge/](image-bridge/README.md) (`imagine.mjs` is also used by `astras-pet-os`, so don't move it). New art
+  costs money to generate and needs Astra's approval.
+- **Turns:** `ROTATE_MS` in `src/presence.js` is 6000, Discord's safe limit. Don't lower it.
+- **Detection reads metadata only:** never conversation text, prompts or automatic chat titles. Rules:
+  [CLAUDE.md](CLAUDE.md), Privacy.
 - **Adding another AI:** each app is a self-contained folder: copy one and change its detection, labels, Discord
   application and galaxy. Step by step: [ADDING-A-MODEL.md](ADDING-A-MODEL.md).
-- **Tests** (every app plus the naming rules): `node --test`. **Rebuild the downloads:** `node scripts/package.mjs`.
-  No dependencies. Contributor (and AI assistant) rules: [CLAUDE.md](CLAUDE.md).
+- **Rules and handoffs:** [CLAUDE.md](CLAUDE.md) and [AGENTS.md](AGENTS.md) for contributors and AI assistants; open
+  work in [handoffs/](handoffs/README.md); report a vulnerability through [SECURITY.md](SECURITY.md).
 
 An independent project, not made, endorsed or sponsored by OpenAI, Anthropic or Discord; their names appear only to say
 which product you're using. MIT-licensed code; original galaxy art.
