@@ -12,12 +12,19 @@ What your friends see on your Discord profile while the app is sharing:
 <th width="50%"><a href="anthropic-discord-presence/README.md">Anthropic Discord Presence</a><br><sub>for Claude Code</sub></th>
 </tr>
 <tr>
-<td width="50%"><a href="openai-discord-presence/README.md"><img src="docs/images/openai-card-20261029.gif" alt="OpenAI Discord Presence card: Using GPT-6 Astra on Ultra, Working on Astra's Infinite Pole, timer running" width="100%"></a></td>
-<td width="50%"><a href="anthropic-discord-presence/README.md"><img src="docs/images/anthropic-card-20261029.gif" alt="Anthropic Discord Presence card: Using Claude Opus 5.5 on Max, Working on Astra's Infinite Pole, timer running" width="100%"></a></td>
+<td width="50%"><a href="openai-discord-presence/README.md"><img src="docs/images/openai-card-20261030.gif" alt="OpenAI Discord Presence card: Using GPT-6 Astra on Ultra, Working on Astra's Infinite Pole, timer running" width="100%"></a></td>
+<td width="50%"><a href="anthropic-discord-presence/README.md"><img src="docs/images/anthropic-card-20261030.gif" alt="Anthropic Discord Presence card: Using Claude Opus 5.5 on Max, Working on Astra's Infinite Pole, timer running" width="100%"></a></td>
 </tr>
 </table>
 
 The company, the model and effort, the chat's name (if you turn it on) and the time. Several chats take turns.
+
+## Official Artwork
+
+Astra approved these galaxies on October 30, 2026: individual blue or gold stars flow
+into a white core, with the outside fading completely to black. The apps and portfolio
+render continuous motion; Discord uses seamless 25-fps GIFs.
+[Artwork, source and reproduction](docs/official-galaxy-artwork-20261030.md).
 
 ## The App
 
@@ -29,8 +36,8 @@ A small program on your PC. Its page opens in your browser and shows a live prev
 <th width="50%">Anthropic Discord Presence</th>
 </tr>
 <tr>
-<td width="50%"><a href="openai-discord-presence/README.md"><img src="docs/images/openai-app-20261029.png" alt="OpenAI Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
-<td width="50%"><a href="anthropic-discord-presence/README.md"><img src="docs/images/anthropic-app-20261029.png" alt="Anthropic Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
+<td width="50%"><a href="openai-discord-presence/README.md"><img src="docs/images/openai-app-20261030.png" alt="OpenAI Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
+<td width="50%"><a href="anthropic-discord-presence/README.md"><img src="docs/images/anthropic-app-20261030.png" alt="Anthropic Discord Presence's page: the galaxy, the Start, Stop, Automatic, Hide Chat Topic and Quit buttons, and the card" width="100%"></a></td>
 </tr>
 <tr>
 <td align="center"><b><a href="https://github.com/findastra/ai-discord-presence/raw/main/downloads/openai-discord-presence.zip">⬇ Download for Windows</a></b></td>
@@ -110,7 +117,7 @@ sharing on.
    (`GALAXY_URL` in `src/presence.js`). Moving or renaming it breaks every running card; when the art changes, bump
    its `?v=` so Discord fetches it again.
 6. **The galaxies:** one arm per model generation (6 for GPT-6, 5 for Claude 5); a new generation adds an arm. Stars
-   near the core orbit faster than the rim, the arms trail, and stars brighten as they pass through an arm. GIFs stay
+   move individually along fixed spiral arms into a white nucleus. GIFs stay
    under 10 MB. Every prompt and command: [docs/galaxy-art-20261017.md](docs/galaxy-art-20261017.md); tools in
    [image-bridge/](image-bridge/README.md).
 7. **Turns:** `ROTATE_MS` in `src/presence.js` is 6000, Discord's safe limit. Don't lower it.

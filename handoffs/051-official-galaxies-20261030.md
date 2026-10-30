@@ -9,7 +9,7 @@ artwork, preserving blue stars and fading the outer edge into black. Apply to bo
 presence apps, both storefronts and the portfolio website.
 
 ## Ownership and state
-State: IN_PROGRESS. Implementer: root Codex session; review: galaxy_assets (read-only).
+State: READY_FOR_REVIEW (review passed; publishing). Implementer: root Codex session; review: galaxy_assets (read-only).
 Root owns integration, renderer/data, docs, tests and publication. A bounded export
 helper may be delegated separately; no two agents write the same file.
 Scope is the exact list in the change record. Existing unrelated work is preserved.
@@ -28,4 +28,20 @@ edges; apps and downloaded builds work; independent review passes; source and we
 are published and checked. No user settings, detection behavior or credentials change.
 
 ## Receipt and review
-Pending final revision and validation evidence.
+- galaxy_assets received this card and the bounded scope before reviewing.
+- Reviewed source/portfolio runtime and integration, including renderer SHA256
+  `ccbf0dbe3167b019c73793d2f85e465f507c803436a2b0c19836d9d1aa9db42b`.
+- Found and returned a repeated WebGL restoration listener leak. Root fixed it;
+  reviewer reran three restoration cycles: exactly one renderer/observer, no leaks.
+- Independent review passed: 114 tests; offscreen and paused drawing stops; detached
+  canvases clean up; no page errors; source/portfolio renderer and data copies match.
+- Root verified real app asset routes/MIME/bytes, widths 360/768/1200, pause, reduced
+  motion and context-loss still fallback. Black eight-pixel outer margins at times
+  0,20,80,160; blue/red ratio 1.27–1.34, gold retained. Two ZIPs contain tested assets.
+- archived_galaxy_chat received only the bounded local export-helper scope and
+  delivered six GIFs. All 3,600 frames independently decoded and matched intended
+  RGB hashes; 600frames/25fps/24seconds; all under10MB; seamless endpoint checks.
+- reference_motion received only portfolio files and copies, delivered responsive
+  UI checks and released ownership to root. Root retained all publication scope.
+- Astra authorized publication and the website update in the request that started
+  this revision. Final merge/deployment evidence remains to be appended.

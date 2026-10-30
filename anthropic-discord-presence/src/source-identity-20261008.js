@@ -7,6 +7,7 @@ export function sourceIdentity(root = fileURLToPath(new URL('../', import.meta.u
   const canonical = realpathSync(root).replaceAll('\\', '/');
   const files = [
     ...readdirSync(join(root, 'src')).filter(name => name.endsWith('.js')).map(name => 'src/' + name),
+    'public/official-galaxy-data-20261030.js', 'public/official-galaxy-renderer-20261030.js', 'public/official-galaxy-still-20261030.png',
     'scripts/startup.js', 'public/index.html', 'public/app.js', 'public/style.css', 'package.json',
   ].sort();
   const hash = createHash('sha256');

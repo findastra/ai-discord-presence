@@ -90,7 +90,7 @@ export function effortLabel(id) {
 // The project's own Discord application. Application IDs are public, so friends can use it without any setup.
 export const BUILT_IN_CLIENT_ID = '1555096326734094356';
 
-export const GALAXY_URL = 'https://raw.githubusercontent.com/findastra/ai-discord-presence/main/anthropic-discord-presence/public/galaxy-card.gif?v=8';
+export const GALAXY_URL = 'https://raw.githubusercontent.com/findastra/ai-discord-presence/main/anthropic-discord-presence/public/galaxy-card.gif?v=9';
 
 export function activity(startedAt, image = GALAXY_URL, project = '', model = '', effort = '') {
   if (startedAt === null) return null;
@@ -110,7 +110,9 @@ export function activity(startedAt, image = GALAXY_URL, project = '', model = ''
 
 export function validateConfig(input) {
   const clientId = String(input.clientId ?? '').trim();
-  const image = String(input.image || GALAXY_URL).trim();
+  const savedImage = String(input.image || GALAXY_URL).trim();
+  // Refresh only this app's built-in art; keep custom image URLs and asset keys.
+  const image = /^https:\/\/raw\.githubusercontent\.com\/findastra\/ai-discord-presence\/main\/anthropic-discord-presence\/public\/galaxy-card\.gif(?:\?v=\d+)?$/.test(savedImage) ? GALAXY_URL : savedImage;
   if (!/^\d{17,20}$/.test(clientId)) throw new Error('Paste the 17–20 digit Discord Application ID. No token needed.');
   // Either an uploaded Discord asset key or an https image link.
   if (!/^[a-z0-9_-]{1,128}$/.test(image) && !/^https:\/\/[^\s"<>]{1,240}$/.test(image)) throw new Error('Use an uploaded asset key or an https image link.');

@@ -120,6 +120,9 @@ const assets = {
   '/style.css': ['style.css', 'text/css; charset=utf-8'],
   '/galaxy.png': ['galaxy.png', 'image/png'],
   '/galaxy.gif': ['galaxy.gif', 'image/gif'],
+  '/official-galaxy-still-20261030.png': ['official-galaxy-still-20261030.png', 'image/png'],
+  '/official-galaxy-data-20261030.js': ['official-galaxy-data-20261030.js', 'text/javascript; charset=utf-8'],
+  '/official-galaxy-renderer-20261030.js': ['official-galaxy-renderer-20261030.js', 'text/javascript; charset=utf-8'],
 };
 
 const server = http.createServer(async (req, res) => {

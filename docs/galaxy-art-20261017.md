@@ -4,6 +4,12 @@ By Astra. Claude Opus 5.5 (`claude-opus-5-5`), 2026-10-17. Tools: [image-bridge/
 
 Each app's card art is an original galaxy: **one arm per current model generation** (OpenAI 6 for GPT-6, Anthropic 5 for Claude 5), centred, filling the square, on black, with a seamless swirl that moves like a real spiral galaxy. Approved by Astra on 2026-10-07/08.
 
+## Current official animation
+
+On 2026-10-30 Astra approved the individual-star inward flow as the official artwork.
+The original PNG recipe below remains unchanged. The old rotating GIF method in section4
+is historical; see [the current artwork and animation](official-galaxy-artwork-20261030.md).
+
 ## Verified
 
 Running steps 3 and 4 below on `image-bridge/masters/` rebuilds both shipped `public/galaxy.png` files **exactly** (0 differing values of 3,145,728 each), checked 2026-10-17.

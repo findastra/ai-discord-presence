@@ -119,3 +119,7 @@ h1{font-size:var(--fs);line-height:1;align-items:flex-end;padding-bottom:var(--d
    card's left edge, using the room the middle section has (Astra, 2026-10-28). */
 @media(max-width:483px){.controls .buttons{flex-direction:column;justify-self:start;align-self:start;gap:4px}
 .controls .buttons button{flex:none;min-width:0;padding:4px 16px}}
+
+/* Official individual-star artwork. By Astra, 2026-10-30. */
+.hero{background:#000}.galaxy,.galaxy img{animation:none!important;transform:none!important}.galaxy img{mask-image:none;mix-blend-mode:normal}.official-galaxy canvas{position:absolute;inset:0;margin:auto;height:min(100%,var(--gw));width:auto;aspect-ratio:1;display:none}.official-galaxy-ready>canvas{display:block}.official-galaxy-ready>img{visibility:hidden}.galaxy-pause{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:1;padding:4px 10px;font-size:11px;background:#000a}.official-card-galaxy{position:relative;width:64px;height:64px;flex:none;border-radius:6px;overflow:hidden;background:#000}.official-card-galaxy canvas,.official-card-galaxy img{position:absolute;inset:0;width:100%;height:100%}.official-card-galaxy canvas{display:none}.official-card-galaxy.official-galaxy-ready canvas{display:block}
+.official-galaxy:not(.official-galaxy-ready)+.galaxy-pause{display:none}
