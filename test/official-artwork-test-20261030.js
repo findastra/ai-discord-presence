@@ -38,7 +38,11 @@ for(const brand of ['openai','anthropic']){
       files.set(name,zip.subarray(start,start+bytes));offset=start+bytes;
     }
     for(const file of ['index.html','style.css','official-galaxy-data-20261030.js','official-galaxy-renderer-20261030.js','official-galaxy-still-20261030.png','galaxy.gif']){
-      assert.deepEqual(files.get(brand+'-discord-presence/public/'+file),readFileSync(new URL('public/'+file,base)),file+' must match source');
+      const packed=files.get(brand+'-discord-presence/public/'+file),source=readFileSync(new URL('public/'+file,base));
+      assert(packed,file+' must be packaged');
+      // Git may check text out with CRLF on Windows; that must not fail a ZIP audit.
+      if(/\.(js|css|html)$/.test(file))assert.equal(packed.toString('utf8').replaceAll('\r\n','\n'),source.toString('utf8').replaceAll('\r\n','\n'),file+' text must match source');
+      else assert.deepEqual(packed,source,file+' binary bytes must match source');
     }
   });
 }

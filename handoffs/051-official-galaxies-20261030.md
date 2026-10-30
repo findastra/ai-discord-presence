@@ -1,4 +1,4 @@
-status: taken by Codex (official galaxy session)
+status: done
 for: Codex / galaxy_assets review
 from: OpenAI Codex (GPT-6), 2026-10-30
 needs: current repo instructions, changes/official-galaxies-20261030.md
@@ -9,7 +9,7 @@ artwork, preserving blue stars and fading the outer edge into black. Apply to bo
 presence apps, both storefronts and the portfolio website.
 
 ## Ownership and state
-State: READY_FOR_REVIEW (review passed; publishing). Implementer: root Codex session; review: galaxy_assets (read-only).
+State: DONE. Implementer: root Codex session; review: galaxy_assets (read-only).
 Root owns integration, renderer/data, docs, tests and publication. A bounded export
 helper may be delegated separately; no two agents write the same file.
 Scope is the exact list in the change record. Existing unrelated work is preserved.
@@ -44,4 +44,22 @@ are published and checked. No user settings, detection behavior or credentials c
 - reference_motion received only portfolio files and copies, delivered responsive
   UI checks and released ownership to root. Root retained all publication scope.
 - Astra authorized publication and the website update in the request that started
-  this revision. Final merge/deployment evidence remains to be appended.
+  this revision.
+
+## Publication and acceptance
+- Source: PR51 merged at `08963341232ceebef95e8e091f80699b773b2241`.
+- OpenAI storefront: PR5 merged at `eef1424a76c5cc3fa6dec5be18b3d1deaa83ca66`.
+- Anthropic storefront: PR5 merged at `962a7f2e03ed4b6ef7c8c2c2a8f6b09b83412c00`.
+- Portfolio: PR37 merged at `47de67bbc22b0086f99cc9c1bc04bb4eff56e969`;
+  GitHub Pages reported built with no error for that commit.
+- Live website HTML/CSS/JS/data matched the reviewed source (normalizing Git's
+  checkout line endings). Both public GIFs and stills returned200, correct image
+  MIME types and exact binary hashes. A fresh live browser rendered both galaxies,
+  loaded both updated app screenshots, exercised pause and reported no page errors.
+- Canonical app/storefront checkouts fast-forwarded without altering unrelated work.
+  Neither presence server was running at verification; no sharing mode was changed.
+- Follow-up: ZIP text comparison now tolerates Git's Windows CRLF checkout; PNG/GIF
+  comparisons remain byte-exact. Reviewer reproduced the line-ending-only difference,
+  approved the test correction, and reran all114 tests successfully. No runtime change.
+- Private local verification reports are available from Astra; no private paths or
+  settings were published. All new published filenames passed the dated-name audit.
