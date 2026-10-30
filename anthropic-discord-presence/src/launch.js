@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { resolve } from 'node:path';
+import { realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { SOURCE_IDENTITY } from './source-identity-20261008.js';
 const url = 'http://127.0.0.1:38762/';
 const app = 'anthropic-discord-presence';
@@ -51,6 +51,17 @@ export async function launch({ fetcher = fetch, spawnProcess = spawn, identity =
   }
   if (!background) spawnProcess('rundll32.exe', ['url.dll,FileProtocolHandler', url], { detached: true, windowsHide: true, stdio: 'ignore' }).unref();
 }
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
+function isMainModule() {
+  if (!process.argv[1]) return false;
+  // Node resolves module paths through directory junctions and symlinks.
+  // Resolve both spellings so a linked installation still runs its launcher.
+  const canonical = path => {
+    const real = realpathSync(path);
+    return process.platform === 'win32' ? real.toLowerCase() : real;
+  };
+  try { return canonical(process.argv[1]) === canonical(fileURLToPath(import.meta.url)); }
+  catch { return false; } // An imported module need not have a file-backed entrypoint.
+}
+if (isMainModule()) {
   try { await launch(); } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
