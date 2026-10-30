@@ -38,4 +38,4 @@ Record delivered commits, tests and reviewer receipt here. No merge is authorize
 
 ## Receipt and review
 
-Pending the coordinating Codex review of the delivered branch revision. Keep implementation ownership released while review runs; the reviewer will record receipt and findings before any integration.
+Received and reviewed by the coordinating OpenAI Codex session on 2026-10-30 at `652ad169ff1e5799e4dcfd70b0b6a5b27d3e26fc`. Inspected both launcher diffs, the real-junction subprocess regressions and package contents evidence. Canonical comparison resolves the observed no-op without relaxing installation identity checks or changing sharing preferences; ordinary imports remain inert. No blocking findings. The full 108-test result and red-before/green-after evidence were verified in the implementation report. Source ownership remains released; owner-approved integration is pending. This record-only review update does not change the accepted source or packages.
