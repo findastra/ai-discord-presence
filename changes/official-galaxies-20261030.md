@@ -6,7 +6,7 @@ Astra approved the individually moving star preview and asked to preserve the bl
 fade the outside to black, call both galaxies the official artwork, push to GitHub,
 and update the website.
 
-State: IN_PROGRESS. Implementer: Codex, official galaxy session. Reviewer: galaxy_assets.
+State: DONE. Implementer: Codex, official galaxy session. Reviewer: galaxy_assets.
 Writable scope: both apps' public galaxy renderer/data/art and their integration in
 index.html, style.css, server routes, source identity, presence image URL; packaging,
 art documentation, focused tests, screenshots and downloads. Related publication:
@@ -19,4 +19,6 @@ credential or registry change. Acceptance: individual star motion, soft white co
 source colors, black edges; usable pause/reduced motion and fallback; app tests and
 downloads verified; independent review; published source and verified website.
 
-Publication and verification evidence will be recorded in this change's handoff.
+Publication and verification evidence is recorded in
+[handoff051](../handoffs/051-official-galaxies-20261030.md): source and storefronts merged,
+website deployment verified, all114 tests passed, exports decoded and visually checked.
