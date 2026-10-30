@@ -6,6 +6,11 @@ A free Windows companion for sharing Codex activity on Discord, with locally det
 
 ## Start it
 
+The official blue six-arm artwork uses individual stars flowing into a white core,
+with black outer edges. Approved by Astra, October 30, 2026.
+[Artwork and source](../docs/official-galaxy-artwork-20261030.md). **Pause stars**
+stops the page animation; the device's reduced-motion preference is respected.
+
 1. Install [Node.js 24 or later](https://nodejs.org/en/download) if needed. No npm install is required.
 2. Extract the download and double-click **Start OpenAI Discord Presence.cmd**.
 3. Keep Discord desktop open with activity sharing enabled, then click **Automatic**.
