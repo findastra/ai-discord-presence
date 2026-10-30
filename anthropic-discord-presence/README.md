@@ -8,7 +8,7 @@ A free Windows companion for sharing Claude activity on Discord, with locally de
 
 The official gold five-arm artwork uses individual stars flowing into a white core,
 with black outer edges. Approved by Astra, October 30, 2026.
-[Artwork and source](../docs/official-galaxy-artwork-20261030.md). **Pause stars**
+[Artwork and source](https://github.com/findastra/ai-discord-presence/blob/main/docs/official-galaxy-artwork-20261030.md). **Pause stars**
 stops the page animation; the device's reduced-motion preference is respected.
 
 1. Install [Node.js 24 or later](https://nodejs.org/en/download) if needed. No npm install is required.
