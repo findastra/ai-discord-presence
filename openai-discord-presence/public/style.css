@@ -123,3 +123,20 @@ h1{font-size:var(--fs);line-height:1;align-items:flex-end;padding-bottom:var(--d
 /* Official individual-star artwork. By Astra, 2026-10-30. */
 .hero{background:#000}.galaxy,.galaxy img{animation:none!important;transform:none!important}.galaxy img{mask-image:none;mix-blend-mode:normal}.official-galaxy canvas{position:absolute;inset:0;margin:auto;height:min(100%,var(--gw));width:auto;aspect-ratio:1;display:none}.official-galaxy-ready>canvas{display:block}.official-galaxy-ready>img{visibility:hidden}.galaxy-pause{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:1;padding:4px 10px;font-size:11px;background:#000a}.official-card-galaxy{position:relative;width:64px;height:64px;flex:none;border-radius:6px;overflow:hidden;background:#000}.official-card-galaxy canvas,.official-card-galaxy img{position:absolute;inset:0;width:100%;height:100%}.official-card-galaxy canvas{display:none}.official-card-galaxy.official-galaxy-ready canvas{display:block}
 .official-galaxy:not(.official-galaxy-ready)+.galaxy-pause{display:none}
+
+/* Everything under the galaxy a third bigger on computer screens, to match the card Discord really draws on a
+   profile: the card, its text and galaxy, the buttons beside it, the heading and the paragraph (Astra, 2026-10-31).
+   The room kept under the galaxy grows to fit, and the section goes to one column sooner. Phones keep the sizes
+   above, as Discord's own card is smaller there too. */
+@media(min-width:641px){
+:root{--reserve:min(760px,max(460px,min(564px,calc(460px + (1100px - 100vw) * .433)),calc(564px + (650px - 100vw) * .39)))}
+.headline{font-size:38px}#intro{font-size:18px}.controls .card-label{font-size:14px}
+.controls{grid-template-columns:auto 400px;column-gap:20px;row-gap:12px}
+.controls .buttons{gap:6px}.controls .buttons button{font-size:16px;padding:4px 22px}
+.preview{width:400px;padding:14px 16px 16px;border-radius:10px}
+.preview-top{font-size:16px;margin-bottom:10px}.preview-body{gap:14px}
+.preview img,.official-card-galaxy{width:86px;height:86px;border-radius:8px}
+.preview strong{font-size:18px}.preview p,.preview .small,#timer{font-size:16px}
+.elapsed{gap:6px}.elapsed .pad{width:18px;height:18px}}
+@media(min-width:641px) and (max-width:1060px){.workspace{display:flex;flex-direction:column;align-items:stretch;
+justify-content:center;gap:14px}.headline,.session{align-self:stretch}.controls{align-self:flex-start}}
