@@ -86,7 +86,7 @@ void main(){vec2 d=(gl_PointCoord-.5)*spriteSize;float radius2=dot(d,d);
     const entry=window.officialGalaxyData?.[canvas.dataset.officialGalaxy];if(!entry)return;
     try {
       const renderer=mount(canvas,entry),state={renderer,visible:true,dirty:true,lost:false};active.set(canvas,state);
-      const resize=new ResizeObserver(()=>{const size=Math.max(1,Math.round(canvas.getBoundingClientRect().width*Math.min(devicePixelRatio||1,2)));if(canvas.width!==size){canvas.width=canvas.height=size;state.dirty=true;}});resize.observe(canvas);
+      const resize=new ResizeObserver(()=>{const size=Math.max(1,Math.round(canvas.getBoundingClientRect().width*Math.min(devicePixelRatio||1,2)));if(canvas.width!==size){canvas.width=canvas.height=size;/* Resizing wipes the canvas black: draw again at once so a window being resized never flashes (Astra, 2026-11-03). */if(!state.lost)state.renderer.draw(elapsed);state.dirty=false;}});resize.observe(canvas);
       const visible=new IntersectionObserver(entries=>{state.visible=entries[0].isIntersecting;state.dirty=true;});visible.observe(canvas);
       const onLost=event=>{event.preventDefault();state.lost=true;canvas.classList.remove('official-galaxy-ready');canvas.parentElement?.classList.remove('official-galaxy-ready');};
       const onRestored=()=>{state.cleanup();active.delete(canvas);if(canvas.isConnected)attach(canvas);};
