@@ -140,3 +140,8 @@ h1{font-size:var(--fs);line-height:1;align-items:flex-end;padding-bottom:var(--d
 .elapsed{gap:6px}.elapsed .pad{width:18px;height:18px}}
 @media(min-width:641px) and (max-width:1060px){.workspace{display:flex;flex-direction:column;align-items:stretch;
 justify-content:center;gap:14px}.headline,.session{align-self:stretch}.controls{align-self:flex-start}}
+
+/* The galaxy as big as the hero: from the top of the page to just above the line, with the title allowed over it
+   (Astra, 2026-11-02). The card shows galaxy-card.gif, the same picture Discord shows. */
+:root{--hh:max(180px,calc(100vh - var(--reserve)));--gw:min(calc(var(--hh) - 12px),100vw)}
+.galaxy{top:0}h1{z-index:1;text-shadow:0 0 18px #000,0 0 6px #000}
