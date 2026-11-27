@@ -1,3 +1,4 @@
+import { SavedMode, DisplayLease, startCoordinator } from './presence-runtime-20261127.js';
 import http from 'node:http';
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -21,7 +22,9 @@ try { config = validateConfig(JSON.parse(readFileSync(configPath, 'utf8'))); } c
 const presence = new Presence();
 // The website copy of the card, when config.webCardGist names a gist (Astra's own PC only).
 const webCard = new WebCard('anthropic.json');
-presence.setMode(launchMode(config));
+const savedMode = new SavedMode(join(root, '.local'));
+const displayLease = new DisplayLease();
+presence.setMode(savedMode.read(launchMode(config)));
 const rpc = new DiscordRPC();
 let detection = { active: false, model: '', message: 'Choose Automatic for recent Claude Code conversations, or Start session for regular Claude desktop chat.' };
 let currentSession = selectSession(detection, config);
@@ -67,6 +70,12 @@ async function sync() {
       message = presence.mode === 'off' ? 'Sharing is off.' : detection.message;
       return;
     }
+    if (!displayLease.allows()) {
+      if (rpc.ready && lastSent !== null) await rpc.setActivity(null);
+      published = false; lastSent = null; rpc.disconnect();
+      message = 'Sharing is enabled; another enabled app is taking its turn.';
+      return;
+    }
     if (Date.now() < retryAt) return;
     await rpc.connect(config.clientId);
     retryAt = 0;
@@ -79,7 +88,7 @@ async function sync() {
       await rpc.setActivity(payload);
       lastSent = signature;
     }
-    published = true;
+    published = lastSent != null;
     void webCard.push(config.webCardGist, payload);
     message = 'Activity accepted by Discord. Your settings and Discord client control its visibility; only one card may appear.';
   } catch (error) {
@@ -131,7 +140,7 @@ const server = http.createServer(async (req, res) => {
   if (req.headers.host !== `127.0.0.1:${port}`) return send(res, 403, { error: 'Local requests only.' });
   try {
     if (req.method === 'GET' && req.url === '/api/status') {
-      return send(res, 200, { app: 'anthropic-discord-presence', version: VERSION, identity: SOURCE_IDENTITY, config, mode: presence.mode, startedAt: presence.startedAt, published,
+      return send(res, 200, { app: 'anthropic-discord-presence', version: VERSION, identity: SOURCE_IDENTITY, coordinationVersion: 1, eligible: !!config.clientId && presence.startedAt !== null, coordinated: displayLease.until > Date.now(), config, mode: presence.mode, startedAt: presence.startedAt, published,
         connected: rpc.ready, message, webCard: config.webCardGist ? webCard.error || 'on' : 'off', startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'Claude', detection: detection.message,
         projects: config.shareProject && !config.projectName ? [...new Set(rotationCards(detection.sessions ?? []).map(s => s.project).filter(Boolean))] : [],
         rotateSeconds: ROTATE_MS / 1000 });
@@ -148,7 +157,9 @@ const server = http.createServer(async (req, res) => {
         const nextConfig = validateConfig(input);
         mkdirSync(join(root, '.local'), { recursive: true });
         writeFileSync(configPath, JSON.stringify(nextConfig, null, 2) + '\n', { mode: 0o600 });
-        presence.setMode(modeAfterSettings(config, nextConfig, presence.mode));
+        const nextMode = modeAfterSettings(config, nextConfig, presence.mode);
+        savedMode.save(nextMode);
+        presence.setMode(nextMode);
         config = nextConfig;
         revision++;
         detectedAt = 0;
@@ -157,7 +168,21 @@ const server = http.createServer(async (req, res) => {
         void sync();
         return send(res, 200, { ok: true });
       }
+      if (req.url === '/api/display') {
+        displayLease.update(input);
+        revision++; retryAt = 0;
+        await sync();
+        // A withdrawal acknowledgement must wait for an in-flight RPC update too.
+        const deadline = Date.now() + 2500;
+        while (running || rerun) {
+          if (Date.now() >= deadline) throw new Error('Display update is still pending.');
+          await new Promise(done => setTimeout(done, 25));
+        }
+        if (!input.selected && (published || rpc.ready)) throw new Error('Card withdrawal is still pending.');
+        return send(res, 200, { ok: true });
+      }
       if (req.url === '/api/mode') {
+        savedMode.save(input.mode);
         presence.setMode(input.mode);
         revision++;
         detectedAt = 0;
@@ -214,6 +239,7 @@ function startTray() {
   } catch { /* The control panel still works without a tray icon. */ }
 }
 server.listen(port, '127.0.0.1', () => {
+  startCoordinator(join(root, '..', '..', 'discord-tower', 'tools', 'presence-control', 'presence-control-20261030.mjs'));
   console.log(`Anthropic Discord Presence: ${origin}\nClose with Quit app or Ctrl+C.`);
   void sync();
   startTray();
