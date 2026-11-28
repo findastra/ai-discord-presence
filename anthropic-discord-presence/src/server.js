@@ -58,7 +58,7 @@ async function sync() {
       detection = await detectClaude({ names: config.shareProject === true });
       detectedAt = Date.now();
     }
-    presence.update(detection.active);
+    presence.update(detection.active || displayLease.keepsEnabled(presence.mode));
     currentSession = selectSession(detection, config);
     if (!config.clientId) { message = 'Add your Discord Application ID to connect.'; return; }
     if (presence.startedAt === null) {
@@ -82,6 +82,9 @@ async function sync() {
     if (current !== revision || closing) { rerun = true; return; }
     currentSession = selectSession(detection, config);
     const payload = activity(presence.startedAt, config.image, currentSession.project, currentSession.model, currentSession.effort);
+    if (!detection.active && displayLease.keepsEnabled(presence.mode)) {
+      payload.details = 'Idle'; payload.state = 'Automatic sharing enabled';
+    }
     const signature = JSON.stringify(payload);
     if (lastSent !== signature && Date.now() - sentAt >= MIN_SEND_MS) {
       sentAt = Date.now();
@@ -140,7 +143,7 @@ const server = http.createServer(async (req, res) => {
   if (req.headers.host !== `127.0.0.1:${port}`) return send(res, 403, { error: 'Local requests only.' });
   try {
     if (req.method === 'GET' && req.url === '/api/status') {
-      return send(res, 200, { app: 'anthropic-discord-presence', version: VERSION, identity: SOURCE_IDENTITY, coordinationVersion: 1, eligible: !!config.clientId && presence.startedAt !== null, coordinated: displayLease.until > Date.now(), config, mode: presence.mode, startedAt: presence.startedAt, published,
+      return send(res, 200, { app: 'anthropic-discord-presence', version: VERSION, identity: SOURCE_IDENTITY, coordinationVersion: 1, eligible: !!config.clientId && presence.mode !== 'off', coordinated: displayLease.until > Date.now(), config, mode: presence.mode, startedAt: presence.startedAt, published,
         connected: rpc.ready, message, webCard: config.webCardGist ? webCard.error || 'on' : 'off', startupEnabled: startupEnabled(), project: currentSession.project, model: currentSession.model, effortLabel: modelLabel(currentSession.model) ? effortLabel(currentSession.effort) : '', modelLabel: modelLabel(currentSession.model) || 'Claude', detection: detection.message,
         projects: config.shareProject && !config.projectName ? [...new Set(rotationCards(detection.sessions ?? []).map(s => s.project).filter(Boolean))] : [],
         rotateSeconds: ROTATE_MS / 1000 });
