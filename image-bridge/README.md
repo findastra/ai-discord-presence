@@ -16,7 +16,7 @@ The full recipe, with every prompt and command, is in [docs/galaxy-art-20261017.
 
 1. Sign in at https://platform.openai.com and add a payment method under **Billing**. The API is billed per image, separately from a ChatGPT subscription. Set a monthly limit there.
 2. Create a key at https://platform.openai.com/api-keys, named for what uses it (for example `image-bridge-desktop-2026-10`). Treat it like a password: never paste it into a chat, a repo file or a screenshot.
-3. Store it as an environment variable (no typing errors possible this way): **Start** → type `environment` → **Edit environment variables for your account** → **New…** → name `OPENAI_API_KEY`, value: the key (starts with `sk-`, no quotes or spaces) → **OK**, **OK**.
+3. Store it as an environment variable (no typing errors possible this way): **Start** → type `environment` → **Edit environment variables for your account** → **New…** → name `FARM_ART_OPENAI_API_KEY`, value: the key (starts with `sk-`, no quotes or spaces) → **OK**, **OK**. The art key has its own name because Codex and other tools read `OPENAI_API_KEY`; the bridge still falls back to `OPENAI_API_KEY` while you move it.
 4. Restart the assistant app so it sees the new variable.
 
 To turn the bridge off, delete the variable or delete the key on the OpenAI site.
